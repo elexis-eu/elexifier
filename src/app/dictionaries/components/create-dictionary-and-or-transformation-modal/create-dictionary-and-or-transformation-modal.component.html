@@ -1,0 +1,73 @@
+<div class="container p-0">
+  <div class="row">
+    <div class="col-12">
+      <ng-container *ngIf="!dictionaryId">
+        <div class="ui-dialog-titlebar d-flex">
+          <span>Upload a dictionary</span>
+          <i
+            [pTooltip]="UPLOAD_A_DICTIONARY_TOOLTIP_TEXT"
+            [tooltipPosition]="'top'"
+            class="pi pi-question-circle elex-pi-question-circle pl-1"
+          ></i>
+          <span
+            (click)="ref.close()"
+            class="pi pi-times elex-pi-times"
+          ></span>
+        </div>
+        <app-create-dictionary
+          (ready)="onDictionaryReady($event)"
+          (fileInputReady)="onFileInputReady($event)"
+          (selectedFileType)="onSelectFileType($event)"
+          [showErrors]="showErrors"
+        ></app-create-dictionary>
+      </ng-container>
+
+      <ng-container *ngIf="(fileType === FileTypes.AppXml || fileType === FileTypes.TextXml) || dictionaryId">
+        <div
+          *ngIf="dictionaryId"
+          class="ui-dialog-titlebar d-flex"
+        >
+          <span>New transformation</span>
+          <i
+            [pTooltip]="NEW_TRANSFORMATION_TOOLTIP_TEXT"
+            [tooltipPosition]="'top'"
+            class="pi pi-question-circle elex-pi-question-circle pl-1"
+          ></i>
+          <span
+            (click)="ref.close()"
+            class="pi pi-times elex-pi-times"
+          ></span>
+        </div>
+        <app-create-transformation
+          (ready)="onTransformationReady($event)"
+          [showErrors]="showErrors"
+        ></app-create-transformation>
+      </ng-container>
+      <hr/>
+      <div class="col-12 text-center">
+        <button
+          pButton
+          (click)="onCreateClick()"
+          class="button button-primary mb-3"
+          icon="pi pi-save"
+          label="Create"
+          [disabled]="uploadInProgress || (!fileType && !dictionaryId)"
+        ></button>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  *ngIf="uploadInProgress && !dictionaryId"
+  class="container"
+>
+  <div class="text-center mb-3">
+    {{ progressPercentage }}%
+  </div>
+
+  <div>
+    <p-progressBar
+      mode="indeterminate"
+    ></p-progressBar>
+  </div>
+</div>

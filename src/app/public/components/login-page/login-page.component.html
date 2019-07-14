@@ -1,0 +1,89 @@
+<div class="container layout-container--no-sidebar">
+  <div class="row main">
+    <div class="elex-login-form col-12 col-sm-6 card">
+      <ng-container *ngIf="!loading.loggingInWithSketch; else sketchLogin">
+        <div>
+          <img style="height: 70px" src="/assets/images/elexis_full.jpeg">
+        </div>
+        <form
+          [formGroup]="loginFG"
+          (ngSubmit)="onLogin()"
+          class="elex-login-form--inner"
+        >
+          <div class="text-center">
+            <h2 class="mb-3 font-weight-normal">LOGIN</h2>
+          </div>
+
+          <div class="p-3">
+            <div class="form-label-group mb-3">
+              <label>Email</label>
+              <input
+                formControlName="login"
+                type="text"
+                id="login"
+                class="form-control"
+                placeholder="Your username"
+              />
+              <app-form-validation
+                [control]="loginFG.controls.login"
+                [showErrors]="showErrors"
+              ></app-form-validation>
+            </div>
+
+            <div class="form-label-group mb-3">
+              <label>
+                Password
+              </label>
+              <input
+                formControlName="password"
+                type="password"
+                id="password"
+                class="form-control"
+                placeholder="Password"
+              />
+              <app-form-validation
+                [control]="loginFG.controls.password"
+                [showErrors]="showErrors"
+              ></app-form-validation>
+            </div>
+            <div class="text-center">
+              <small
+                [routerLink]="['/register']"
+                class="elex-link mb-3 d-block"
+              >
+                Don't have an account yet?
+              </small>
+
+              <button
+                type="submit"
+                class="button button-primary"
+              >
+                Login
+              </button>
+            </div>
+          </div>
+        </form>
+        <div class="d-flex justify-content-center mb-3 form-seperator">
+          <div class="">OR</div>
+        </div>
+        <div>
+          <a href="http://auth.sketchengine.eu/?next=https%3A%2F%2Felexifier.elex.is%2Flogin%3Fsketch_token%3D&elexifier=1" style="color: #26A1D2; text-decoration: none">
+            <div class="text-center">
+              <span class="d-block">LOGIN WITH</span>
+              <img style="height: 75px" src="https://www.sketchengine.eu/wp-content/uploads/SE_logo_330x150-bleed-transp-bg.png">
+            </div>
+          </a>
+        </div>
+      </ng-container>
+      <ng-template #sketchLogin>
+        <div class="text-center mb-3">
+          <h2 class="mb-3 font-weight-normal">Logging in with</h2>
+          <img style="height: 75px" src="https://www.sketchengine.eu/wp-content/uploads/SE_logo_330x150-bleed-transp-bg.png">
+        </div>
+        <div>
+          <p-progressBar *ngIf="loading.loggingInWithSketch" mode="indeterminate"></p-progressBar>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,60 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <div class="ui-dialog-titlebar d-flex">
+        <span>Download transformation</span>
+        <span
+          (click)="ref.close()"
+          class="pi pi-times elex-pi-times"
+        ></span>
+      </div>
+    </div>
+    <div class="col-12 my-4">
+      <ng-container *ngIf="!fileStatus || fileStatus === null; else fileReadyButton;">
+        <p class="mb-4 text-center">
+          Download the transformation with or without namespaces?
+        </p>
+        <div class="d-flex justify-content-center">
+          <button
+            pButton
+            (click)="onSelectDownloadOption(false)"
+            class="button button-primary mb-3 mr-4"
+            icon="pi pi-download"
+            label="With namespaces"
+          ></button>
+          <button
+            pButton
+            (click)="onSelectDownloadOption(true)"
+            class="button button-primary mb-3"
+            icon="pi pi-download"
+            label="Without namespaces"
+          ></button>
+        </div>
+      </ng-container>
+    </div>
+    <ng-template #fileReadyButton>
+      <ng-container *ngIf="fileStatus === 'Ready'; else filePreparing">
+        <p class="mb-4 text-center">
+          Your download is ready. Click the button below to start download.
+        </p>
+        <div class="d-flex justify-content-center">
+          <button
+            pButton
+            (click)="downloadFile()"
+            class="button button-primary mb-3"
+            icon="pi pi-download"
+            label="Download"
+          ></button>
+        </div>
+      </ng-container>
+    </ng-template>
+    <ng-template #filePreparing>
+      <div class="col-12 my-4">
+        <p class="mb-4 text-center">
+          Your file is being prepared<br/>
+          Please come back later ...
+        </p>
+      </div>
+    </ng-template>
+  </div>
+</div>

@@ -1,0 +1,27 @@
+@import 'src/styles/colors.scss';
+
+.configuration-selector-row {
+  display: flex;
+
+  .configuration-selector-item {
+    height: 40px;
+    background: #fff;
+    flex: 1;
+    color: $blue;
+    text-align: center;
+    line-height: 40px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+
+    &:hover {
+      background: $lightBlue;
+    }
+
+    &.selected {
+      background: $blue;
+      color: #fff;
+    }
+  }
+}

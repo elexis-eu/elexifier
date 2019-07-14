@@ -1,0 +1,86 @@
+<div class="transformation-edit-view d-flex" style="display: flex">
+  <div class="highlight-box" [ngClass]="{'padded': fixedTree}">
+    <div class="highlight-box-section" [ngClass]="{'padded': menuDepth < 3}">
+      <ng-container *ngIf="loading.originalXml">
+        <div style="z-index: 20; position: absolute; background: rgba(255,255,255,1); width: 100%; height: 100%; padding: 1rem">
+          <div class="loading-placeholder placeholder-large">
+            <span class="text-row"></span>
+            <span class="text-row"></span>
+            <span class="text-row"></span>
+            <span class="text-row"></span>
+            <span class="text-row"></span>
+            <span class="text-row"></span>
+            <span class="text-row"></span>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="highlightedInput && highlightedInput.length > 0; else noOriginal">
+        <pre class="line-numbers language-xml higlighted-code">
+          <code [innerText]="highlightedInput">
+          </code>
+        </pre>
+      </ng-container>
+      <ng-template #noOriginal>
+        <ng-container *ngIf="!loading.originalXml">
+          <div class="text-center text-secondary p-4">
+            <div><i class="pi pi-info fs-32"></i></div>
+            This transformations seems broken. Please verify transformer settings.
+            <br>
+            <a class="elex-link" [routerLink]="['/dictionaries']">GO BACK</a>
+          </div>
+        </ng-container>
+      </ng-template>
+    </div>
+    <div class="highlight-box-section">
+      <div class="strip-ns-floater px-3" *ngIf="highlightedOutput && highlightedOutput.length > 0">
+        <div class="d-flex align-items-center mr-3">
+          <p-checkbox
+            (onChange)="onChangeStripSettings()"
+            [(ngModel)]="stripSettings.namespaces"
+            styleClass="small"
+            [binary]="true"
+            [style]="{ 'margin-top': '-3px' }"
+          >
+          </p-checkbox>&nbsp;<span class="fs-12 fw-300">Strip namespaces</span>
+        </div>
+        <div class="d-flex align-items-center">
+          <p-checkbox
+            (onChange)="onChangeStripSettings()"
+            [(ngModel)]="stripSettings.dictScrap"
+            styleClass="small"
+            [binary]="true"
+            [style]="{ 'margin-top': '-3px' }"
+          >
+          </p-checkbox>&nbsp;<span class="fs-12 fw-300">Strip dictScrap</span>
+        </div>
+      </div>
+      <ng-container *ngIf="loading.outputTei">
+        <div style="z-index: 20; position: absolute; background: rgba(255,255,255,1); width: 100%; height: 100%; padding: 1rem">
+          <div class="loading-placeholder placeholder-large">
+            <span class="text-row"></span>
+            <span class="text-row"></span>
+            <span class="text-row"></span>
+            <span class="text-row"></span>
+            <span class="text-row"></span>
+            <span class="text-row"></span>
+            <span class="text-row"></span>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="highlightedOutput && highlightedOutput.length > 0">
+        <pre class="line-numbers language-xml higlighted-code">
+          <code [innerText]="highlightedOutput"></code>
+        </pre>
+      </ng-container>
+  </div>
+</div>
+<div *ngIf="isEdit && transformationService.transformation">
+  <app-transformation-tree
+    [editable]="true"
+    [transformation]="transformationService.transformation"
+    [fixed]="fixedTree"
+    (anchor)="onChangeAnchor($event)"
+    *ngIf="transformationService.transformation"
+  ></app-transformation-tree>
+</div>
+</div>

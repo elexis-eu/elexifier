@@ -1,0 +1,55 @@
+<div
+  *ngIf="control && showErrors"
+  [ngSwitch]="true"
+  class="errors"
+>
+  <small
+    *ngSwitchCase="control.hasError('required')"
+    i18n
+    class="error"
+  >
+    Required field
+  </small>
+  <small
+    *ngSwitchCase="control.hasError('pattern')"
+    i18n
+    class="error"
+  >
+    No pattern match
+  </small>
+  <small
+    *ngSwitchCase="control.hasError('minlength')"
+    i18n
+    class="error"
+  >
+    Text is too short
+  </small>
+  <small
+    *ngSwitchCase="control.hasError('maxlength')"
+    i18n
+    class="error"
+  >
+    Text is too long
+  </small>
+  <small
+    *ngSwitchCase="control.hasError('url')"
+    i18n
+    class="error"
+  >
+    This URL is not valid
+  </small>
+  <small
+    *ngSwitchCase="control.hasError('email')"
+    i18n
+    class="error"
+  >
+    This email is not valid
+  </small>
+  <small
+    *ngSwitchCase="control.hasError('password')"
+    i18n
+    class="error"
+  >
+    Your password must include at least 8 characters, 1 number and 1 uppercase letter
+  </small>
+</div>

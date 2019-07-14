@@ -1,0 +1,112 @@
+@import 'src/styles/colors.scss';
+
+.sidebar-container {
+  display: flex;
+  position: relative;
+  ul {
+    padding: unset;
+  }
+
+  .sidebar {
+    background: #fff;
+    width: 65px;
+    height: calc(100vh - 65px);
+    background: $darkBlue;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .sidebar-menu {
+      &--bottom {
+        margin-bottom: 0px;
+      }
+
+      &-item {
+        padding: 0.5rem;
+        text-align: center;
+        height: 65px;
+        line-height: 44px;
+        cursor: pointer;
+        color: $gray;
+
+        i {
+          vertical-align: bottom;
+        }
+
+        &.active {
+          color: #fff;
+        }
+      }
+    }
+  }
+}
+
+.sidebar-column {
+  //padding-bottom: 3rem;
+  //position: relative;
+
+  .create-new-button {
+    height: 3rem;
+    width: 100%;
+    text-align: center;
+    line-height: 3rem;
+    font-size: 12px;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-top: auto;
+    &.blue {
+      border-top: 1px solid $darkBlue;
+    }
+
+    &.puke {
+      color: $puke;
+      border-top: 1px solid $puke;
+    }
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.top-toolbar {
+  position: absolute;
+  width: calc(100vw - 485px);
+  left: 100%;
+  z-index: 30;
+  background: #fff;
+  padding: 0.5rem;
+  border-bottom: 1px solid #cecece;
+  text-align: left;
+  cursor: pointer;
+
+  .toolbar-button {
+    color: $gray;
+    transition: color 0.2s ease-out;
+
+    &:last-child {
+      .toolbar-control {
+        margin-right: 0;
+      }
+    }
+
+    &:hover {
+      text-decoration: none;
+      color: $darkBlue;
+      transition: color 0.2s ease-out;
+
+      .toolbar-control {
+        color: $darkBlue;
+        transition: color 0.2s ease-out;
+      }
+    }
+  }
+
+  .toolbar-control {
+    height: 18px;
+    width: 18px;
+    color: $gray;
+    margin-right: 16px;
+    transition: color 0.2s ease-out;
+  }
+}

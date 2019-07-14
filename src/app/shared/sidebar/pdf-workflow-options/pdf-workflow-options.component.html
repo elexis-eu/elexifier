@@ -1,0 +1,175 @@
+<div class="sidebar-column-search justify-content-center">
+  <span class="fs-14 text-uppercase">
+    Workflow options
+  </span>
+</div>
+<div class="sidebar-column--content">
+  <ul class="sidebar-column-menu">
+    <li class="sidebar-column-menu-item hover">
+      <div class="sidebar-column-menu-item--name sidebar-column-menu-item--name-pdf">
+        <button
+          (click)="onStartAnnotateProcessClick()"
+          class="button button-primary mr-auto mb-2"
+          [disabled]="!annotateUrl"
+        >
+          {{ annotateUrl ? 'Reset annotations' : 'Annotate' }}
+        </button>
+        <div class="sidebar-column-menu-item--text-small">
+          <ng-container [ngSwitch]="true">
+            <span
+              *ngSwitchCase="PdfStatuses.AnnotateStarting === status"
+              class="text-warning"
+            >
+              Asking Lexonomy to start processing your file
+            </span>
+            <span
+              *ngSwitchCase="PdfStatuses.AnnotateProcessing === status"
+              class="text-warning"
+            >
+              Lexonomy is processing you file...
+            </span>
+            <span
+              *ngSwitchCase="PdfStatuses.AnnotateReady === status"
+              class="text-success"
+            >
+              Hooray, your file is ready to be annotated
+            </span>
+            <span
+              *ngSwitchCase="PdfStatuses.AnnotateLexonomyError === status"
+              class="text-danger"
+            >
+              Sending annotated dictionary to Lexonomy failed
+            </span>
+          </ng-container>
+          <a
+            *ngIf="annotateUrl"
+            [href]="annotateUrl"
+            target="_blank"
+          >
+            {{ annotateUrl }}
+          </a>
+        </div>
+      </div>
+    </li>
+    <li class="sidebar-column-menu-item hover">
+      <div class="sidebar-column-menu-item--name sidebar-column-menu-item--name-pdf">
+        <div
+          (click)="onTriggerMlWorkflowClick()"
+          class="button button-primary mr-auto mb-2"
+        >
+          To ML
+        </div>
+        <div
+          [ngSwitch]="true"
+          class="sidebar-column-menu-item--text-small"
+        >
+          <span
+            *ngSwitchCase="PdfStatuses.LexonomyAnnotated === status"
+            class="text-success"
+          >
+            Annotated file is ready for ML
+          </span>
+          <span
+            *ngSwitchCase="PdfStatuses.StartingMl === status"
+            class="text-warning"
+          >
+            Starting ML process
+          </span>
+          <span
+            *ngSwitchCase="PdfStatuses.MlFormat === status"
+            class="text-warning"
+          >
+            Running ML on annotated file
+          </span>
+          <span
+            *ngSwitchCase="PdfStatuses.MlAnnotated === status"
+            class="text-warning"
+          >
+            Finished ML on file, converting output to xml
+          </span>
+          <span
+            *ngSwitchCase="PdfStatuses.LexFormat === status"
+            class="text-warning"
+          >
+            ML output was transformed to xml and is ready to be downloaded or sent to preview
+          </span>
+          <span
+            *ngSwitchCase="PdfStatuses.Lex2MlError === status"
+            class="text-danger"
+          >
+            Transformation to json format failed
+          </span>
+          <span
+            *ngSwitchCase="PdfStatuses.Ml2LexError === status"
+            class="text-danger"
+          >
+            Transformation from json to xml failed
+          </span>
+          <span
+            *ngSwitchCase="PdfStatuses.MlError === status"
+            class="text-danger"
+          >
+            There was an error during machine learning process
+          </span>
+        </div>
+      </div>
+    </li>
+    <li class="sidebar-column-menu-item hover">
+      <div class="sidebar-column-menu-item--name sidebar-column-menu-item--name-pdf">
+        <div
+          (click)="onOpenPreviewClick()"
+          class="button button-primary mr-auto mb-2"
+        >
+          To Preview
+        </div>
+        <div class="sidebar-column-menu-item--text-small">
+          <ng-container [ngSwitch]="true">
+            <span
+              *ngSwitchCase="PdfStatuses.PreviewStarting === status"
+              class="text-warning"
+            >
+              Asking Lexonomy to start processing your file
+            </span>
+            <span
+              *ngSwitchCase="PdfStatuses.PreviewProcessing === status"
+              class="text-warning"
+            >
+              Lexonomy is processing you file...
+            </span>
+            <span
+              *ngSwitchCase="PdfStatuses.PreviewReady === status"
+              class="text-success"
+            >
+              Hooray, your file is for preview
+            </span>
+            <span
+              *ngSwitchCase="PdfStatuses.PreviewLexonomyError === status"
+              class="text-danger"
+            >
+              Sending preview dictionary to Lexonomy failed
+            </span>
+          </ng-container>
+          <a
+            *ngIf="previewUrl"
+            [href]="previewUrl"
+            target="_blank"
+          >
+            {{ previewUrl }}
+          </a>
+        </div>
+      </div>
+    </li>
+    <li class="sidebar-column-menu-item hover">
+      <div class="sidebar-column-menu-item--name sidebar-column-menu-item--name-pdf">
+        <a
+          *ngIf="downloadUrl"
+          [href]="downloadUrl"
+          download
+          class="button button-primary mr-auto mb-2"
+        >
+          Download
+        </a>
+      </div>
+    </li>
+  </ul>
+</div>

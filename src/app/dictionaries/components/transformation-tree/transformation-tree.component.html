@@ -1,0 +1,966 @@
+<form
+    #form="ngForm"
+    (ngSubmit)="onSaveTransformation(form.valid)"
+    class="transformation-tree elexifier-scroller"
+    [ngClass]="{'fixed': fixed, 'hidden': !opened}"
+>
+  <div
+    class="handle"
+    (click)="toggleTreeOpened()"
+    *ngIf="fixed"
+  >
+    <div class="settings-label">
+      <feather-icon
+        name="settings"
+        class="icon icon-small icon-grey mr-2"
+      ></feather-icon>
+      <span>TRANSFORMATION</span>
+    </div>
+    <div
+      class="anchor"
+      (click)="toggleAnchor()"
+      [pTooltip]="'Anchor'"
+    >
+      <feather-icon
+        name="anchor"
+        class="icon icon-small icon-grey"
+      ></feather-icon>
+    </div>
+  </div>
+  <div
+    class="transformation-tree-toolbar"
+    *ngIf="editable"
+  >
+    <div>
+      <p-menu
+          #unusedTransformersMenu
+          [popup]="true"
+          appendTo="body"
+          [model]="unusedTransformers"
+      ></p-menu>
+      <a
+        (click)="unusedTransformersMenu.toggle($event)"
+        class="add-transformer-button"
+      >
+        Add core element
+        <i-feather
+          name="chevron-down"
+          class="icon icon-small"
+        >
+
+        </i-feather>
+      </a>
+    </div>
+    <div class="d-flex">
+      <div
+        class="mr-3 unanchor"
+        *ngIf="!fixed"
+        (click)="toggleAnchor()"
+        [pTooltip]="'Unanchor'"
+        [tooltipPosition]="'top'"
+      >
+        <feather-icon
+          name="anchor"
+          class="icon icon-small icon-grey"
+        ></feather-icon>
+      </div>
+      <div class="mr-2">
+        <button
+          class="button button-primary button-xs"
+          type="submit"
+        >Update
+        </button>
+      </div>
+      <div *ngIf="mode !== 'configuration' && fixed;">
+        <a
+          class="text-danger fs-12"
+          (click)="this.opened = false"
+        >Close</a>
+      </div>
+    </div>
+  </div>
+  <div class="transformer-list">
+    <ng-container *ngFor="let transformer of transformers">
+      <div
+        class="transformer-list-item"
+        *ngIf="!transformation[transformer.id].deleted"
+      >
+        <div
+          class="transformer-name selected"
+          (click)="onToggleCollapsed(transformer.id)"
+        >
+          <span>
+            {{ transformer.name }}
+          </span>
+          <ng-container [ngSwitch]="true">
+            <i
+              *ngSwitchCase="transformer.name === TransformerElementsWorthOfExplanation.Entry"
+              [pTooltip]="ENTRY_TOOLTIP_TEXT"
+              [tooltipPosition]="'top'"
+              class="pi pi-question-circle elex-pi-question-circle pl-1"
+            ></i>
+            <i
+              *ngSwitchCase="transformer.name === TransformerElementsWorthOfExplanation.Headword"
+              [pTooltip]="HEADWORD_TOOLTIP_TEXT"
+              [tooltipPosition]="'top'"
+              class="pi pi-question-circle elex-pi-question-circle pl-1"
+            ></i>
+            <i
+              *ngSwitchCase="transformer.name === TransformerElementsWorthOfExplanation.Sense"
+              [pTooltip]="SENSE_TOOLTIP_TEXT"
+              [tooltipPosition]="'top'"
+              class="pi pi-question-circle elex-pi-question-circle pl-1"
+            ></i>
+            <i
+              *ngSwitchCase="transformer.name === TransformerElementsWorthOfExplanation.PartOfSpeech"
+              [pTooltip]="PART_OF_SPEECH_TOOLTIP_TEXT"
+              [tooltipPosition]="'top'"
+              class="pi pi-question-circle elex-pi-question-circle pl-1"
+            ></i>
+            <i
+              *ngSwitchCase="transformer.name === TransformerElementsWorthOfExplanation.SecondaryHeadword"
+              [pTooltip]="SECONDARY_HEADWORD_TOOLTIP_TEXT"
+              [tooltipPosition]="'top'"
+              class="pi pi-question-circle elex-pi-question-circle pl-1"
+            ></i>
+            <i
+              *ngSwitchCase="transformer.name === TransformerElementsWorthOfExplanation.EntryLanguage"
+              [pTooltip]="ENTRY_LANGUAGE_TOOLTIP_TEXT"
+              [tooltipPosition]="'top'"
+              class="pi pi-question-circle elex-pi-question-circle pl-1"
+            ></i>
+            <i
+              *ngSwitchCase="transformer.name === TransformerElementsWorthOfExplanation.HeadwordTranslationLanguage"
+              [pTooltip]="HEADWORD_TRANSLATION_LANGUAGE_TOOLTIP_TEXT"
+              [tooltipPosition]="'top'"
+              class="pi pi-question-circle elex-pi-question-circle pl-1"
+            ></i>
+            <i
+              *ngSwitchCase="transformer.name === TransformerElementsWorthOfExplanation.Definition"
+              [pTooltip]="DEFINITION_TOOLTIP_TEXT"
+              [tooltipPosition]="'top'"
+              class="pi pi-question-circle elex-pi-question-circle pl-1"
+            ></i>
+            <i
+              *ngSwitchCase="transformer.name === TransformerElementsWorthOfExplanation.HeadwordTranslation"
+              [pTooltip]="HEADWORD_TRANSLATION_TOOLTIP_TEXT"
+              [tooltipPosition]="'top'"
+              class="pi pi-question-circle elex-pi-question-circle pl-1"
+            ></i>
+            <i
+              *ngSwitchCase="transformer.name === TransformerElementsWorthOfExplanation.Example"
+              [pTooltip]="EXAMPLE_TOOLTIP_TEXT"
+              [tooltipPosition]="'top'"
+              class="pi pi-question-circle elex-pi-question-circle pl-1"
+            ></i>
+          </ng-container>
+
+          <div
+            class="ml-auto"
+            *ngIf="editable"
+          >
+            <i-feather
+              name="chevron-down"
+              class="icon icon-small icon-grey hover"
+              *ngIf="!isTransformerOpened(transformer.id); else down"
+            >
+
+            </i-feather>
+            <ng-template #down>
+              <i-feather
+                name="chevron-up"
+                class="icon icon-small icon-grey hover"
+              >
+
+              </i-feather>
+            </ng-template>
+          </div>
+        </div>
+        <ng-container *ngIf="getSelectorData(transformer.id)?.length; else singleSelector">
+          <div
+            id="{{transformer.id}}-selector-row"
+            class="selector-row"
+            [ngClass]="{'collapsed': !isTransformerOpened(transformer.id) && editable}"
+          >
+            <div class="selector-value">
+              <span class="selector-value--type base-indent">UNION</span>
+              <div
+                cdkDropList
+                cdkDropListOrientation="vertical"
+                class="selector-list"
+                (cdkDropListDropped)="onDropSelector($event, transformer.id)"
+              >
+                <ng-container *ngFor="let selector of getSelectorData(transformer.id); let i = index">
+                  <div
+                    id="{{transformer.id}}-selector-row-item-{{i}}"
+                    class="selector-item indent-1"
+                    cdkDrag
+                    [cdkDragDisabled]="!editable"
+                  >
+                    <div
+                      class="drag-indicator"
+                      [ngClass]="{ 'hidden': !editable }"
+                      cdkDragHandle
+                    >
+                      <i-feather
+                        name="menu"
+                        class="icon icon-grey icon-small"
+                      >
+                      </i-feather>
+                    </div>
+                    <div
+                      class="delete-button"
+                      [ngClass]="{ 'hidden': !editable }"
+                    >
+                    <span
+                      class="subtract-button"
+                      *ngIf="getSelectorData(transformer.id)[i].type !== 'exclude' && !(transformer.id === 'sense' || transformer.id === 'entry')"
+                      (click)="onSubtractSelector(transformer.id, i)"
+                    >
+                      Excl.
+                    </span>&nbsp;
+                      <i-feather
+                        name="trash2"
+                        (click)="onRemoveSelector(i, transformer.id)"
+                        class="icon icon-red icon-small"
+                      >
+
+                      </i-feather>
+                    </div>
+                    <div class="indented-row">
+                      <ng-container *ngIf="getSelectorData(transformer.id)[i].type === 'exclude'; else basicSelector">
+                        <div class="d-flex subtracted-selectors">
+                        <span
+                          class="selector-value--expr"
+                        >
+                          <span
+                            class="content"
+                            appContenteditable="true"
+                            contenteditable="true"
+                            [disabled]="!editable"
+                            [(ngModel)]="getSelectorData(transformer.id)[i].left.expr"
+                            [appAvailableNodesValidator]="allowedSelectorValues"
+                            [name]="'selector-'+transformer.id+i+'-left'"
+                            [ngClass]="{'invalid': val1.errors}"
+                            #val1="ngModel"
+                            required
+                            appAutofocus
+                            [autofocusEnabled]="autofocusEnabled"
+                          ></span>
+                          <span
+                            class="selector-value--dropdown"
+                            [ngClass]="{'visible': op1.visible}"
+                            (click)="op1.toggle($event)"
+                          >
+                            <i-feather
+                              name="chevron-down"
+                              class="icon icon-small"
+                            ></i-feather>
+                          </span>
+                          <p-overlayPanel
+                              #op1
+                              appendTo="body"
+                              styleClass="selector-dropdown elexifier-scroller"
+                          >
+                            <div>
+                              <div class="dropdown-selector-menu">
+                                <div
+                                  class="dropdown-selector-menu--item text-center"
+                                  (click)="onUnsubtractSelector(transformer.id, 'left',  i)"
+                                >
+                                  <feather-icon
+                                    name="trash-2"
+                                    class="icon icon-small text-danger"
+                                  ></feather-icon>
+                                </div>
+                                <div
+                                  class="dropdown-selector-menu--item"
+                                  *ngFor="let node of filteredXmlNodes"
+                                  (click)="getSelectorData(transformer.id)[i].left.expr = node; op1.hide()"
+                                >
+                                  {{ node }}
+                                </div>
+                              </div>
+                            </div>
+                          </p-overlayPanel>
+                        </span>
+                          <span class="selector-value--type">EXCL.</span>
+                          <span class="selector-value--expr">
+                          <span
+                            class="content"
+                            appContenteditable="true"
+                            contenteditable="true"
+                            [disabled]="!editable"
+                            [(ngModel)]="getSelectorData(transformer.id)[i].right.expr"
+                            [appAvailableNodesValidator]="allowedSelectorValues"
+                            [name]="'selector-'+transformer.id+i+'-right'"
+                            #val2="ngModel"
+                            [ngClass]="{'invalid': val2.errors}"
+                            appAutofocus
+                            required
+                            [autofocusEnabled]="autofocusEnabled"
+                          >
+                          </span>
+                          <span
+                            class="selector-value--dropdown"
+                            [ngClass]="{'visible': op2.visible}"
+                            (click)="op2.toggle($event)"
+                          >
+                            <i-feather
+                              name="chevron-down"
+                              class="icon icon-small"
+                            ></i-feather>
+                          </span>
+                          <p-overlayPanel
+                              #op2
+                              appendTo="body"
+                              styleClass="selector-dropdown elexifier-scroller"
+                          >
+                            <div>
+                              <div class="dropdown-selector-menu">
+                                <div
+                                  class="dropdown-selector-menu--item text-center"
+                                  (click)="onUnsubtractSelector(transformer.id, 'right', i)"
+                                >
+                                  <feather-icon
+                                    name="trash-2"
+                                    class="icon icon-small text-danger"
+                                  ></feather-icon>
+                                </div>
+                                <div
+                                  class="dropdown-selector-menu--item"
+                                  *ngFor="let node of filteredXmlNodes"
+                                  (click)="getSelectorData(transformer.id)[i].right.expr = node; op2.hide()"
+                                >
+                                  {{ node }}
+                                </div>
+                              </div>
+                            </div>
+                          </p-overlayPanel>
+                        </span>
+                        </div>
+                      </ng-container>
+                      <ng-template #basicSelector>
+                        <span class="selector-value--type">ONLY</span>
+                        <span class="selector-value--expr">
+                        <span
+                          class="content"
+                          appContenteditable="true"
+                          contenteditable="true"
+                          [disabled]="!editable"
+                          [(ngModel)]="getSelectorData(transformer.id)[i].expr"
+                          [name]="'selector-'+transformer.id+i"
+                          [appAvailableNodesValidator]="allowedSelectorValues"
+                          #val="ngModel"
+                          [ngClass]="{'invalid': val.errors}"
+                          appAutofocus
+                          [autofocusEnabled]="autofocusEnabled"
+                        ></span>
+                        <span
+                          class="selector-value--dropdown"
+                          [ngClass]="{'visible': op.visible}"
+                          (click)="op.toggle($event)"
+                        >
+                          <i-feather
+                            name="chevron-down"
+                            class="icon icon-small"
+                          ></i-feather>
+                        </span>
+                        <p-overlayPanel
+                            #op
+                            appendTo="body"
+                            styleClass="selector-dropdown elexifier-scroller"
+                        >
+                          <div>
+                            <div class="dropdown-selector-menu">
+                              <div
+                                class="dropdown-selector-menu--item"
+                                *ngFor="let node of filteredXmlNodes"
+                                (click)="getSelectorData(transformer.id)[i].expr = node; op.hide()"
+                              >
+                                {{ node }}
+                              </div>
+                            </div>
+                          </div>
+                        </p-overlayPanel>
+                      </span>
+                      </ng-template>
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+            <div
+              class="add-selector-button"
+              *ngIf="editable"
+            >
+              <span
+                (click)="onAddSelector(transformer.id)"
+              >
+                <i-feather
+                  name="plus"
+                  class="icon icon-small icon-puke"
+                >
+
+                </i-feather>&nbsp;Add
+              </span>
+            </div>
+            <div
+              class="transformer-settings"
+              *ngIf="editable"
+            >
+              <div
+                class="transformer-setting"
+                *ngIf="!isEntryOrSense(transformer.id)"
+              >
+                <div class="selector-setting--name">
+                  Value
+                </div>
+                <div class="selector-setting--value">
+                  <select
+                    class="one-line-input"
+                    *ngIf="transformer"
+                    [(ngModel)]="transformation[transformer.id].attr"
+                    [name]="'attr-'+transformer.id"
+                    (change)="onAttributeTypeChange($event, transformer.id)"
+                  >
+                    <option [value]="getTransformerAttributeValue(transformer.id)">
+                      Attribute value
+                    </option>
+                    <option value="{http://elex.is/wp1/teiLex0Mapper/meta}innerText">
+                      Element inner text
+                    </option>
+                    <option value="{http://elex.is/wp1/teiLex0Mapper/meta}innerTextRec">
+                      Subtree text
+                    </option>
+                    <option value="{http://elex.is/wp1/teiLex0Mapper/meta}constant">
+                      Constant
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div
+                class="transformer-setting"
+                *ngIf="shouldShowCustomAttributeOption(transformer.id)"
+              >
+                <div class="selector-setting--name">
+                  Attribute value
+                </div>
+                <div class="selector-setting--value">
+                  <input
+                    class="one-line-input"
+                    *ngIf="transformer"
+                    [(ngModel)]="transformation[transformer.id].attr"
+                    [name]="'value-'+transformer.id"
+                    placeholder="Text"
+                  >
+                </div>
+              </div>
+              <div
+                class="transformer-setting"
+                *ngIf="transformer && transformation[transformer.id].attr === PseudoAttributes.Constant"
+              >
+                <div class="selector-setting--name">
+                  Constant
+                </div>
+                <div class="selector-setting--value">
+                  <input
+                    class="one-line-input"
+                    *ngIf="transformer"
+                    [(ngModel)]="transformation[transformer.id].const"
+                    [name]="'const-'+transformer.id"
+                    placeholder="e.g. sl"
+                  >
+                </div>
+              </div>
+              <div>
+                <input
+                  id="{{transformer.id}}-show-reg"
+                  class="regex-toggler"
+                  type="checkbox"
+                  value="0"
+                  #showRegexOptions
+                  (change)="true"
+                >
+                <label for="{{transformer.id}}-show-reg">Regex options&nbsp;
+                  <span *ngIf="editable">
+                    <i-feather
+                      name="chevron-down"
+                      class="icon icon-small icon-puke hover"
+                      *ngIf="(transformer?.rex && transformer.rex.length === 0) || !showRegexOptions.checked; else down"
+                    >
+
+                    </i-feather>
+                    <ng-template #down>
+                      <i-feather
+                        name="chevron-up"
+                        class="icon icon-small icon-puke hover"
+                      >
+
+                      </i-feather>
+                    </ng-template>
+                  </span>
+                </label>
+              </div>
+              <div
+                class="transformer-setting"
+                [ngClass]="{'hidden': !showRegexOptions.checked}"
+              >
+                <div class="selector-setting--name">
+                  RegExp
+                </div>
+                <div class="selector-setting--value">
+                  <input
+                    class="one-line-input"
+                    *ngIf="transformer"
+                    [(ngModel)]="transformer.rex"
+                    [name]="'regex-'+transformer.id"
+                    placeholder="e.g. /^[a-z0-9_-]$/"
+                  >
+                </div>
+              </div>
+              <div
+                class="transformer-setting"
+                [ngClass]="{'hidden': !showRegexOptions.checked}"
+              >
+                <div class="selector-setting--name">
+                  RegExp Group
+                </div>
+                <div class="selector-setting--value">
+                  <input
+                    class="one-line-input"
+                    *ngIf="transformer"
+                    [name]="'rexgroup-'+transformer.id"
+                    [(ngModel)]="transformer.rexGroup"
+                    placeholder="e.g. (a-z)"
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-template #singleSelector>
+          <div
+            id="{{ transformer.id }}-selector-row"
+            class="selector-row"
+            *ngIf="getSelectorData(transformer.id) && !transformation[transformer.id].deleted"
+            [ngClass]="{'collapsed': !isTransformerOpened(transformer.id) && editable}"
+          >
+            <div class="selector-value">
+              <div class="selector-item base-indent selected">
+                <!--              TODO: Fix removing-->
+                <div
+                  class="delete-button"
+                  [ngClass]="{ 'hidden': !editable }"
+                >
+                  <span
+                    class="subtract-button"
+                    *ngIf="getSelectorData(transformer.id).type !== 'exclude' && !(transformer.id === 'sense' || transformer.id === 'entry')"
+                    (click)="onSubtractSelector(transformer.id)"
+                  >
+                    Excl.
+                  </span>&nbsp;
+                  <i-feather
+                    name="trash2"
+                    class="icon icon-red icon-small"
+                    (click)="onRemoveSelector(0, transformer.id)"
+                    *ngIf="!(transformer.id === 'sense' || transformer.id === 'entry')"
+                  >
+                  </i-feather>
+                </div>
+                <div class="indented-row">
+                  <ng-container *ngIf="getSelectorData(transformer.id).type === 'exclude'; else basicSingleSelector">
+                    <div class="d-flex subtracted-selectors">
+                      <span
+                        class="selector-value--expr"
+                      >
+                        <span
+                          class="content"
+                          [ngClass]="{'focus': op1.visible, 'invalid': val1.errors}"
+                          appContenteditable="true"
+                          contenteditable="true"
+                          [disabled]="!editable"
+                          [name]="'selector-'+transformer.id+'-left'"
+                          [(ngModel)]="getSelectorData(transformer.id).left.expr"
+                          [appAvailableNodesValidator]="allowedSelectorValues"
+                          #val1="ngModel"
+                          appAutofocus
+                          required
+                          [autofocusEnabled]="autofocusEnabled"
+                        >
+                        </span>
+                        <span
+                          class="selector-value--dropdown"
+                          [ngClass]="{'visible': op1.visible}"
+                          (click)="op1.toggle($event)"
+                        >
+                          <i-feather
+                            name="chevron-down"
+                            class="icon icon-small"
+                          ></i-feather>
+                        </span>
+                        <p-overlayPanel
+                            #op1
+                            appendTo="body"
+                            styleClass="selector-dropdown elexifier-scroller"
+                        >
+                          <div>
+                            <div class="dropdown-selector-menu">
+                              <div
+                                class="dropdown-selector-menu--item text-center"
+                                (click)="onUnsubtractSelector(transformer.id,'right')"
+                              >
+                                <feather-icon
+                                  name="trash-2"
+                                  class="icon icon-small text-danger"
+                                ></feather-icon>
+                              </div>
+                              <div
+                                class="dropdown-selector-menu--item"
+                                *ngFor="let node of filteredXmlNodes"
+                                (click)="getSelectorData(transformer.id).left.expr = node; op1.hide()"
+                              >
+                                {{ node }}
+                              </div>
+                            </div>
+                          </div>
+                        </p-overlayPanel>
+                      </span>
+                      <span
+                        class="selector-value--type"
+                      >EXCL.</span>
+                      <span
+                        class="selector-value--expr"
+                      >
+                        <span
+                          class="content"
+                          [ngClass]="{'focus': op2.visible, 'invalid': val2.errors}"
+                          appContenteditable="true"
+                          contenteditable="true"
+                          [disabled]="!editable"
+                          [name]="'selector-'+transformer.id+'-right'"
+                          [(ngModel)]="getSelectorData(transformer.id).right.expr"
+                          [appAvailableNodesValidator]="allowedSelectorValues"
+                          required
+                          #val2="ngModel"
+                          appAutofocus
+                          [autofocusEnabled]="autofocusEnabled"
+                        >
+                        </span>
+                        <span
+                          class="selector-value--dropdown"
+                          [ngClass]="{'visible': op2.visible}"
+                          (click)="op2.toggle($event)"
+                        >
+                          <i-feather
+                            name="chevron-down"
+                            class="icon icon-small"
+                          ></i-feather>
+                        </span>
+                        <p-overlayPanel
+                            #op2
+                            appendTo="body"
+                            styleClass="selector-dropdown elexifier-scroller"
+                        >
+                          <div>
+                            <div class="dropdown-selector-menu">
+                              <div
+                                class="dropdown-selector-menu--item text-center"
+                                (click)="onUnsubtractSelector(transformer.id,'right')"
+                              >
+                                <feather-icon
+                                  name="trash-2"
+                                  class="icon icon-small text-danger"
+                                ></feather-icon>
+                              </div>
+                              <div
+                                class="dropdown-selector-menu--item"
+                                *ngFor="let node of filteredXmlNodes"
+                                (click)="getSelectorData(transformer.id).right.expr = node; op2.hide()"
+                              >
+                                {{ node }}
+                              </div>
+                            </div>
+                          </div>
+                        </p-overlayPanel>
+                      </span>
+                    </div>
+                  </ng-container>
+                  <ng-template #basicSingleSelector>
+                    <span class="selector-value--type">ONLY</span>
+                    <span
+                      class="selector-value--expr"
+                    >
+                      <span
+                        class="content"
+                        [ngClass]="{'focus': op.visible, 'invalid': val.errors}"
+                        appContenteditable="true"
+                        contenteditable="true"
+                        [disabled]="!editable"
+                        [name]="'selector-'+transformer.id"
+                        [(ngModel)]="getSelectorData(transformer.id).expr"
+                        [appAvailableNodesValidator]="allowedSelectorValues"
+                        #val="ngModel"
+                        required
+                        appAutofocus
+                        [autofocusEnabled]="autofocusEnabled"
+                      >
+                      </span>
+                      <span
+                        class="selector-value--dropdown"
+                        [ngClass]="{'visible': op.visible}"
+                        (click)="op.toggle($event)"
+                      >
+                        <i-feather
+                          name="chevron-down"
+                          class="icon icon-small"
+                        ></i-feather>
+                      </span>
+                      <p-overlayPanel
+                          #op
+                          appendTo="body"
+                          [dismissable]="true"
+                          styleClass="selector-dropdown elexifier-scroller"
+                      >
+                        <div>
+                          <div class="dropdown-selector-menu">
+                            <div
+                              class="dropdown-selector-menu--item"
+                              *ngFor="let node of filteredXmlNodes"
+                              (click)="getSelectorData(transformer.id).expr = node; op.hide()"
+                            >
+                              {{ node }}
+                            </div>
+                          </div>
+                        </div>
+                      </p-overlayPanel>
+                    </span>
+                  </ng-template>
+                </div>
+              </div>
+            </div>
+            <div
+              class="add-selector-button"
+              *ngIf="editable && transformer.id !== 'pos'"
+            >
+              <span
+                (click)="onAddSelector(transformer.id)"
+              >
+                <i-feather
+                  name="plus"
+                  class="icon icon-small icon-puke"
+                >
+
+                </i-feather>&nbsp;
+                Add
+              </span>
+            </div>
+            <div
+              class="transformer-settings"
+              *ngIf="editable"
+            >
+              <div
+                class="transformer-setting"
+                *ngIf="!isEntryOrSense(transformer.id)"
+              >
+                <div class="selector-setting--name">
+                  Value
+                </div>
+                <div class="selector-setting--value">
+                  <select
+                    class="one-line-input"
+                    *ngIf="transformer"
+                    [(ngModel)]="transformation[transformer.id].attr"
+                    [name]="'value-'+transformer.id"
+                    (change)="onAttributeTypeChange($event, transformer.id)"
+                  >
+                    <option [value]="getTransformerAttributeValue(transformer.id)">
+                      Attribute value
+                    </option>
+                    <option value="{http://elex.is/wp1/teiLex0Mapper/meta}innerText">
+                      Element inner text
+                    </option>
+                    <option value="{http://elex.is/wp1/teiLex0Mapper/meta}innerTextRec">
+                      Subtree text
+                    </option>
+                    <option value="{http://elex.is/wp1/teiLex0Mapper/meta}constant">
+                      Constant
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div
+                class="transformer-setting"
+                *ngIf="shouldShowCustomAttributeOption(transformer.id)"
+              >
+                <div class="selector-setting--name">
+                  Attribute value
+                </div>
+                <div class="selector-setting--value">
+                  <input
+                    class="one-line-input"
+                    *ngIf="transformer"
+                    [(ngModel)]="transformation[transformer.id].attr"
+                    [name]="'attr-'+transformer.id"
+                    placeholder="Text"
+                  >
+                </div>
+              </div>
+              <div
+                class="transformer-setting"
+                *ngIf="transformer && transformation[transformer.id].attr === PseudoAttributes.Constant"
+              >
+                <div class="selector-setting--name">
+                  Constant
+                </div>
+                <div class="selector-setting--value">
+                  <input
+                    class="one-line-input"
+                    *ngIf="transformer"
+                    [(ngModel)]="transformation[transformer.id].const"
+                    [name]="'const-'+transformer.id"
+                    placeholder="e.g. sl"
+                  >
+                </div>
+              </div>
+
+              <!-- XLAT settings -->
+              <ng-container *ngIf="transformer.id === 'pos'">
+                <div class="pt-2 pb-3" ngbDropdown>
+<!--                  <p-menu-->
+<!--                      #unusedTransformersMenu-->
+<!--                      [popup]="true"-->
+<!--                      appendTo="body"-->
+<!--                      [model]="unusedPosElements"-->
+<!--                  ></p-menu>-->
+                  <a
+                    (click)="loadPartOfSpeechElements();"
+                    ngbDropdownToggle
+                    class="fs-12 text-uppercase"
+                  >
+                    POS
+                  </a>
+                  <div
+                    ngbDropdownMenu
+                  >
+                    <div
+                      ngbDropdownItem
+                      *ngFor="let i of unusedPosElements"
+                      (click)="transformationService.addPosElement(i)"
+                    >
+                      {{ i }}
+                    </div>
+                  </div>
+                </div>
+                <ng-container *ngIf="transformation[transformer.id].xlat">
+                  <div
+                    class="transformer-setting"
+                    *ngFor="let posElement of objectKeys(transformation[transformer.id].xlat)"
+                  >
+                    <div class="selector-setting--name text-lowercase">
+                      {{ posElement }}
+                    </div>
+                    <div class="selector-setting--value">
+                      <div
+                        class=""
+                        ngbDropdown>
+<!--                        <p-menu-->
+<!--                          #unusedPosMenu-->
+<!--                          [popup]="true"-->
+<!--                          appendTo="body"-->
+<!--                          [model]="getUnusedPosItems(posElement)"-->
+<!--                        ></p-menu>-->
+                        <a
+                          ngbDropdownToggle
+                          class="fs-12 text-uppercase position-relative"
+                        >
+                          <span
+                            class="one-line-input text-uppercase d-inline-block w-100"
+                          >{{transformation[transformer.id].xlat[posElement]}}</span>
+                        </a>
+                        <div
+                          ngbDropdownMenu
+                        >
+                          <div
+                            ngbDropdownItem
+                            *ngFor="let i of getUnusedPosItems(posElement)"
+                            (click)="transformationService.applyPosValue(posElement, i)"
+                          >
+                            {{ i }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+              </ng-container>
+              <div class="pt-2">
+                <input
+                  id="{{transformer.id}}-show-reg"
+                  class="regex-toggler"
+                  type="checkbox"
+                  #showRegexOptions
+                  (change)="true"
+                >
+                <label for="{{transformer.id}}-show-reg">
+                  Regex options&nbsp;
+                  <span *ngIf="editable">
+                  <i-feather
+                    name="chevron-down"
+                    class="icon icon-small icon-puke hover"
+                    *ngIf="(transformer?.rex && transformer.rex.length === 0) || !showRegexOptions.checked; else down"
+                  >
+
+                  </i-feather>
+                  <ng-template #down>
+                    <i-feather
+                      name="chevron-up"
+                      class="icon icon-small icon-puke hover"
+                    >
+
+                    </i-feather>
+                  </ng-template>
+                </span>
+                </label>
+              </div>
+              <div
+                class="transformer-setting"
+                [ngClass]="{'hidden': !showRegexOptions.checked}"
+              >
+                <div class="selector-setting--name">
+                  RegExp
+                </div>
+                <div class="selector-setting--value">
+                  <input
+                    class="one-line-input"
+                    *ngIf="transformer"
+                    [(ngModel)]="transformation[transformer.id].rex"
+                    [name]="'regex-'+transformer.id"
+                    placeholder="e.g. /^[a-z0-9_-]$/"
+                  >
+                </div>
+              </div>
+              <div
+                class="transformer-setting"
+                [ngClass]="{'hidden': !showRegexOptions.checked}"
+              >
+                <div class="selector-setting--name">
+                  RegExp Group
+                </div>
+                <div class="selector-setting--value">
+                  <input
+                    class="one-line-input"
+                    *ngIf="transformer"
+                    [name]="'rexgroup-'+transformer.id"
+                    [(ngModel)]="transformation[transformer.id].rexGroup"
+                    placeholder="e.g. (a-z)"
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </ng-container>
+  </div>
+</form>

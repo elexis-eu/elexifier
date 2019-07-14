@@ -1,0 +1,66 @@
+<div class="container layout-container--no-sidebar">
+  <div class="row main">
+    <div class="elex-login-form col-12 col-sm-6 card">
+      <div>
+        <img style="height: 70px" src="/assets/images/elexis_full.jpeg">
+      </div>
+      <form
+        [formGroup]="registerFG"
+        class="elex-login-form--inner"
+      >
+        <div class="text-center">
+          <h2 class="mb-3 font-weight-normal">REGISTER</h2>
+        </div>
+
+        <div class="p-3">
+          <div class="form-label-group mb-3">
+            <label>Email</label>
+            <input
+              name="email"
+              formControlName="email"
+              type="email"
+              id="email"
+              class="form-control"
+              placeholder="Your email"
+            />
+            <app-form-validation
+              [control]="registerFG.controls.email"
+              [showErrors]="showErrors"
+            ></app-form-validation>
+          </div>
+
+          <div class="form-label-group mb-3">
+            <label>Password</label>
+            <input
+              formControlName="password"
+              type="password"
+              id="password"
+              class="form-control"
+              placeholder="Password"
+            />
+            <app-form-validation
+              [control]="registerFG.controls.password"
+              [showErrors]="showErrors"
+            ></app-form-validation>
+          </div>
+          <div class="text-center">
+            <small
+              [routerLink]="['/login']"
+              class="elex-link mb-3 d-block"
+            >
+              Already have an account?
+            </small>
+
+            <button
+              type="button"
+              class="button button-primary"
+              (click)="onRegister()"
+            >
+              Register
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

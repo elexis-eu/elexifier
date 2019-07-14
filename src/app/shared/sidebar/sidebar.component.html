@@ -1,0 +1,395 @@
+<div class="sidebar-container">
+  <div class="sidebar">
+    <ul class="sidebar-menu">
+      <a
+        class="sidebar-menu-item d-block"
+        [routerLink]="['/dictionaries', 'xml']"
+        routerLinkActive="active"
+      >
+        <i class="pi pi-file-excel fs-32">
+          <small class="d-block fs-12">.xml</small>
+        </i>
+      </a>
+      <a
+        class="sidebar-menu-item d-block"
+        [routerLink]="['/dictionaries', 'pdf']"
+        routerLinkActive="active"
+      >
+        <i class="pi pi-file-pdf fs-32">
+          <small class="d-block fs-12">.pdf</small>
+        </i>
+      </a>
+    </ul>
+    <ul class="sidebar-menu sidebar-menu--bottom">
+      <p-menu
+          #userMenu
+          [popup]="true"
+          [model]="userMenuItems"
+      ></p-menu>
+      <li
+        class="sidebar-menu-item"
+        (click)="userMenu.toggle($event)"
+      >
+        <i-feather
+          name="user"
+          class="sidebar-menu-item--icon"
+        ></i-feather>
+      </li>
+    </ul>
+  </div>
+  <div class="d-flex elexifier-scroller">
+    <div
+      class="sidebar-column"
+      [ngClass]="{'hidden': menuDepth > 2 || menuDepth < 1}"
+    >
+      <div class="sidebar-column-search">
+        <i-feather
+          name="search"
+          class="icon icon-grey"
+        ></i-feather>
+        <input
+          type="text"
+          class="sidebar-column-search--input"
+          placeholder="Dictionaries"
+          [(ngModel)]="dictionarySearchString"
+          (input)="filterColumn('dictionaries', dictionarySearchString, 'filteredDictionaries', 'name')"
+        >
+        <span>
+          <i-feather
+            name="x"
+            class="icon icon-grey icon-small hover"
+            style="cursor: pointer"
+            [pTooltip]="'Clear'"
+            [tooltipPosition]="'top'"
+            (click)="resetList('filteredDictionaries', 'dictionaries'); dictionarySearchString = ''"
+          ></i-feather>
+        </span>
+      </div>
+      <div class="sidebar-column--content">
+        <ng-container *ngIf="loading.dictionaries; else dictionariesList">
+          <div class="p-3">
+            <div class="loading-placeholder placeholder-small">
+              <div class="text-row"></div>
+              <div class="text-row"></div>
+              <br>
+              <div class="text-row"></div>
+              <div class="text-row"></div>
+              <br>
+              <div class="text-row"></div>
+              <div class="text-row"></div>
+              <br>
+              <div class="text-row"></div>
+              <div class="text-row"></div>
+              <br>
+              <div class="text-row"></div>
+              <div class="text-row"></div>
+              <br>
+            </div>
+          </div>
+        </ng-container>
+        <ng-template #dictionariesList>
+          <ng-container *ngIf="dictionaries && dictionaries.length > 0; else noDictionaries">
+            <ul class="sidebar-column-menu">
+              <li
+                class="sidebar-column-menu-item"
+                *ngFor="let dictionary of filteredDictionaries; let i = index"
+                [ngClass]="{'selected': selectedDictionaryIndex === i}"
+                (click)="onSelectDictionary(i)"
+              >
+                <div class="sidebar-column-menu-item--name">
+                  <div class="mr-auto">{{ dictionary.name }}</div>
+                  <div>
+                    <div
+                      ngbDropdown
+                      placement="bottom-right"
+                      container="body"
+                      class="d-inline-block"
+                    >
+                      <div
+                        class="menu-toggler"
+                        ngbDropdownToggle
+                      >
+                        <i-feather
+                          name="more-vertical"
+                          class="thin-menu"
+                        ></i-feather>
+                      </div>
+                      <div ngbDropdownMenu>
+                        <button
+                          ngbDropdownItem
+                          (click)="onEditMetadataClick(dictionary.id)"
+                        >
+                          Edit metadata
+                        </button>
+                        <button
+                          ngbDropdownItem
+                          (click)="onDeleteDictionaryClick(dictionary.id)"
+                          class="text-danger"
+                        >
+                          Delete dictionary
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </ng-container>
+        </ng-template>
+        <ng-template #noDictionaries>
+          <p class="text-gray text-center fs-12 py-4">
+            No dictionaries
+          </p>
+        </ng-template>
+      </div>
+      <div
+        class="create-new-button blue"
+        (click)="openCreateDictionaryAndTransformationModal()"
+      >
+        <i-feather
+          name="file-plus"
+          class="icon icon-small"
+        ></i-feather>
+        New dictionary
+      </div>
+    </div>
+
+    <!-- TODO: refactor to a smaller component, ie xmlWorkflowSidebarComponent -->
+    <ng-container *ngIf="workflowStore.type === 'xml'; else pdfWorkflowOptions">
+      <div
+        class="sidebar-column puke"
+        [ngClass]="{'hidden': menuDepth < 2 || menuDepth > 3}"
+        *ngIf="dictionaries && dictionaries[selectedDictionaryIndex]"
+      >
+        <div
+          class="sidebar-column-search"
+          *ngIf="dictionaries && menuDepth > 2 && workflowStore.selectedTransformation; else textOnly"
+        >
+          <a
+            [routerLink]="[dictionaries[selectedDictionaryIndex].id, 'transformations', workflowStore.selectedTransformation.transformation.id]"
+          >
+            <i-feather
+              [pTooltip]="'Back'"
+              [tooltipPosition]="'top'"
+              name="chevron-left"
+              class="icon icon-grey mr-3 hover"
+              (click)="fullpageLoaderService.loading = true"
+            >
+            </i-feather>
+          </a>
+          <span class="fs-14">
+          {{ dictionaries[selectedDictionaryIndex].name}}
+        </span>
+        </div>
+        <ng-template #textOnly>
+          <div class="sidebar-column-search justify-content-center">
+          <span class="fs-14 text-puke text-uppercase">
+            Transformations
+          </span>
+          </div>
+        </ng-template>
+        <div class="sidebar-column--content">
+          <ng-container *ngIf="loading.transformations; else transformationList">
+            <div class="p-3">
+              <div class="loading-placeholder placeholder-small">
+                <div class="text-row"></div>
+                <div class="text-row"></div>
+                <br>
+                <div class="text-row"></div>
+                <div class="text-row"></div>
+                <br>
+              </div>
+            </div>
+          </ng-container>
+          <ng-template #transformationList>
+            <ng-container *ngIf="transformations && transformations.length > 0; else noTransformations">
+              <ul class="sidebar-column-menu">
+                <li
+                  class="sidebar-column-menu-item"
+                  *ngFor="let transformation of transformations; let i = index"
+                  [ngClass]="{'selected': selectedTransformationId === i}"
+                  (click)="onSelectTransformation(i)"
+                >
+                  <div class="sidebar-column-menu-item--name">
+                    <div class="mr-auto">{{ transformation.name }}</div>
+                  </div>
+                  <div class="sidebar-column-menu-item--date">
+                    {{ transformation.created_ts }}
+                    {{ transformation.id }}
+                  </div>
+                </li>
+              </ul>
+            </ng-container>
+          </ng-template>
+          <ng-template #noTransformations>
+            <p class="text-gray text-center fs-12 py-4">
+              No transformations
+            </p>
+          </ng-template>
+        </div>
+        <div
+          class="create-new-button puke"
+          (click)="openCreateTransformationModal(dictionaries[selectedDictionaryIndex].id)"
+        >
+          <i-feather
+            name="file-plus"
+            class="icon icon-small"
+          ></i-feather>
+          New transformaton
+        </div>
+      </div>
+      <div
+        class="sidebar-column"
+        [ngClass]="{'hidden': menuDepth < 3}"
+      >
+        <div
+          class="sidebar-column-search"
+          *ngIf="dictionaries && menuDepth > 3"
+        >
+          <a
+            *ngIf="workflowStore.selectedTransformation"
+            [routerLink]="[dictionaries[selectedDictionaryIndex].id, 'transformations', workflowStore.selectedTransformation.transformation.id]"
+          >
+            <i-feather
+              [pTooltip]="'Back'"
+              [tooltipPosition]="'top'"
+              name="chevron-left"
+              class="icon icon-grey mr-3 hover"
+              (click)="fullpageLoaderService.loading = true"
+            >
+            </i-feather>
+          </a>
+          <span class="fs-14">
+              {{ dictionaries[selectedDictionaryIndex].name}}
+            </span>
+        </div>
+        <div class="sidebar-column-search">
+          <i-feather
+            name="search"
+            class="icon icon-grey"
+          ></i-feather>
+          <input
+            type="text"
+            class="sidebar-column-search--input"
+            placeholder="Headwords"
+            #hwSearch
+            [(ngModel)]="headwordSearchString"
+            (input)="filterHeadwords(hwSearch.value)"
+          >
+          <span>
+          <i-feather
+            name="x"
+            class="icon icon-grey icon-small hover"
+            style="cursor: pointer"
+            [pTooltip]="'Clear'"
+            [tooltipPosition]="'top'"
+            (click)="hwSearch.value = '';filterHeadwords('')"
+          ></i-feather>
+        </span>
+        </div>
+        <div
+          class="sidebar-column--content"
+          [ngClass]="{'p-3': loading.headwords}"
+        >
+          <ng-container *ngIf="loading.headwords; else showHeadwords">
+            <div class="loading-placeholder placeholder-small">
+              <div class="text-row"></div>
+              <div class="text-row"></div>
+              <br>
+              <div class="text-row"></div>
+              <div class="text-row"></div>
+              <br>
+              <div class="text-row"></div>
+              <div class="text-row"></div>
+              <br>
+              <div class="text-row"></div>
+              <div class="text-row"></div>
+              <br>
+              <div class="text-row"></div>
+              <div class="text-row"></div>
+              <br>
+            </div>
+          </ng-container>
+          <ng-template #showHeadwords>
+            <ng-container *ngIf="filteredHeadwords.length > 0; else noHeadwords">
+              <ul class="sidebar-column-menu">
+                <li
+                  class="sidebar-column-menu-item"
+                  *ngFor="let headword of filteredHeadwords; let i = index"
+                  [ngClass]="{'selected': workflowStore.selectedHeadword && workflowStore.selectedHeadword.id === headword.id}"
+                  (click)="onSelectHeadword(headword.id)"
+                >
+                  <div class="sidebar-column-menu-item--name">{{ headword.entry_text && headword.entry_text.length > 0 ? headword.entry_text : 'Entry ' + i }}</div>
+                </li>
+              </ul>
+            </ng-container>
+          </ng-template>
+          <ng-template #noHeadwords>
+            <p class="text-gray text-center fs-12 py-4">
+              No entities
+            </p>
+          </ng-template>
+        </div>
+      </div>
+      <div
+        class="top-toolbar"
+        *ngIf="menuDepth < 3 && menuDepth > 1 && dictionaries && dictionaries.length > 0 && transformations && transformations[selectedTransformationId]"
+      >
+        <div class="toolbar-title"></div>
+        <div class="toolbar-controls">
+          <a
+            class="toolbar-button"
+            (click)="onDownloadTransformation()"
+          >
+            Download
+            <i-feather
+              name="download-cloud"
+              class="toolbar-control"
+            ></i-feather>
+          </a>
+          <a
+            class="toolbar-button"
+            (click)="onClickEditTransformation()"
+          >
+            Edit
+            <i-feather
+              name="edit3"
+              class="toolbar-control"
+            ></i-feather>
+          </a>
+          <a
+            class="toolbar-button"
+            (click)="onResetTransform(transformations[selectedTransformationId].id)"
+          >
+            Reset
+            <i-feather
+              name="clock"
+              class="toolbar-control"
+            ></i-feather>
+          </a>
+          <a
+            class="toolbar-button"
+            (click)="onDeleteTransformationClick(transformations[selectedTransformationId].id)"
+          >
+            Remove
+            <i-feather
+              name="trash2"
+              class="toolbar-control"
+            ></i-feather>
+          </a>
+        </div>
+      </div>
+    </ng-container>
+    <ng-template #pdfWorkflowOptions>
+      <div
+        class="sidebar-column"
+        [ngClass]="{'hidden': menuDepth < 2}"
+        *ngIf="dictionaries && dictionaries[selectedDictionaryIndex]"
+      >
+        <app-pdf-workflow-options
+          [dictionaryId]="dictionaries[selectedDictionaryIndex]?.id"
+        ></app-pdf-workflow-options>
+      </div>
+    </ng-template>
+  </div>
+</div>

@@ -1,0 +1,39 @@
+<div
+  class="pt-5 px-5"
+  style="flex: 1"
+>
+  <ng-container *ngIf="workflowType === 'xml'">
+    <p class="text-center">
+      <i-feather name="file-text"></i-feather>
+    </p>
+    <h6>1. Upload an xml dictionary and create a transformation</h6>
+    <p class="text-gray">
+      Start by clicking NEW DICTIONARY in the bottom left corner and then upload an XML dictionary, define its metadata and the initial transformation rules.
+    </p>
+    <h6>2. Define the transformation specification</h6>
+    <p class="text-gray">
+      Click Edit in the top row to define the individual core elements of the Elexis Data Model. Select the elements in your xml file from the list or define your own Xpath expression.
+    </p>
+    <h6>3. Download your file</h6>
+  </ng-container>
+  <ng-container *ngIf="workflowType === 'pdf'">
+      <p class="text-gray text-center">Please select or upload a dictionary to get started</p>
+  </ng-container>
+  <hr class="my-4">
+  <p class="text-center">
+    <a
+      class="button button-primary d-inline-block"
+      (click)="openCreateDictionaryAndTransformationModal()"
+    >
+      Upload a dictionary
+    </a>
+  </p>
+<!--  <p class="text-gray">Please select a dictionary and a transformation to get started</p>-->
+<!--  <p class="text-gray">or</p>-->
+<!--  <a-->
+<!--    class="button button-primary d-inline-block"-->
+<!--    (click)="openCreateDictionaryAndTransformationModal()"-->
+<!--  >-->
+<!--    Upload a dictionary-->
+<!--  </a>-->
+</div>

@@ -1,0 +1,225 @@
+@import 'src/styles/colors.scss';
+
+.ui-button, p-button {
+  -webkit-appearance: unset !important;
+}
+
+.ui-button-rounded {
+  border-radius: 20px !important;
+}
+
+.ui-button-icon-only {
+  margin: 0.25rem 0.35rem !important;
+}
+
+.elex-button--primary.ui-button {
+  background-color: $primary !important;
+  border-color: $primary !important;
+}
+
+.ui-paginator .ui-paginator-pages .ui-paginator-page.ui-state-active {
+  background: $primary !important;
+}
+
+.elex-outline.ui-button {
+  background-color: unset !important;
+
+  &.elex-button {
+    &--primary {
+      color: $primary !important;
+      border-color: $primary !important;
+    }
+
+    &--secondary {
+      color: $secondary !important;
+      border-color: $secondary !important;
+    }
+  }
+}
+
+.ui-toast .ui-toast-icon {
+  display: none;
+}
+
+.ui-toast .ui-toast-message-text-content {
+  margin-left: 0;
+}
+
+.ui-progress-spinner {
+  height: 50px;
+  width: 50px;
+
+  .ui-progress-spinner-circle {
+    stroke-width: 5px;
+  }
+}
+
+@keyframes ui-progress-spinner-color {
+  0%, 100% {
+    stroke: $grey;
+  }
+  // Colored circle
+  // 100%,
+  // 0% {
+  //     stroke: $primary;
+  // }
+  // 40% {
+  //     stroke: $secondary;
+  // }
+  // 66% {
+  //     stroke: $primary;
+  // }
+  // 80%,
+  // 90% {
+  //     stroke: $secondary;
+  // }
+}
+
+.ui-chkbox .ui-chkbox-box.ui-state-active, .ui-chkbox-icon {
+  background-color: $blue !important;
+  border-color: $blue !important;
+
+  &:focus, &:active {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+}
+
+.ui-chkbox.ui-widget, .ui-chkbox.ui-state, .ui-chkbox .ui-chkbox-box.ui-state-focus, .ui-chkbox .ui-chkbox-box.ui-state-active {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.ui-chkbox {
+ &.small {
+   width: 16px;
+   height: 16px;
+   .ui-chkbox-box {
+     width: 16px;
+     height: 16px;
+   }
+   .ui-chkbox-box .ui-chkbox-icon {
+     font-size: 13px !important;
+   }
+ }
+}
+
+body .upload-dictionary-modal {
+  position: absolute;
+  overflow-y: scroll;
+  max-height: 100%;
+
+  .upload-modal-dropdown {
+    border: none;
+    border-bottom: 1px solid $blue;
+
+    .ui-dropdown-panel .ui-dropdown-items .ui-dropdown-item.ui-state-highlight {
+      background-color: $blue !important;
+    }
+
+    .ui-dropdown-label {
+      border-radius: 0px !important;
+    }
+
+    .pi.pi-chevron-down {
+      color: $blue;
+    }
+
+    &.ui-dropdown {
+      width: 100% !important;
+    }
+  }
+
+  .ui-dialog-content {
+    padding: 0 !important;
+
+    .upload-form-label {
+      color: #1e6b9e;
+      font-weight: 500;
+      line-height: 2rem;
+      font-size: 14px;
+      text-transform: uppercase;
+    }
+  }
+  .ui-dialog-titlebar {
+    background: #fff !important;
+    font-size: 14px;
+    color: $blue !important;
+    text-transform: uppercase;
+  }
+
+  .ui-button {
+    background: $blue !important;
+    border: 1px solid $blue !important;
+  }
+
+  .ui-progressbar .ui-progressbar-value {
+    background: $blue;
+  }
+
+  .dictionary-upload {
+    border: 2px dashed $gray;
+    padding: 30px;
+
+    &.ui-fileupload {
+      .ui-fileupload-buttonbar {
+        background-color: unset !important;
+        padding: unset !important;
+        border: unset !important;
+        color: unset !important;
+        border-bottom: unset !important;
+
+        text-align: center;
+      }
+
+      .ui-fileupload-content {
+        background-color: unset !important;
+        padding: unset !important;
+        border: unset !important;
+        color: unset !important;
+      }
+
+      .ui-progressbar {
+        display: none !important;
+      }
+
+      .ui-fileupload-files {
+        display: block;
+      }
+
+      .ui-fileupload-row {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
+}
+//
+p-calendar {
+  display: inline-block;
+  width: 100%;
+
+  &>span {
+    width: 100%;
+
+    button.ui-button-icon-only {
+      position: absolute !important;
+      padding: 0 !important;
+      right: 0 !important;
+      margin: 0 !important;
+    }
+  }
+}
+
+.elex-pi-times {
+  color: $grey;
+  margin-left: auto;
+  align-self: center;
+}
+
+.elex-pi-question-circle {
+  vertical-align: text-bottom;
+  align-self: center;
+  color: $grey;
+}

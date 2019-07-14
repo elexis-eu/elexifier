@@ -1,0 +1,180 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12" *ngIf="isEdit">
+      <div class="ui-dialog-titlebar d-flex">
+        <span>Edit metadata</span>
+        <span
+          (click)="ref.close()"
+          class="pi pi-times elex-pi-times"
+        ></span>
+      </div>
+    </div>
+    <div class="col-12 my-4" *ngIf="!isEdit">
+      <p-fileUpload
+          #fileInput
+          name="dict[]"
+          accept="text/xml, application/xml, application/pdf"
+          styleClass="dictionary-upload"
+          [auto]="false"
+          [showUploadButton]="false"
+          [customUpload]="true"
+          (onSelect)="onSelectFile()"
+          (onSend)="onSendFileUploadRequest()"
+          (onRemove)="onRemoveFile()"
+      >
+      </p-fileUpload>
+      <app-form-validation
+        [control]="createDictionaryFormGroup.controls.fileSelected"
+        [showErrors]="showErrors"
+      ></app-form-validation>
+    </div>
+    <form
+      [formGroup]="createDictionaryFormGroup"
+      class="col-12 mb-2"
+      [ngClass]="{'pt-3': isEdit}"
+    >
+      <div class="row" formGroupName="metaData">
+        <ng-container *ngFor="let field of metadataFields; let i = index">
+          <div
+            class="col-12 d-table-row"
+            *ngIf="i < 3 || showAllFields"
+          >
+            <div class="row">
+              <div class="col-12 col-md-6">
+                <span class="upload-form-label">{{ field.name }}</span>
+              </div>
+              <div class="col-12 col-md-6 mb-2">
+                <ng-container *ngIf="field.type === 'text'; else datepicker">
+                  <input
+                    type="text"
+                    class="w-100 one-line-input blue"
+                    pInputText
+                    [formControlName]="field.name"
+                  />
+                </ng-container>
+                <ng-template #datepicker>
+                  <ng-container *ngIf="field.type === 'date'; else objectArray">
+                    <p-calendar
+                      [showIcon]="true"
+                      dateFormat="yy-mm-dd"
+                      inputStyleClass="one-line-input blue d-inline-block"
+                      [formControlName]="field.name"
+                    ></p-calendar>
+                  </ng-container>
+                </ng-template>
+                <ng-template #objectArray>
+                  <div [formArrayName]="field.name">
+                    <div *ngFor="let control of getMetaFieldControlArray(field.name)['controls']; let j = index">
+                      <div class="metadata-array--item mt-3" [formGroup]="control">
+                        <div
+                          *ngFor="let object of metadataFields[i].objects;"
+                          [ngClass]="{'disabled': editingField !== field.name || editingIndex !== j}"
+                        >
+                          <input
+                            type="text"
+                            class="w-100 one-line-input blue d-block"
+                            pInputText
+                            [placeholder]="object.label"
+                            [formControlName]="object.name"
+                          />
+                          <div
+                            class="metadata-array--item__button"
+                          >
+                            <ng-container *ngIf="editingField !== field.name || editingIndex !== j; else checkIcon">
+                              <span
+                                (click)="onClickEditArrayItem(field.name, j)"
+                                class="text-gray mr-3">
+                                <i-feather
+                                  name="edit3"
+                                  class="icon icon-grey icon-small hover"
+                                  style="cursor: pointer"
+                                  [pTooltip]="'Edit'"
+                                  [tooltipPosition]="'top'"
+                                ></i-feather>
+                                Edit
+                              </span>
+                            </ng-container>
+                            <ng-template #checkIcon>
+                              <span
+                                (click)="onClickEditArrayItem(field.name, j)"
+                                class="text-success mr-3">
+                                <i-feather
+                                  name="check"
+                                  class="icon icon-green icon-small hover"
+                                  style="cursor: pointer"
+                                  [pTooltip]="'Confirm'"
+                                  [tooltipPosition]="'top'"
+                                ></i-feather>
+                                Confirm
+                              </span>
+                            </ng-template>
+                            <span
+                              (click)="onClickRemoveArrayItem(field.name, j)"
+                              class="text-danger">
+                              <i-feather
+                                name="trash2"
+                                class="icon icon-red icon-small hover"
+                                style="cursor: pointer"
+                                [pTooltip]="'Delete'"
+                                [tooltipPosition]="'top'"
+                              ></i-feather>
+                              Delete
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <button
+                        pButton
+                        (click)="addControlToField(field.name)"
+                        class="button button-primary button-small mb-3"
+                        icon="pi pi-plus"
+                        label="Add"
+                      ></button>
+                    </div>
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <div class="col-12">
+          <div class="d-flex align-items-center mr-3">
+            <p-checkbox
+              (onChange)="toggleShowAllFields($event)"
+              styleClass="small"
+              [binary]="true"
+              [style]="{ 'margin-top': '-3px' }"
+            >
+            </p-checkbox>&nbsp;<span class="fs-12 fw-300">Show additional options</span>
+          </div>
+        </div>
+      </div>
+      <hr *ngIf="isEdit">
+      <div class="text-center">
+        <button
+          pButton
+          (click)="onSave()"
+          class="button button-primary mb-3"
+          icon="pi pi-save"
+          label="Save"
+          *ngIf="isEdit"
+        ></button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- TODO: this should be done with one class, refactor in the future -->
+<div
+  *ngIf="fileType === FileTypes.AppXml || fileType === FileTypes.TextXml"
+  class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top ng-tns-c9-11 ng-star-inserted"
+>
+  <span class="ui-dialog-title">Create a transformation</span>
+  <i
+    [pTooltip]="NEW_TRANSFORMATION_TOOLTIP_TEXT"
+    [tooltipPosition]="'top'"
+    class="pi pi-question-circle elex-pi-question-circle pl-1"
+  ></i>
+</div>

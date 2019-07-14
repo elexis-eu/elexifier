@@ -1,0 +1,86 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12 mb-3">
+      <form
+        class="row align-items-center"
+        [formGroup]="createTransformationFormGroup"
+      >
+        <div
+          class="col-12 pt-3"
+        >
+          <div class="row">
+            <div class="col-12 mb-2">
+              <div class="row">
+                <div class="col-6">
+                  <span class="upload-form-label">Entry element</span>
+                  <i
+                    [pTooltip]="ENTRY_ELEMENT_TOOLTIP_TEXT"
+                    class="pi pi-question-circle elex-pi-question-circle"
+                  ></i>
+                </div>
+                <div class="col-6">
+                  <input
+                    type="text"
+                    class="w-100 one-line-input blue"
+                    pInputText
+                    formControlName="entry_spec"
+                  />
+                  <app-form-validation
+                    [control]="createTransformationFormGroup.controls.entry_spec"
+                    [showErrors]="showErrors"
+                  ></app-form-validation>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 mb-2">
+              <div class="row">
+                <div class="col-6">
+                  <span class="upload-form-label">Headword element</span>
+                  <i
+                    [pTooltip]="HEADWORD_ELEMENT_TOOLTIP_TEXT"
+                    class="pi pi-question-circle elex-pi-question-circle"
+                  ></i>
+                </div>
+                <div class="col-6">
+                  <input
+                    type="text"
+                    class="w-100 one-line-input blue"
+                    pInputText
+                    formControlName="hw"
+                  />
+                  <app-form-validation
+                    [control]="createTransformationFormGroup.controls.hw"
+                    [showErrors]="showErrors"
+                  ></app-form-validation>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 mb-3">
+          <div class="row">
+            <div class="col-6">
+              <span class="upload-form-label">Transformation name</span>
+              <i
+                [pTooltip]="TRANSFORMATION_NAME_TOOLTIP_TEXT"
+                class="pi pi-question-circle elex-pi-question-circle"
+              ></i>
+            </div>
+            <div class="col-6">
+              <input
+                type="text"
+                class="w-100 one-line-input blue"
+                pInputText
+                formControlName="xfname"
+              />
+              <app-form-validation
+                [control]="createTransformationFormGroup.controls.xfname"
+                [showErrors]="showErrors"
+              ></app-form-validation>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

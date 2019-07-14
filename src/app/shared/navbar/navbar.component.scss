@@ -1,0 +1,90 @@
+@import 'src/styles/colors.scss';
+
+.navbar {
+  z-index: 10;
+  display: flex;
+  justify-content: unset;
+  background: #fff;;
+  //box-shadow: 0 0.5rem 1rem 0 rgba(44,51,73,.1);
+  position: fixed;
+  left: 0;
+  right: 0;
+  height: 65px;
+  border-bottom: 1px solid $lightGray;
+  padding: 0px;
+
+  .menu-right {
+    display: flex;
+    padding: 0.5rem 1rem;
+  }
+
+  &-item {
+    margin-right: 1rem;
+    border-right: 1px solid $lightGrey;
+    padding-right: 1rem;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    &:first-child {
+      margin-left: 0px;
+    }
+
+    &:last-child {
+      margin-right: 0px;
+      border-right: none;
+    }
+
+    &.user {
+      .user-avatar {
+        border-radius: 50%;
+        height: 2rem;
+        width: 2rem;
+        color: #fff;
+        line-height: 2rem;
+        text-align: center;
+        font-size: 1.2rem;
+        letter-spacing: 0.5px;
+        background: $primary;
+        margin-right: 0.5rem;
+      }
+
+      .user-name {
+        font-size: 14px;
+      }
+    }
+  }
+
+  &-item--container {
+    height: 100%;
+    width: 180px;
+    padding: 0rem 0.2rem;
+  }
+
+  &-item--logo {
+    border-right: none;
+    height: 100%;
+
+    background: url("/assets/images/elexis_full.jpeg") no-repeat;
+    background-position: center;
+    background-size: contain;
+  }
+}
+
+// Search
+.search {
+  display: flex;
+  align-items: center;
+
+  input {
+    border: none;
+    width: 100%;
+    height: 2rem;
+    padding: 0 0.75rem;
+    font-size: 14px;
+
+    &::placeholder {
+      color: $gray;
+    }
+  }
+}
