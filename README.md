@@ -29,7 +29,7 @@ The application consists of two Docker containers:
 - Frontend: https://github.com/elexis-eu/elexifier
 - Backend: https://github.com/elexis-eu/elexifier-api
 
-The frontend is written in Angular. The backend is written in Python Flask and uses a Postgres database. If you want to install it locally, check #local-installation.
+The frontend is written in Angular. The backend is written in Python Flask and uses a Postgres database. If you want to install it locally, check [Local installation](#local-installation).
 
 ##  2. <a name='Use'></a>Use
 
@@ -134,9 +134,13 @@ The JSON object that describes a union transformer must contain the following at
 
 ##  4. <a name='PDFtransformation-basicconcepts'></a>PDF transformation - basic concepts
 
-To transform a PDF dictionary, you need to annotate a sample of the PDF file. The PDF is first transformed in flat structure using a pdf2xml (Matjaž?) conversion script. Then, the a chunk of the resulting XML file is sent to Lexonomy for manual annotation. In the next step, the annotations act as training data for the machine learning algorithm. The following features are used by the algorithm: `font`, `font-size`, `bold`, `italic`, `newline` and the token content itself.
+To transform a PDF dictionary, you need to annotate a sample of the PDF file. The PDF is first transformed in flat structure using a pdf2xml conversion script (based on https://github.com/kermitt2/pdf2xml). Then, a chunk of the resulting XML file is sent to Lexonomy for manual annotation. In the next step, the annotations act as training data for the machine learning algorithm. The following features are used by the algorithm: `font`, `font-size`, `bold`, `italic`, `newline` and the token content itself.
 
-The script assumes a 3-level structure with pages as level 1 base, entries as level 2 base and senses as level 3 base. The script constructs a model for each level and trains it on 75% of the data for that model, then predicts the labels on the unlabelled data from each level. Unlabelled data is at first only available for the first level, but through prediction, second and third level data is generated as well. The model used has two inputs: one-hot encoded token features and LSTM-encoded token contents with a c-LSTM* that are merged and fed into a bidirectional LSTM and outputing a one-hot encoded label. Model details can be found in the code.
+Machine learning assumes a three-level structure with pages as first level base, entries as second level base and senses as third level base. On the first level, entries are predicted for the second level to work on, which in turn generates third level base - senses. A model is constructed for each level and trained on 75% of the data annotated in lexonomy. Afterwards, labels for each token (separate word or symbol in the dictionary) of the unlabelled data are predicted for each level. At first, unlabelled data is only available for the first level, but through prediction, second and third level data is generated as well, along with the labels. Labels are then used to wrap tokens into correct containers.
+
+The model used is a recurrent neural network with two inputs for each input token: one-hot encoded token features (such as font, size and so forth) and LSTM-encoded token contents. The two inputs are merged and fed into a bidirectional LSTM, which then outputs a one-hot encoded label. Labels are defined in the annotation and the model can adapt to different labels at different levels, depending on the annotation structure.
+
+Current results show great promise as they are around 97-99% (varies between levels and datasets) and achieved within a short training time. They depend, as always in the field of machine learning, on perfect annotation and since the current datasets contain a mistake or two, we cannot expect a perfect prediction yet. With careful annotation and further finetuning of the model, we believe prediction error can be mininized even further.
 
 ##  5. <a name='Localinstallation'></a>Local installation
 
