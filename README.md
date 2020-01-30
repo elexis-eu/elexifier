@@ -140,7 +140,7 @@ Machine learning assumes a three-level structure with pages as first level base,
 
 The model used is a recurrent neural network with two inputs for each input token: one-hot encoded token features (such as font, size and so forth) and LSTM-encoded token contents. The two inputs are merged and fed into a bidirectional LSTM, which then outputs a one-hot encoded label. Labels are defined in the annotation and the model can adapt to different labels at different levels, depending on the annotation structure.
 
-Current results show great promise as they are around 97-99% (varies between levels and datasets) and achieved within a short training time. They depend, as always in the field of machine learning, on perfect annotation and since the current datasets contain a mistake or two, we cannot expect a perfect prediction yet. With careful annotation and further finetuning of the model, we believe prediction error can be mininized even further.
+Current results show great promise as they often exceed 90% f1 score (varies between levels and datasets) and are achieved within a short training time. However, results are, as always in the field of machine learning, significantly influenced by the quality of the annotation.
 
 ##  5. <a name='Localinstallation'></a>Local installation
 
