@@ -33,7 +33,7 @@ The frontend is written in Angular. The backend is written in Python Flask and u
 
 ##  2. <a name='Use'></a>Use
 
-On the login screen, create a new account or login with your Sketch Engine credentials. Then select the XML or PDF module and upload a dictionary to get started. For detailed instructions, check the User Guide.
+On the login screen, create a new account or login with your Sketch Engine credentials. Then select the XML or PDF module and upload a dictionary to get started. For detailed instructions, check the ![User Guide](https://github.com/elexis-eu/elexifier/blob/master/docs/elexifier-user-guide.md).
 
 ##  3. <a name='XMLtransformation-basicconcepts'></a>XML transformation - basic concepts
 
