@@ -1,13 +1,10 @@
 # Elexifier User Guide
 
-Welcome to the *Elexifier User Guide*. Elexifier is an app that allows you to transform XML and PDF dictionaries into an *Elexis Data Model* compliant format.
+Welcome to the *Elexifier User Guide*. Elexifier is an app that allows you to transform XML and PDF dictionaries into an *Elexis Data Model* compliant format. Note that the app is currently in a *Public Beta* release and it is likely that you will encounter bugs and/or unwanted behaviour. For assistance, don't hesitate to contact <elexifier@ijs.si>.
 
 ---
 
 # Table of contents
-
-
-
 
 <!-- vscode-markdown-toc -->
 * 1. [XML transformation](#XMLtransformation)
@@ -16,7 +13,8 @@ Welcome to the *Elexifier User Guide*. Elexifier is an app that allows you to tr
 		* 1.2.1. [Overview](#Overview)
 		* 1.2.2. [Adding core elements](#Addingcoreelements)
 		* 1.2.3. [Editing core elements](#Editingcoreelements)
-		* 1.2.4. [Examples](#Examples)
+		* 1.2.4. [Selecting XML elements](#SelectingXMLelements)
+		* 1.2.5. [Examples](#Examples)
 	* 1.3. [Download transformed dictionary](#Downloadtransformeddictionary)
 	* 1.4. [Removing transformations](#Removingtransformations)
 	* 1.5. [Reseting transformations](#Resetingtransformations)
@@ -38,6 +36,9 @@ Welcome to the *Elexifier User Guide*. Elexifier is an app that allows you to tr
 
 # Login
 Elexifier is available on [elexifier.elex.is](elexifier.elex.is). You can create a user account or login with your *Sketch Engine* credentials.
+
+**NOTE**: Annotation in Lexonomy is currently **NOT** supported with Sketch Engine credentials. If you want to transform PDF files create a new account in Elexifier.
+
 
 ---
 
@@ -102,12 +103,21 @@ To edit a core element:
 
 ---
 
-####  1.2.4. <a name='Examples'></a>Examples
+####  1.2.4. <a name='SelectingXMLelements'></a>Selecting XML elements
+
+Elexifier helps you with the selection of XML elements by validating paths and providing suggestions. Start by selecting one of the XML elements from the list (you can type a few characters to filter the list) and then use the up and down keys to select one of the suggested sub-elements. Confirm selection by pressing the Enter key.
+
+![](images/xml-suggestions.png)
+
+**NOTE:** The elements search is case-sensitive.
+
+
+####  1.2.5. <a name='Examples'></a>Examples
 This section contains example transformations that ilustrate the various options offered by Elexifier.
 
 ---
 
-#####  2.4.1. <a name='Asimpletransformation'></a>A simple transformation
+##### 3.1.2.5.1. <a name='Asimpletransformation'></a>A simple transformation
 Let's transform a simple XML element `hw` into its Elexis Data Model representation:
 
     <hw>babble</hw>
@@ -124,7 +134,7 @@ The transformed dictionary looks like this:
 
 ---
 
-#####  2.4.2. <a name='Usingattributevaluesinthetransformeddictionary'></a>Using attribute values in the transformed dictionary
+##### 3.1.2.5.2. <a name='Usingattributevaluesinthetransformeddictionary'></a>Using attribute values in the transformed dictionary
 Let's say we want to transform attribute values into Elexis Data Model elements.
 
     <Lemma writtenForm="X ray" partOfSpeech="n"/>
@@ -141,7 +151,7 @@ The transformed dictionary looks like this:
 
 ---
 
-#####  2.4.3. <a name='Excludeelements'></a>Exclude elements
+##### 3.1.2.5.3. <a name='Excludeelements'></a>Exclude elements
 Let's say we have a `tr` element that can denote a headword translation and an example translation. The transformation needs to take into account where the `tr` element appears in the original XML. We can achieve this by using the **EXCL.** option.
 
     <tr>žlobudranje; blebetanje, čvekanje, kvasanje; <ic>o otroku</ic>čebljanje;<ic>npr. o potoku</ic>žuborenje, šumenje</tr>
@@ -189,7 +199,7 @@ This results in the correct transformation:
 
 ---
 
-#####  2.4.4. <a name='Joinelements'></a>Join elements
+##### 3.1.2.5.4. <a name='Joinelements'></a>Join elements
 
 You can transform multiple XML elements have into one Elexis Data Model core element. The following dictionary uses `s1` and `s2` to denote senses:
 
@@ -233,20 +243,20 @@ Both elements are transformed as senses:
 
 ---
 
-#####  2.4.5. <a name='Addtranslationlanguage'></a>Add translation language
-To add a `lang` attribute to an element, we can use the option to include a constant value (instead of extracting one from the dictionary).
+##### 3.1.2.5.5. <a name='Addtranslationlanguage'></a>Add translation language
+To add a `lang` attribute to an element, the **Entry**, **Headword Translation** and **Example Translation** have a dedicated **Language** field where you can select and ISO 639-2 language code. Simply start typing and then select a value from the list.
 
-![](images/constant.png)
+![](images/language.png)
 
-In the example, we defined the `tr` element as the element containing the headword translation values (and we also excluded all `e/tr` elements). However, instead of using the **Element inner text** option to extract the text from the original xml, we used a **Constant** value for the Slovene language (`sl`). The resulting dictionary looks like this (note the `xml:lang` attribute):
+The resulting dictionary looks like this (note the `xml:lang` attribute):
 
     <cit type="translationEquivalent">
-        <quote xml:lang="sl">blejanje, beketanje</quote>
+        <quote xml:lang="slv">blejanje, beketanje</quote>
         </cit>
 
 ---
 
-#####  2.4.6. <a name='Editpart-of-speechcoreelement'></a>Edit part-of-speech core element
+##### 3.1.2.5.6. <a name='Editpart-of-speechcoreelement'></a>Edit part-of-speech core element
 
 The part-of-speech core element is unique among core elements, because you have to specify an additional mapping table for each value found in the part-of-speech element of the original XML file. In the example below, the `ps` element contains the POS information.
 
@@ -308,42 +318,55 @@ Click **Reset** in the top row.
 
 Click the three dots next to the dictionary name and then click **Delete dictionary**. This will delete the dictionary and all its transformations.
 
-###  1.7. <a name='Editingdictionarymetadata'></a>7. Editing dictionary metadata
+###  1.7. <a name='Editingdictionarymetadata'></a>Editing dictionary metadata
 ![](images/metadata.png)
 
 Click the three dots next to the dictionary name and then click **Edit metadata**. You can edit the metadata in the popup window.
 
 ##  2. <a name='PDFtransformation'></a>PDF transformation
 
+PDF transformation combines human annotation with machine learning to rapidly convert large PDF dictionaries. Users start by annotating a sample of the data in Lexonomy and then Elexifier propagates the annotations to the entire dictionary.
+
+Tips for best results:
+- We suggest you delete any pages that do not contain dictionary data, such as title pages, introductions, tables of contents etc. While it won't stop Elexifier from processing your file, it may have an adverse effect the final results.
+- The algorithm uses information about font size, font type, position etc. to learn the annotations. As such, it works best on dictionaries that consistently use different fonts for different elements (headwords, examples, part-of-speech tags etc.).
+- While the algorithms work well in general, don't expect perfect results, even in the best of cases, a small number of mistakes may need to be manually corrected.
+- Machine learning needs a large enough sample of annotated data. Annotate **at least** four (4) pages of the original XML. Smaller samples may still work, but they are more prone to errors. If you annotated at least 4 pages and still encounter errors or the results are not satisfactory, contact <elexifier@ijs.si>.
+- Note that this is a public beta release and you are likely to encounter bugs and/or unexpected behaviour.
+
 ###  2.1. <a name='SendingdictionarytoLexonomyforannotation'></a>Sending dictionary to Lexonomy for annotation
 
 After uploading a dictionary, click Annotate and wait while the PDF dictionary is converted and sent to Lexonomy (lexonomy.elex.is).
 ![](images/pdf-options.png)
 
-Click the link that appears and login to Lexonomy. You will be logged in automatically, if you used the Sketch Engine SSO to login to Elexifier, otherwise you will need to create an account with the same email address in Lexonomy.
+Click the link that appears and login to Lexonomy. You will need to create an account with the same email address in Lexonomy in order to annotate the file. By default, Elexifier sends the first 20 pages. In rare cases where you need to annotate more than 20 pages, you can use the **+** sign to send another batch of 20 pages to Lexonomy. Once the file is sent to Lexonomy, you can use the **Reset annotations** button to delete all existing annotations and start over.
 
 ![](images/lex-link.png)
 
 ###  2.2. <a name='Annotatingdictionary'></a>Annotating dictionary
 
-Select your dictionary from the list in Lexonomy and open it for editing.
-![](images/lex-view.png)
+Select your data (i.e. *pages 1-20* below) from the list in Lexonomy and open it for editing.
+![](images/lex-view2.png)
 
 Annotate the following elements: `entry`, `headword`, `part of speech`, `sense`, `definition`, `translation`, `example`. Using the mouse, highlight the words that form an individual element and then double-click to select an annotation label from the list.
 
 ![](images/lex-highlight.png)
 ![](images/lex-selection.png)
 
-The annotations will be visible in the preview window.
+The annotations will be visible in the preview window. Lexonomy implements a few basic rules to limit the range of possible annotations. A valid entry will have a **green** rectangle, while an invalid entry will have an **orange** rectangle. When you save the annotations (using the **Save** button in the top toolbar), Lexonomy will warn you if your data contains invalid entries.
 
-![](images/lex-visible.png)
+**IMPORTANT**: Save your work on a regular basis to avoid losing your annotations!
 
-For the best results, a rough guideline is to annotate at least 10 pages of your dictionary. However, success depends on the structure of the dictionary and some experimentation will be necessary in order to get the best results (e.g., if you have very long entries, then you will have to annotate more pages, otherwise the algorithm will not have enough entry elements for training.)
+![](images/lex-annotate-rules.png)
+
+
 
 ###  2.3. <a name='Startingmachinelearning'></a>Starting machine learning
 
-After you finish the annotation, go back to Elexifier and click the **To ML** button to run the training and predicition processes. Depending on the size of the dictionary, it may take a few hours. You can safely close the window in the meantime. Once the process is completed, Elexifier will display a status message.
+After you finish the annotation, go back to Elexifier and click the **To ML** button to run the training and predicition processes. Depending on the size of the dictionary, it may take a few hours. You can safely close the window in the meantime. Once the process is completed, Elexifier will display a status message informing you about the results.
 
 ###  2.4. <a name='Previewingresultsanddownloadingdictionary'></a>Previewing results and downloading dictionary
 
-You can check the results of the prediction process in Lexonomy. After ML is finished, click the **To Preview** butoon to send the file back to Lexonomy and have a look at the results. If you are happy with the results, click **Download** in Elexifier to download a TEI-compliant XML file of the converted dictionary.
+You can check the results of the prediction process in Lexonomy. After ML is finished, click the **To Preview** butoon to send the file back to Lexonomy and have a look at the results. If you are happy with the results, click **Download** in Elexifier to download a TEI-compliant XML file of the converted dictionary. 
+
+Due to various types of PDF file encodings, the initial PDF conversion can contain corrupted characters. If this is the case in your data, you can map corrupted characters to proper ones using the **Map characters** button. 
