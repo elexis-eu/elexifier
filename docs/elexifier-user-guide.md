@@ -37,8 +37,6 @@ Welcome to the *Elexifier User Guide*. Elexifier is an app that allows you to tr
 # Login
 Elexifier is available on [elexifier.elex.is](elexifier.elex.is). You can create a user account or login with your *Sketch Engine* credentials.
 
-**NOTE**: Annotation in Lexonomy is currently **NOT** supported with Sketch Engine credentials. If you want to transform PDF files create a new account in Elexifier.
-
 
 ---
 
