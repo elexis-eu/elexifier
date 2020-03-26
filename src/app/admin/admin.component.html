@@ -1,0 +1,24 @@
+<div class="layout-container">
+  <app-sidebar></app-sidebar>
+  <div class="sidebar-column">
+    <div class="sidebar-column-search justify-content-center">
+    <span class="fs-14 text-uppercase">
+      Admin
+    </span>
+    </div>
+    <div class="sidebar-column--content">
+      <ul class="sidebar-column-menu">
+        <li class="sidebar-column-menu-item hover">
+          <div
+            [routerLink]="['logs']"
+            class="sidebar-column-menu-item--name sidebar-column-menu-item--name-pdf">
+            Logs
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="content-container">
+    <router-outlet></router-outlet>
+  </div>
+</div>

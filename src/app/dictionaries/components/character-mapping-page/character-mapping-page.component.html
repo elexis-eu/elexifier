@@ -1,0 +1,45 @@
+<div
+  class="pt-5 px-5"
+  style="flex: 1"
+>
+  <div [formGroup]="characterMap">
+    <div class="row">
+      <div class="col-12">
+        <h3>Character mapping</h3>
+        <p>
+          On this page you can input the wrongfully interpreted characters and swap them with the intended ones.
+        </p>
+        <p class="text-muted">
+          e.g. Key: ~ Value: č
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-5">Key</div>
+      <div class="col-5">Value</div>
+      <div class="col-2"></div>
+    </div>
+    <div class="row mb-4">
+      <ng-container [formGroup]="keyPair" *ngFor="let keyPair of characterMap.controls; let i = index">
+        <div class="col-5 form-group">
+          <input class="one-line-input" formControlName="key">
+        </div>
+        <div class="col-5 form-group">
+          <input class="one-line-input" formControlName="value">
+        </div>
+        <div class="col-2 text-right">
+          <i-feather
+            name="trash2"
+            class="icon icon-red remove-pair"
+            (click)="onRemovePair(i)"
+          >
+          </i-feather>
+        </div>
+      </ng-container>
+    </div>
+    <div class="d-flex">
+      <button type="button" class="button button-secondary button-outline mr-auto" (click)="onAddKeyPair()">+ Add a new character</button>
+      <button type="button" class="button button-primary" (click)="onSaveKeyPairs()">Save</button>
+    </div>
+  </div>
+</div>

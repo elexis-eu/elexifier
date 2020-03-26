@@ -1,0 +1,21 @@
+<div class="p-5">
+  <div class="d-flex align-items-center justify-content-between mb-4">
+    <h4 class="">Log ID: {{log.id}}</h4>
+    <div>
+      <button
+        class="button button-primary d-inline-block mr-3"
+        (click)="onDownloadAnnotations()"
+      >Download Annotations</button>
+      <button
+        class="button button-primary d-inline-block"
+        (click)="onDownloadXml()"
+      >Download XML</button>
+    </div>
+  </div>
+  <div class="card p-3">
+    <h5>Message:</h5>
+    <div class="terminal">
+      {{ log.message }}
+    </div>
+  </div>
+</div>

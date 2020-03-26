@@ -1,0 +1,23 @@
+<div>
+  <ng-container *ngIf="logs">
+    <table class="table table-borderless table-striped bg-white">
+      <thead>
+        <tr>
+          <td>ID</td>
+          <td>Dataset ID</td>
+          <td>Time Logged</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let log of logs">
+          <td>{{ log.id }}</td>
+          <td>{{ log.dsid }}</td>
+          <td>{{ log.time }}</td>
+          <td>
+            <a [routerLink]="[log.id]">Check</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-container>
+</div>
