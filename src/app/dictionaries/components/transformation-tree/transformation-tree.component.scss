@@ -206,6 +206,7 @@ $baseIndent: 75px + 16;
         }
 
         .base-indent {
+          padding-right: 5rem;
           padding-left: $baseIndent !important;
           display: inline-block;
         }
@@ -229,6 +230,11 @@ $baseIndent: 75px + 16;
             min-height: 20px;
             display: inline-block;
             margin-right: 1.25rem;
+
+            .disabled {
+              pointer-events: none;
+              opacity: 0.75;
+            }
 
             .content {
               background: $puke;
@@ -321,6 +327,9 @@ $baseIndent: 75px + 16;
               line-height: 22px;
               cursor: pointer;
 
+              &.disabled {
+                transform: translateX(0px) !important;
+              }
               &.visible {
                 transform: translateX(14px);
                 transition: transform ease-in-out 0.1s;
@@ -647,7 +656,7 @@ $baseIndent: 75px + 16;
     padding: 0.5rem;
     font-size: 12px;
 
-    &:hover {
+    &:hover, &.selected {
       cursor: pointer;
       background: $lightGray;
     }

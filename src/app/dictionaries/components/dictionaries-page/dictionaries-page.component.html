@@ -2,7 +2,11 @@
   class="pt-5 px-5"
   style="flex: 1"
 >
-  <ng-container *ngIf="workflowType === 'xml'">
+  <h4 class="text-danger text-center">NOTICE:</h4>
+  <p class="text-danger text-center">
+    This is a <b>PUBLIC BETA</b> release. You will likely encounter bugs and/or unexpected behaviour. In case of any issues, please contact elexifier@ijs.si
+  </p>
+  <ng-container *ngIf="workflowType === 'xml'; else pdf">
     <p class="text-center">
       <i-feather name="file-text"></i-feather>
     </p>
@@ -16,9 +20,17 @@
     </p>
     <h6>3. Download your file</h6>
   </ng-container>
-  <ng-container *ngIf="workflowType === 'pdf'">
-      <p class="text-gray text-center">Please select or upload a dictionary to get started</p>
-  </ng-container>
+  <ng-template #pdf>
+    <p class="text-center">
+      <i-feather name="file-text"></i-feather>
+    </p>
+    <h6>1. Upload your PDF and send it to Lexonomy for annotation.</h6>
+    <h6>2. Click the link to annotate your dictionary in Lexonomy. Tip: For best results, annotate at least 4 full pages of dictionary entries.</h6>
+    <h6>3. Start the machine learning process. The process runs in the background, so you can close the app and come back later.</h6>
+    <h6>4. The results of the ML processing can be previewed in Lexonomy.</h6>
+    <h6>5. Due to unknown encodings, PDF conversion can result in corrupted characters. If you see corrupted characters in your dictionary, you can map them to proper characters and Elexifier will replace them in the final file.</h6>
+    <h6>6. Download your transformed dictionary.</h6>
+  </ng-template>
   <hr class="my-4">
   <p class="text-center">
     <a

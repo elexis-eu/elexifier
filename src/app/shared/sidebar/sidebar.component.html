@@ -19,6 +19,16 @@
           <small class="d-block fs-12">.pdf</small>
         </i>
       </a>
+      <a
+        *ngIf="(userStore.user$ | async).admin"
+        class="sidebar-menu-item d-block"
+        [routerLink]="['/admin']"
+        routerLinkActive="active"
+      >
+        <i class="pi pi-chart-bar fs-32">
+          <small class="d-block fs-12">Admin</small>
+        </i>
+      </a>
     </ul>
     <ul class="sidebar-menu sidebar-menu--bottom">
       <p-menu

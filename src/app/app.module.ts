@@ -52,7 +52,7 @@ export class SentryErrorHandler implements ErrorHandler {
   }
 }
 
-// TODO: remove xsm
+// TODO: remove xsm immediately
 setup({ framework: 'Angular' });
 
 @NgModule({

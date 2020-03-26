@@ -1,0 +1,16 @@
+version: "2"
+
+services:
+  nginx:
+    build:
+      dockerfile: Dockerfile.staging
+      context: .
+    networks:
+      elexifier-network:
+        aliases:
+          - web-app
+    ports:
+      - 8081:80
+
+networks:
+  elexifier-network:

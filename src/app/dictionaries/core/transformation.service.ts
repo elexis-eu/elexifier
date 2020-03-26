@@ -9,6 +9,7 @@ import { TransformationApiService } from '@elexifier/dictionaries/core/transform
 import { MessageService } from 'primeng/api';
 import {WorkflowStore} from '@elexifier/store/workflow.store';
 import {map, switchMap} from 'rxjs/operators';
+import {SidebarStore} from '@elexifier/store/sidebar.store';
 
 @Injectable({
   providedIn: 'root',
@@ -47,6 +48,7 @@ export class TransformationService {
     private transformationApiService: TransformationApiService,
     private messageService: MessageService,
     private workflowStore: WorkflowStore,
+    private sidebarStore: SidebarStore,
   ) {
     workflowStore.selectedTransformation$.subscribe((t: any) => {
       if (t) {
@@ -111,6 +113,8 @@ export class TransformationService {
     } else if (this._transformation[transformerName].deleted) {
       this._transformation[transformerName].deleted = false;
     }
+
+    this.transformation = DataHelperService.putElementsInOrder(this.transformation);
   }
 
   public applyPosValue(item, value) {
@@ -129,6 +133,9 @@ export class TransformationService {
       .forEach(k => {
         if (this._transformation[k].deleted) {
           delete newTransformation[k];
+          if (this._transformation[`${k}_lang`]) {
+            delete newTransformation[`${k}_lang`];
+          }
 
           transformerDeleted = true;
 
@@ -307,15 +314,23 @@ export class TransformationService {
 
     this.transformationApiService.patchTransformation(this.transformationId, data)
       .pipe(
-        map((patched) => {
+        switchMap((patched) => {
           if (patched) {
             this.messageService.add({
               severity: 'success',
               summary: 'Success',
               detail: 'Transformation successfully saved',
             });
-            this.workflowStore.selectedHeadword = this.workflowStore.selectedHeadword;
+            return this.transformationApiService.getTransformationById(this.transformationId);
           }
+        }),
+        map((transformationResponse) => {
+          this.workflowStore.selectedTransformation = {
+            transformation: transformationResponse.transform[0],
+            entities: transformationResponse.entities,
+          };
+          this.sidebarStore.reload();
+          this.workflowStore.selectedHeadword = this.workflowStore.selectedHeadword;
         }))
       .subscribe();
   }
@@ -476,7 +491,7 @@ export class TransformationService {
     return transformation;
   }
 
-  private prependSelectorsRelatively(transformation): Transformation {
+  public prependSelectorsRelatively(transformation): Transformation {
     const newTransform = JSON.parse(JSON.stringify(transformation));
 
     Object.keys(transformation).forEach((transformerName) => {

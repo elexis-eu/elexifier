@@ -16,4 +16,8 @@ export class SidebarStore {
   public setDepth(depth): void {
     this._depth.next(depth);
   }
+
+  public reload() {
+    this._depth.next(this._depth.value);
+  }
 }

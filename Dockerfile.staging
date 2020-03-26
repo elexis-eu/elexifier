@@ -1,0 +1,13 @@
+FROM nginx:alpine
+RUN rm -rf /usr/share/nginx/html/*
+COPY ./nginx/nginx.staging.conf /etc/nginx/nginx.conf
+COPY ./dist/elexifier /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+
+RUN apk update \
+    && apk add openssl
+
+# ARG CONF_FILE
+# COPY ${CONF_FILE} /etc/nginx/nginx.conf
+# COPY /dist ./dist

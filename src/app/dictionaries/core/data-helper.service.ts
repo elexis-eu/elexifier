@@ -8,55 +8,85 @@ export class DataHelperService {
   public static availableTransformers = [{
     name: 'entry',
     id: 'entry',
+    addable: true,
   }, {
     name: 'sense',
     id: 'sense',
+    addable: true,
   }, {
     name: 'headword',
     id: 'hw',
+    addable: true,
   }, {
     name: 'definition',
     id: 'def',
+    addable: true,
   }, {
     name: 'headword translation',
     id: 'hw_tr',
+    addable: true,
   }, {
     name: 'entry language',
     id: 'entry_lang',
+    addable: false,
   }, {
     name: 'headword translation language',
     id: 'hw_tr_lang',
+    addable: false,
   }, {
     name: 'example',
     id: 'ex',
+    addable: true,
   }, {
     name: 'example translation',
     id: 'ex_tr',
+    addable: true,
   }, {
     name: 'example translation language',
     id: 'ex_tr_lang',
+    addable: false,
   }, {
     name: 'part of speech',
     id: 'pos',
+    addable: true,
   }, {
     name: 'secondary headword',
     id: 'sec_hw',
+    addable: true,
   }];
 
   public static elementList = [
     'entry',
+    'hw',
+    'sec_hw',
+    'pos',
     'sense',
     'def',
-    'entry_lang',
-    'hw',
     'hw_tr',
-    'hw_tr_lang',
     'ex',
     'ex_tr',
+    'entry_lang',
+    'hw_tr_lang',
     'ex_tr_lang',
-    'pos',
-    'sec_hw',
   ];
+
+  public static elementLanguagePairs = [
+    ['entry', 'entry_lang'],
+    ['hw_tr', 'hw_tr_lang'],
+    ['ex_tr', 'ex_tr_lang'],
+  ];
+
+  public static putElementsInOrder(transformation) {
+    const orderedTransformation = {};
+
+    DataHelperService.elementList.forEach((el) => {
+      if (transformation[el]) {
+        orderedTransformation[el] = transformation[el];
+      }
+    });
+
+    return orderedTransformation;
+  }
 
   public static metadata = [
     {
@@ -247,11 +277,12 @@ export class DataHelperService {
 
   public static getUnusedTransformers(transformation) {
     const transformers = [];
-    this.elementList.forEach((k) => {
-      if (!transformation[k] || transformation[k].deleted) {
+    this.availableTransformers.forEach((k) => {
+      if (!transformation[k.id] || transformation[k.id].deleted) {
         const transformer = {
-          id: k,
-          name: this.findTransformerNameByShortId(k),
+          id: k.id,
+          name: this.findTransformerNameByShortId(k.id),
+          addable: k.addable,
         };
         transformers.push(transformer);
       }

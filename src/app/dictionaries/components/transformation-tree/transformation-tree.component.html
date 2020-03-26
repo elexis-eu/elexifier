@@ -83,7 +83,7 @@
     <ng-container *ngFor="let transformer of transformers">
       <div
         class="transformer-list-item"
-        *ngIf="!transformation[transformer.id].deleted"
+        *ngIf="!transformation[transformer.id].deleted && transformer.id !== 'entry_lang' && transformer.id !== 'hw_tr_lang' && transformer.id !== 'ex_tr_lang'"
       >
         <div
           class="transformer-name selected"
@@ -237,6 +237,12 @@
                             class="content"
                             appContenteditable="true"
                             contenteditable="true"
+                            (ngModelChange)="onChangeSelector(transformer.id, $event); op1.show($event, actual1);"
+                            (keyup.arrowDown)="goDownSelectorList()"
+                            (keyup.arrowUp)="goUpSelectorList()"
+                            (keyup.escape)="input1.blur(); op1.hide(); selectorSearch$.next('');"
+                            (blur)="selectorSearch$.next('');"
+                            (keydown.enter)="$event.preventDefault(); selectSelector(getSelectorData(transformer.id)[i].left);"
                             [disabled]="!editable"
                             [(ngModel)]="getSelectorData(transformer.id)[i].left.expr"
                             [appAvailableNodesValidator]="allowedSelectorValues"
@@ -244,6 +250,7 @@
                             [ngClass]="{'invalid': val1.errors}"
                             #val1="ngModel"
                             required
+                            #input1
                             appAutofocus
                             [autofocusEnabled]="autofocusEnabled"
                           ></span>
@@ -251,6 +258,7 @@
                             class="selector-value--dropdown"
                             [ngClass]="{'visible': op1.visible}"
                             (click)="op1.toggle($event)"
+                            #actual1
                           >
                             <i-feather
                               name="chevron-down"
@@ -273,13 +281,24 @@
                                     class="icon icon-small text-danger"
                                   ></feather-icon>
                                 </div>
-                                <div
-                                  class="dropdown-selector-menu--item"
-                                  *ngFor="let node of filteredXmlNodes"
-                                  (click)="getSelectorData(transformer.id)[i].left.expr = node; op1.hide()"
-                                >
-                                  {{ node }}
-                                </div>
+                                <ng-container *ngIf="filteredXmlNodes.length > 0; else none">
+                                  <div
+                                    [ngClass]="{'selected': j === highlightedSelectorIndex}"
+                                    class="dropdown-selector-menu--item"
+                                    *ngFor="let node of filteredXmlNodes let j = index;"
+                                    (click)="getSelectorData(transformer.id)[i].left.expr = node; op1.hide()"
+                                  >
+                                    {{ node }}
+                                  </div>
+                                </ng-container>
+                                <ng-template #none>
+                                  <div
+                                    class="dropdown-selector-menu--item text-gray"
+                                    (click)="op1.hide()"
+                                  >
+                                    None
+                                  </div>
+                                </ng-template>
                               </div>
                             </div>
                           </p-overlayPanel>
@@ -290,6 +309,12 @@
                             class="content"
                             appContenteditable="true"
                             contenteditable="true"
+                            (ngModelChange)="onChangeSelector(transformer.id, $event); op2.show($event, actual2);"
+                            (keyup.arrowDown)="goDownSelectorList()"
+                            (keyup.arrowUp)="goUpSelectorList()"
+                            (keyup.escape)=" input2.blur(); op2.hide(); selectorSearch$.next('');"
+                            (blur)="selectorSearch$.next('');"
+                            (keydown.enter)="$event.preventDefault(); selectSelector(getSelectorData(transformer.id)[i].right);"
                             [disabled]="!editable"
                             [(ngModel)]="getSelectorData(transformer.id)[i].right.expr"
                             [appAvailableNodesValidator]="allowedSelectorValues"
@@ -298,6 +323,7 @@
                             [ngClass]="{'invalid': val2.errors}"
                             appAutofocus
                             required
+                            #input2
                             [autofocusEnabled]="autofocusEnabled"
                           >
                           </span>
@@ -305,6 +331,7 @@
                             class="selector-value--dropdown"
                             [ngClass]="{'visible': op2.visible}"
                             (click)="op2.toggle($event)"
+                            #actual2
                           >
                             <i-feather
                               name="chevron-down"
@@ -327,13 +354,24 @@
                                     class="icon icon-small text-danger"
                                   ></feather-icon>
                                 </div>
-                                <div
-                                  class="dropdown-selector-menu--item"
-                                  *ngFor="let node of filteredXmlNodes"
-                                  (click)="getSelectorData(transformer.id)[i].right.expr = node; op2.hide()"
-                                >
-                                  {{ node }}
-                                </div>
+                                <ng-container *ngIf="filteredXmlNodes.length > 0; else none">
+                                  <div
+                                    [ngClass]="{'selected': j === highlightedSelectorIndex}"
+                                    class="dropdown-selector-menu--item"
+                                    *ngFor="let node of filteredXmlNodes; let j = index;"
+                                    (click)="getSelectorData(transformer.id)[i].right.expr = node; op2.hide()"
+                                  >
+                                    {{ node }}
+                                  </div>
+                                </ng-container>
+                                <ng-template #none>
+                                  <div
+                                    class="dropdown-selector-menu--item text-gray"
+                                    (click)="op2.hide()"
+                                  >
+                                    None
+                                  </div>
+                                </ng-template>
                               </div>
                             </div>
                           </p-overlayPanel>
@@ -347,6 +385,12 @@
                           class="content"
                           appContenteditable="true"
                           contenteditable="true"
+                          (ngModelChange)="onChangeSelector(transformer.id, $event); op.show($event, actual);"
+                          (keyup.arrowDown)="goDownSelectorList()"
+                          (keyup.arrowUp)="goUpSelectorList()"
+                          (keyup.escape)=" input.blur(); op.hide(); selectorSearch$.next('');"
+                          (blur)="selectorSearch$.next('');"
+                          (keydown.enter)="$event.preventDefault(); selectSelector(getSelectorData(transformer.id)[i]);"
                           [disabled]="!editable"
                           [(ngModel)]="getSelectorData(transformer.id)[i].expr"
                           [name]="'selector-'+transformer.id+i"
@@ -354,9 +398,11 @@
                           #val="ngModel"
                           [ngClass]="{'invalid': val.errors}"
                           appAutofocus
+                          #input
                           [autofocusEnabled]="autofocusEnabled"
                         ></span>
                         <span
+                          #actual
                           class="selector-value--dropdown"
                           [ngClass]="{'visible': op.visible}"
                           (click)="op.toggle($event)"
@@ -373,13 +419,24 @@
                         >
                           <div>
                             <div class="dropdown-selector-menu">
-                              <div
-                                class="dropdown-selector-menu--item"
-                                *ngFor="let node of filteredXmlNodes"
-                                (click)="getSelectorData(transformer.id)[i].expr = node; op.hide()"
-                              >
-                                {{ node }}
-                              </div>
+                              <ng-container *ngIf="filteredXmlNodes.length > 0; else none">
+                                <div
+                                  [ngClass]="{'selected': j === highlightedSelectorIndex}"
+                                  class="dropdown-selector-menu--item"
+                                  *ngFor="let node of filteredXmlNodes; let j = index"
+                                  (click)="getSelectorData(transformer.id)[i].expr = node; op.hide()"
+                                >
+                                  {{ node }}
+                                </div>
+                              </ng-container>
+                              <ng-template #none>
+                                <div
+                                  class="dropdown-selector-menu--item text-gray"
+                                  (click)="op.hide()"
+                                >
+                                  None
+                                </div>
+                              </ng-template>
                             </div>
                           </div>
                         </p-overlayPanel>
@@ -456,6 +513,26 @@
                   >
                 </div>
               </div>
+              <ng-container *ngIf="transformer.id === 'entry' || transformer.id === 'hw_tr' || transformer.id === 'ex_tr'">
+                <div class="pt-2">
+                  <div
+                    class="transformer-setting"
+                  >
+                    <div class="selector-setting--name">
+                      Language
+                    </div>
+                    <div class="selector-setting--value">
+                      <input
+                        type="text"
+                        [(ngModel)]="getLanguageTransformer(transformer.id).const"
+                        [ngbTypeahead]="searchLanguages"
+                        #instance="ngbTypeahead"
+                        [ngModelOptions]="{standalone: true}"
+                        class="one-line-input" />
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
               <div
                 class="transformer-setting"
                 *ngIf="transformer && transformation[transformer.id].attr === PseudoAttributes.Constant"
@@ -579,6 +656,12 @@
                           [ngClass]="{'focus': op1.visible, 'invalid': val1.errors}"
                           appContenteditable="true"
                           contenteditable="true"
+                          (ngModelChange)="onChangeSelector(transformer.id, $event); op1.show($event, actual1);"
+                          (keyup.arrowDown)="goDownSelectorList()"
+                          (keyup.arrowUp)="goUpSelectorList()"
+                          (keyup.escape)="input.blur(); op1.hide(); selectorSearch$.next('');"
+                          (blur)="selectorSearch$.next('');"
+                          (keydown.enter)="$event.preventDefault(); selectSelector(getSelectorData(transformer.id).left);"
                           [disabled]="!editable"
                           [name]="'selector-'+transformer.id+'-left'"
                           [(ngModel)]="getSelectorData(transformer.id).left.expr"
@@ -586,6 +669,7 @@
                           #val1="ngModel"
                           appAutofocus
                           required
+                          #input
                           [autofocusEnabled]="autofocusEnabled"
                         >
                         </span>
@@ -593,6 +677,7 @@
                           class="selector-value--dropdown"
                           [ngClass]="{'visible': op1.visible}"
                           (click)="op1.toggle($event)"
+                          #actual1
                         >
                           <i-feather
                             name="chevron-down"
@@ -615,13 +700,24 @@
                                   class="icon icon-small text-danger"
                                 ></feather-icon>
                               </div>
-                              <div
-                                class="dropdown-selector-menu--item"
-                                *ngFor="let node of filteredXmlNodes"
-                                (click)="getSelectorData(transformer.id).left.expr = node; op1.hide()"
-                              >
-                                {{ node }}
-                              </div>
+                              <ng-container *ngIf="filteredXmlNodes.length > 0; else none">
+                                <div
+                                  [ngClass]="{'selected': j === highlightedSelectorIndex}"
+                                  class="dropdown-selector-menu--item"
+                                  *ngFor="let node of filteredXmlNodes; let j = index"
+                                  (click)="getSelectorData(transformer.id).left.expr = node; op1.hide()"
+                                >
+                                  {{ node }}
+                                </div>
+                              </ng-container>
+                              <ng-template #none>
+                                <div
+                                  class="dropdown-selector-menu--item text-gray"
+                                  (click)="op1.hide()"
+                                >
+                                  None
+                                </div>
+                              </ng-template>
                             </div>
                           </div>
                         </p-overlayPanel>
@@ -637,17 +733,25 @@
                           [ngClass]="{'focus': op2.visible, 'invalid': val2.errors}"
                           appContenteditable="true"
                           contenteditable="true"
+                          (ngModelChange)="onChangeSelector(transformer.id, $event); op2.show($event, actual);"
+                          (keyup.arrowDown)="goDownSelectorList()"
+                          (keyup.arrowUp)="goUpSelectorList()"
+                          (keyup.escape)="input.blur(); op2.hide(); selectorSearch$.next('');"
+                          (blur)="selectorSearch$.next('');"
+                          (keydown.enter)="$event.preventDefault(); selectSelector(getSelectorData(transformer.id).right);"
                           [disabled]="!editable"
                           [name]="'selector-'+transformer.id+'-right'"
                           [(ngModel)]="getSelectorData(transformer.id).right.expr"
                           [appAvailableNodesValidator]="allowedSelectorValues"
                           required
+                          #input
                           #val2="ngModel"
                           appAutofocus
                           [autofocusEnabled]="autofocusEnabled"
                         >
                         </span>
                         <span
+                          #actual
                           class="selector-value--dropdown"
                           [ngClass]="{'visible': op2.visible}"
                           (click)="op2.toggle($event)"
@@ -673,13 +777,24 @@
                                   class="icon icon-small text-danger"
                                 ></feather-icon>
                               </div>
-                              <div
-                                class="dropdown-selector-menu--item"
-                                *ngFor="let node of filteredXmlNodes"
-                                (click)="getSelectorData(transformer.id).right.expr = node; op2.hide()"
-                              >
-                                {{ node }}
-                              </div>
+                              <ng-container *ngIf="filteredXmlNodes.length > 0; else none">
+                                <div
+                                  [ngClass]="{'selected': j === highlightedSelectorIndex}"
+                                  class="dropdown-selector-menu--item"
+                                  *ngFor="let node of filteredXmlNodes; let j = index"
+                                  (click)="getSelectorData(transformer.id).right.expr = node; op2.hide()"
+                                >
+                                  {{ node }}
+                                </div>
+                              </ng-container>
+                              <ng-template #none>
+                                <div
+                                  class="dropdown-selector-menu--item text-gray"
+                                  (click)="op2.hide()"
+                                >
+                                  None
+                                </div>
+                              </ng-template>
                             </div>
                           </div>
                         </p-overlayPanel>
@@ -689,27 +804,35 @@
                   <ng-template #basicSingleSelector>
                     <span class="selector-value--type">ONLY</span>
                     <span
+                      [tooltipPosition]="'top'"
+                      [pTooltip]="transformer.id === 'entry' ? 'Entry can\'t be changed. Create a new transformation.' : ''"
                       class="selector-value--expr"
                     >
                       <span
                         class="content"
-                        [ngClass]="{'focus': op.visible, 'invalid': val.errors}"
+                        [ngClass]="{'focus': op.visible, 'invalid': val.errors, 'disabled': transformer.id === 'entry'}"
                         appContenteditable="true"
                         contenteditable="true"
+                        (ngModelChange)="onChangeSelector(transformer.id, $event); op.show($event, actual);"
+                        (keyup.arrowDown)="goDownSelectorList()"
+                        (keyup.arrowUp)="goUpSelectorList()"
+                        (keyup.escape)=" input.blur(); op.hide(); selectorSearch$.next('');"
+                        (blur)="selectorSearch$.next('');"
+                        (keydown.enter)="$event.preventDefault(); selectSelector(getSelectorData(transformer.id));"
                         [disabled]="!editable"
                         [name]="'selector-'+transformer.id"
                         [(ngModel)]="getSelectorData(transformer.id).expr"
                         [appAvailableNodesValidator]="allowedSelectorValues"
                         #val="ngModel"
+                        #input
                         required
-                        appAutofocus
-                        [autofocusEnabled]="autofocusEnabled"
                       >
                       </span>
                       <span
                         class="selector-value--dropdown"
-                        [ngClass]="{'visible': op.visible}"
+                        [ngClass]="{'visible': op.visible, 'disabled': transformer.id === 'entry'}"
                         (click)="op.toggle($event)"
+                        #actual
                       >
                         <i-feather
                           name="chevron-down"
@@ -724,13 +847,24 @@
                       >
                         <div>
                           <div class="dropdown-selector-menu">
-                            <div
-                              class="dropdown-selector-menu--item"
-                              *ngFor="let node of filteredXmlNodes"
-                              (click)="getSelectorData(transformer.id).expr = node; op.hide()"
-                            >
-                              {{ node }}
-                            </div>
+                            <ng-container *ngIf="filteredXmlNodes.length > 0; else none">
+                              <div
+                                class="dropdown-selector-menu--item"
+                                [ngClass]="{'selected': j === highlightedSelectorIndex}"
+                                *ngFor="let node of filteredXmlNodes; let j = index;"
+                                (click)="getSelectorData(transformer.id).expr = node; op.hide()"
+                                >
+                                {{ node }}
+                              </div>
+                            </ng-container>
+                            <ng-template #none>
+                              <div
+                                class="dropdown-selector-menu--item text-gray"
+                                (click)="op.hide()"
+                              >
+                                None
+                              </div>
+                            </ng-template>
                           </div>
                         </div>
                       </p-overlayPanel>
@@ -741,7 +875,7 @@
             </div>
             <div
               class="add-selector-button"
-              *ngIf="editable && transformer.id !== 'pos'"
+              *ngIf="editable && transformer.id !== 'pos' && transformer.id !== 'entry'"
             >
               <span
                 (click)="onAddSelector(transformer.id)"
@@ -893,6 +1027,26 @@
                     </div>
                   </div>
                 </ng-container>
+              </ng-container>
+              <ng-container *ngIf="transformer.id === 'entry' || transformer.id === 'hw_tr' || transformer.id === 'ex_tr'">
+                <div class="pt-2">
+                  <div
+                    class="transformer-setting"
+                  >
+                    <div class="selector-setting--name">
+                      Language
+                    </div>
+                    <div class="selector-setting--value">
+                      <input
+                        type="text"
+                        [(ngModel)]="getLanguageTransformer(transformer.id).const"
+                        [ngbTypeahead]="searchLanguages"
+                        #instance="ngbTypeahead"
+                        [ngModelOptions]="{standalone: true}"
+                        class="one-line-input" />
+                    </div>
+                  </div>
+                </div>
               </ng-container>
               <div class="pt-2">
                 <input

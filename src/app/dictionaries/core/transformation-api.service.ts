@@ -92,7 +92,7 @@ export class TransformationApiService {
     return this.http.get<TransformationEntityResponse>(`${environment.apiUrl}/transform/${id}?page_num=${page}`)
       .pipe(
         switchMap((res) => {
-          const transformer = res.transform[0].transform.pos;
+          const transformation = res.transform[0].transform;
           // if (transformer && transformer.xlat) {
           //   const mirroredXlat = DataHelperService.mirrorObject(transformer.xlat);
           //   transformer.xlat = mirroredXlat;

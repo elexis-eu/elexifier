@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { bindState, get, set } from 'xsm';
 import { AuthService } from '@elexifier/core/auth.service';
+import {UserStore} from '@elexifier/store/user.store';
 
 @Component({
   selector: 'app-root',
@@ -12,6 +13,7 @@ export class AppComponent {
 
   public constructor(
     private authService: AuthService,
+    private userStore: UserStore,
   ) {
     bindState(this, {
       user: null,
@@ -24,6 +26,7 @@ export class AppComponent {
     if (this.isLoggedIn) {
       this.authService.getLoggedInUser()
         .subscribe(user => {
+          userStore.user = user;
           set('user', user);
         });
     }

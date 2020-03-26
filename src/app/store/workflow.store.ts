@@ -3,6 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import {Dictionary} from '@elexifier/dictionaries/core/type/dictionary.interface';
 import {Headword} from '@elexifier/dictionaries/core/type/headword.interface';
 import {TransformationService} from '@elexifier/dictionaries/core/transformation.service';
+import {DataHelperService} from '@elexifier/dictionaries/core/data-helper.service';
 /**
  *  Disabling tslint for Greater Good
  */
@@ -35,6 +36,7 @@ export class WorkflowStore {
   }
 
   public set selectedTransformation(val: any) {
+    val.transformation.transform = DataHelperService.putElementsInOrder(val.transformation.transform);
     this._selectedTransformation.next(val);
   }
 

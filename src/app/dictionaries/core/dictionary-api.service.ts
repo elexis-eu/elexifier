@@ -8,6 +8,7 @@ import { set } from 'xsm';
 import { Order } from '@elexifier/shared/type/order.enum';
 import { FileTypes } from '@elexifier/dictionaries/core/type/file-types.enum';
 import {DataHelperService} from '@elexifier/dictionaries/core/data-helper.service';
+import {KeyValue} from '@angular/common';
 
 enum UploadDictionaryResponse {
   Ok = 'OK',
@@ -54,8 +55,21 @@ export class DictionaryApiService {
       .pipe(switchMap(() => this.getDictionaries())); // TODO: return dictionaries from server
   }
 
+  public downloadTransformedPdf(dictionaryId): Observable<any> {
+    return this.http.get(
+      `${ environment.apiUrl }/ml/${dictionaryId}?xml_format=True`,
+      {responseType: 'text'},
+    );
+  }
+
   public fetchFileFromLexonomy(dictionaryId: string) { // TODO: add type
     return this.http.get(`${ environment.apiUrl }/ml/${dictionaryId}?get_file=True`);
+  }
+
+  public getCharacterMap(
+    dictionaryId: string): Observable<{ character_map: {[key: string]: string}}> { // TODO: add type
+    return this.http.get<{ character_map: {[key: string]: string}}>
+    (`${ environment.apiUrl }/ml/${dictionaryId}/character_map`);
   }
 
   public getDictionaries(type?: string): Observable<Dictionary[]> {
@@ -69,6 +83,10 @@ export class DictionaryApiService {
           set('dictionaries', dictionaries);
         }),
       );
+  }
+
+  public getDictionaryTags(dictionaryId: string): Observable<any> {
+    return this.http.get(`${ environment.apiUrl }/dataset/${dictionaryId}/tags`);
   }
 
 
@@ -96,8 +114,15 @@ export class DictionaryApiService {
     return this.http.post(`${ environment.apiUrl }/save_metadata/${dictionaryId}`, data);
   }
 
-  public startAnnotateProcess(dictionaryId: string) { // TODO: add type
-    return this.http.get(`${ environment.apiUrl }/lexonomy/${dictionaryId}`);
+  public setCharacterMap(
+    dictionaryId: string,
+    charMap: { character_map: {[key: string]: string}})
+    : Observable<{msg: string}> { // TODO: add type
+    return this.http.post<{msg: string}>(`${ environment.apiUrl }/ml/${dictionaryId}/character_map`, charMap);
+  }
+
+  public startAnnotateProcess(dictionaryId: string, sendNext20 = false) { // TODO: add type
+    return this.http.get(`${ environment.apiUrl }/lexonomy/${dictionaryId}?add_pages=${sendNext20}`);
   }
 
   public startMlProcess(dictionaryId: string) { // TODO: add type
@@ -118,5 +143,14 @@ export class DictionaryApiService {
 
   public uploadDictionary(data): Observable<UploadDictionaryResponse> { // TODO: add interface
     return this.http.post<UploadDictionaryResponse>(`${ environment.apiUrl }/dataset/upload`, data);
+  }
+
+  public verifyPaths(dictionaryId: string, paths: string[]): Observable<{ paths: Array<string[]>}> {
+    const data = {
+      paths,
+    };
+
+    return this.http.post(
+      `${ environment.apiUrl }/dataset/${dictionaryId}/validate-path`, data) as Observable<{ paths: Array<string[]>}>;
   }
 }

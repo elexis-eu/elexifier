@@ -1,15 +1,20 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
-import { TransformationService } from '@elexifier/dictionaries/core/transformation.service';
-import { Transformation } from '@elexifier/dictionaries/core/type/transformation.interface';
-import { DataHelperService } from '@elexifier/dictionaries/core/data-helper.service';
-import { PseudoAttributes } from '@elexifier/dictionaries/core/type/pseudo-attributes.enum';
-import { ActivatedRoute } from '@angular/router';
-import { TransformationApiService } from '@elexifier/dictionaries/core/transformation-api.service';
-import { MessageService } from 'primeng/api';
-import { switchMap } from 'rxjs/operators';
-import { NgForm } from '@angular/forms';
-import { of } from 'rxjs';
-import { WorkflowStore } from '@elexifier/store/workflow.store';
+import {Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild} from '@angular/core';
+import {TransformationService} from '@elexifier/dictionaries/core/transformation.service';
+import {Transformation} from '@elexifier/dictionaries/core/type/transformation.interface';
+import {DataHelperService} from '@elexifier/dictionaries/core/data-helper.service';
+import {PseudoAttributes} from '@elexifier/dictionaries/core/type/pseudo-attributes.enum';
+import {ActivatedRoute} from '@angular/router';
+import {TransformationApiService} from '@elexifier/dictionaries/core/transformation-api.service';
+import {MessageService} from 'primeng/api';
+import {debounceTime, distinctUntilChanged, filter, map, switchMap} from 'rxjs/operators';
+import {NgForm} from '@angular/forms';
+import {merge, Observable, of, Subject} from 'rxjs';
+import {WorkflowStore} from '@elexifier/store/workflow.store';
+import { Transformer } from '@elexifier/dictionaries/core/type/transformer.interface';
+import {DictionaryApiService} from '@elexifier/dictionaries/core/dictionary-api.service';
+import {PathBuilder} from '@elexifier/dictionaries/core/path-builder';
+import { langs } from '@elexifier/dictionaries/core/data/languages';
+import {NgbTypeahead} from '@ng-bootstrap/ng-bootstrap';
 
 enum TransformerElementsWorthOfExplanation {
   Definition = 'definition',
@@ -45,8 +50,10 @@ export class TransformationTreeComponent implements OnInit, OnChanges {
   public allowedSelectorValues = [];
   @Output() public anchor = new EventEmitter();
   public autofocusEnabled = true;
-
+  public dictionaryTags: JSON;
   public availableXmlNodes = [];
+  public highlightedSelectorIndex = 0;
+  public langs = langs;
 
   public DEFINITION_TOOLTIP_TEXT = DEFINITION_TOOLTIP_TEXT;
   @Input() public editable: boolean;
@@ -73,6 +80,15 @@ export class TransformationTreeComponent implements OnInit, OnChanges {
   public unusedPosElements = [];
   public unusedTransformers = [];
   private openedTransformers = [];
+  public verifyingPaths = false;
+
+
+
+  @ViewChild('instance', {static: true}) public instance: NgbTypeahead;
+  public focus$ = new Subject<string>();
+  public click$ = new Subject<string>();
+
+  public selectorSearch$ = new Subject<string>();
 
   public constructor(
     private messageService: MessageService,
@@ -80,7 +96,28 @@ export class TransformationTreeComponent implements OnInit, OnChanges {
     private transformationApiService: TransformationApiService,
     public transformationService: TransformationService,
     private workflowStore: WorkflowStore,
-  ) { }
+    private dictionaryApiService: DictionaryApiService,
+  ) {
+    this.selectorSearch$.pipe(
+      switchMap((partialElementString) => {
+        const pathBuilder = new PathBuilder(this.dictionaryTags);
+        this.verifyingPaths = true;
+        const paths = pathBuilder.getPathsForTag(partialElementString);
+        const splittedPaths = [];
+        paths.forEach((p) => {
+          splittedPaths.push(p.split('/'));
+        });
+        return this.dictionaryApiService.verifyPaths(this.selectedDictionaryDatabaseIndex, splittedPaths);
+      }),
+    ).subscribe(({paths}) => {
+      this.verifyingPaths = false;
+      const filteredPaths = [];
+      paths.forEach((p) => {
+        filteredPaths.push(p.join('/'));
+      });
+      this.filteredXmlNodes = filteredPaths;
+    });
+  }
 
   public autofocusTimeout() {
     this.autofocusEnabled = false;
@@ -115,6 +152,25 @@ export class TransformationTreeComponent implements OnInit, OnChanges {
     return null;
   }
 
+  public onChangeLanguageOnFieldsRelatedToLanguage(transformerId, value) {
+    this.transformation[`${transformerId}_lang`].const = value;
+  }
+
+  public getLanguageTransformer(transformerId: string): Transformer {
+    const languageTransformer = this.transformation[`${transformerId}_lang`];
+
+    if (!languageTransformer) {
+      this.transformationService.addTransformer(`${transformerId}_lang`);
+
+      this.transformation[`${transformerId}_lang`].const = '';
+      this.transformation[`${transformerId}_lang`].type = 'simple';
+    }
+    this.transformation[`${transformerId}_lang`].attr = PseudoAttributes.Constant;
+    this.getSelectorData(`${transformerId}_lang`).expr = this.getSelectorData(transformerId).expr;
+
+    return this.transformation[`${transformerId}_lang`];
+  }
+
   public getTransformerAttributeValue(transformerId: string) {
     return this.shouldShowCustomAttributeOption(transformerId) ? this.transformation[transformerId].attr : '';
   }
@@ -123,6 +179,10 @@ export class TransformationTreeComponent implements OnInit, OnChanges {
     if (this.transformation) {
       return this.transformationService.getTransformerType(transformerName);
     }
+  }
+
+  public onChangeSelector(transformerId: string, partialElement: string) {
+    this.selectorSearch$.next(partialElement);
   }
 
   public getUnusedPosItems(item) {
@@ -162,6 +222,18 @@ export class TransformationTreeComponent implements OnInit, OnChanges {
       });
   }
 
+  public searchLanguages = (text$: Observable<string>) => {
+    const debouncedText$ = text$.pipe(debounceTime(200), distinctUntilChanged());
+    const clicksWithClosedPopup$ = this.click$.pipe(filter(() => this.instance && !this.instance.isPopupOpen));
+    const inputFocus$ = this.focus$;
+
+    return merge(debouncedText$, inputFocus$, clicksWithClosedPopup$).pipe(
+      map(term => (term === '' ? langs
+        : langs.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1)).slice(0, 10)),
+    );
+  }
+
+
   public ngOnChanges(): void {
     // Reloading the view
     this.transformers = DataHelperService.extractTransformers(this.transformation);
@@ -174,6 +246,11 @@ export class TransformationTreeComponent implements OnInit, OnChanges {
     this.selectedDictionaryDatabaseIndex = dictionaryId;
 
     if (this.editable && dictionaryId) {
+      this.dictionaryApiService.getDictionaryTags(dictionaryId)
+        .subscribe((res) => {
+          this.dictionaryTags = res;
+        });
+
       // TODO: Probably should merge this and below blocks of code?
       this.transformationApiService.getAvailableNodes(dictionaryId).pipe(
         switchMap((res: { nodes: string[] }) => {
@@ -284,6 +361,17 @@ export class TransformationTreeComponent implements OnInit, OnChanges {
   }
 
   public onSaveTransformation(valid: boolean) {
+    DataHelperService.elementLanguagePairs.forEach((pair) => {
+      const selector = this.getSelectorData(pair[1]);
+      if (selector) {
+        if (this.transformation[pair[0]].selector && this.transformation[pair[0]].selector.selectors) {
+          this.transformation[pair[1]].selector = {...this.transformation[pair[0]].selector};
+        } else {
+          this.transformation[pair[1]].selector = this.getSelectorData(pair[0]);
+        }
+      }
+    });
+
     if (valid) {
       this.transformationService.save();
     } else {
@@ -325,7 +413,9 @@ export class TransformationTreeComponent implements OnInit, OnChanges {
   }
 
   public refreshUnusedTransformers() {
-    this.unusedTransformers = DataHelperService.getUnusedTransformers(this.transformation).map(((t) => {
+    this.unusedTransformers = DataHelperService.getUnusedTransformers(this.transformation)
+      .filter((transformer) => transformer.addable === true)
+      .map((t) => {
       return {
         label: t.name,
         id: t.id,
@@ -335,7 +425,7 @@ export class TransformationTreeComponent implements OnInit, OnChanges {
           this.transformers = DataHelperService.extractTransformers(this.transformation);
         },
       };
-    }));
+    });
   }
 
   public shouldShowCustomAttributeOption(transformerId: string): boolean {
@@ -353,4 +443,25 @@ export class TransformationTreeComponent implements OnInit, OnChanges {
   public toggleTreeOpened() {
     this.opened = !this.opened;
   }
+
+  public goDownSelectorList() {
+    if (this.highlightedSelectorIndex < this.filteredXmlNodes.length - 1) {
+      this.highlightedSelectorIndex ++;
+    }
+  }
+
+  public goUpSelectorList() {
+    if (this.highlightedSelectorIndex > 0) {
+      this.highlightedSelectorIndex --;
+    }
+  }
+
+  public selectSelector(transformer) {
+    if (this.filteredXmlNodes[this.highlightedSelectorIndex]) {
+      transformer.expr = `${this.filteredXmlNodes[this.highlightedSelectorIndex]}/`;
+      this.onChangeSelector(transformer, transformer.expr);
+      this.highlightedSelectorIndex = 0;
+    }
+  }
+
 }

@@ -73,6 +73,14 @@ export class CreateDictionaryAndOrTransformationModalComponent implements OnInit
       };
     }
 
+    // Add entry language element
+    transformationPatchData.xfspec.entry_lang = {
+      attr: PseudoAttributes.Constant,
+      const: '',
+      selector: transformationPatchData.xfspec.entry,
+      type: 'simple',
+    };
+
     // TODO: Currently there is no available field for 'sense' property on the frontend
     if (transformationFormValue.sense) {
       transformationPatchData.xfspec.entry = {
@@ -195,6 +203,9 @@ export class CreateDictionaryAndOrTransformationModalComponent implements OnInit
           }),
       )
       .subscribe(() => {
+        this.workflowStore.selectedDictionary = uploadedDictionary;
+        this.workflowStore.selectedHeadword = null;
+
         const routerPath = [
           'dictionaries',
           this.workflowStore.type,

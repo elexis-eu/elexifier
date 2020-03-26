@@ -9,10 +9,21 @@
       <div class="sidebar-column-menu-item--name sidebar-column-menu-item--name-pdf">
         <button
           (click)="onStartAnnotateProcessClick()"
-          class="button button-primary mr-auto mb-2"
-          [disabled]="!annotateUrl"
+          class="button button-primary mr-2 mb-2 flex-grow-1"
+          [disabled]="isAnnotateDisabled()"
         >
-          {{ annotateUrl ? 'Reset annotations' : 'Annotate' }}
+          {{
+            this.annotateUrl
+                ? 'Reset annotations'
+                : 'Annotate'
+          }}
+        </button>
+        <button
+          *ngIf="this.annotateUrl || isAnnotateDisabled()"
+          [disabled]="isAnnotateDisabled()"
+          [pTooltip]="'Send additional pages to improve translations'"
+          (click)="sendAdditionalPages()"
+          class="button button-primary mr-auto mb-2">+ 20
         </button>
         <div class="sidebar-column-menu-item--text-small">
           <ng-container [ngSwitch]="true">
@@ -45,20 +56,21 @@
             *ngIf="annotateUrl"
             [href]="annotateUrl"
             target="_blank"
+            class="d-block"
           >
-            {{ annotateUrl }}
+            View in Lexonomy
           </a>
         </div>
       </div>
     </li>
     <li class="sidebar-column-menu-item hover">
       <div class="sidebar-column-menu-item--name sidebar-column-menu-item--name-pdf">
-        <div
+        <button
           (click)="onTriggerMlWorkflowClick()"
-          class="button button-primary mr-auto mb-2"
+          class="button button-primary mr-auto mb-2 w-100"
         >
           To ML
-        </div>
+        </button>
         <div
           [ngSwitch]="true"
           class="sidebar-column-menu-item--text-small"
@@ -109,19 +121,20 @@
             *ngSwitchCase="PdfStatuses.MlError === status"
             class="text-danger"
           >
-            There was an error during machine learning process
+            Not enough annotated data, please annotate more. If this issue persists, please contact elexifier@ijs.si.
           </span>
         </div>
       </div>
     </li>
     <li class="sidebar-column-menu-item hover">
       <div class="sidebar-column-menu-item--name sidebar-column-menu-item--name-pdf">
-        <div
+        <button
+          [disabled]="isPreviewDisabled()"
           (click)="onOpenPreviewClick()"
-          class="button button-primary mr-auto mb-2"
+          class="button button-primary mr-auto mb-2 w-100"
         >
-          To Preview
-        </div>
+          Prepare for Preview
+        </button>
         <div class="sidebar-column-menu-item--text-small">
           <ng-container [ngSwitch]="true">
             <span
@@ -153,19 +166,29 @@
             *ngIf="previewUrl"
             [href]="previewUrl"
             target="_blank"
+            class="d-block"
           >
-            {{ previewUrl }}
+            View in Lexonomy
           </a>
         </div>
       </div>
     </li>
     <li class="sidebar-column-menu-item hover">
       <div class="sidebar-column-menu-item--name sidebar-column-menu-item--name-pdf">
+        <button
+          [routerLink]="[dictionaryId, 'character-mapping']"
+          class="button button-primary mr-auto mb-2 w-100"
+        >
+          Map characters
+        </button>
+      </div>
+    </li>
+    <li class="sidebar-column-menu-item hover">
+      <div class="sidebar-column-menu-item--name sidebar-column-menu-item--name-pdf">
         <a
-          *ngIf="downloadUrl"
-          [href]="downloadUrl"
-          download
-          class="button button-primary mr-auto mb-2"
+          (click)="onDownloadPdf()"
+          *ngIf="canDownload()"
+          class="button button-primary mr-auto mb-2 w-100 text-center fw-500"
         >
           Download
         </a>

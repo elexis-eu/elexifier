@@ -16,6 +16,8 @@ import { FileTypes } from '@elexifier/dictionaries/core/type/file-types.enum';
 import { DownloadTransformationComponent } from '@elexifier/dictionaries/components/download-transformation/download-transformation.component';
 import { FullpageLoaderStore } from '@elexifier/store/fullpage-loader.store';
 import { WorkflowStore } from '@elexifier/store/workflow.store';
+import {PseudoAttributes} from '@elexifier/dictionaries/core/type/pseudo-attributes.enum';
+import {UserStore} from '@elexifier/store/user.store';
 
 @Component({
   selector: 'app-sidebar',
@@ -69,6 +71,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
     private dialogService: DialogService,
     public fullpageLoaderService: FullpageLoaderStore,
     public workflowStore: WorkflowStore,
+    public userStore: UserStore,
   ) {}
 
   public filterColumn(array, value, targetArray, propertyToCheck) {
@@ -86,28 +89,27 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    const {
-      dictionaryId,
-      transformId,
-    } = this.route.firstChild.snapshot.params;
     let hwSearchSub;
     this.sidebarStore.depth.pipe(
       takeUntil(this.unsubscribe$),
       )
       .subscribe((menuDepth) => {
+        const {
+          dictionaryId,
+          transformId,
+        } = this.route.firstChild.snapshot.params;
+
         this.menuDepth = menuDepth;
 
         // Clearing headword search
         this.headwordSearchString = '';
         this.filterHeadwords(this.headwordSearchString);
-
         if (this.menuDepth === 4) {
           hwSearchSub = this.headwordSearch$.pipe(
             takeUntil(this.unsubscribe$),
             debounceTime(350),
             switchMap((value) => {
               this.loading.headwords = true;
-
               return this.transformationApiService.filterHeadwords(
                 this.workflowStore.selectedTransformation
                   ? this.workflowStore.selectedTransformation.transformation.id
@@ -165,6 +167,10 @@ export class SidebarComponent implements OnInit, OnDestroy {
         return of(false);
       }),
       switchMap((transformations) => {
+        const {
+          transformId,
+        } = this.route.firstChild.snapshot.params;
+
         if (transformations) {
           // This is a normal xml workflow
           this.transformations = transformations;
@@ -187,7 +193,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
         }
       }),
       map((selectedTransformation: any) => {
-
         if (selectedTransformation) {
           this.workflowStore.selectedTransformation = {
             transformation: selectedTransformation.transform[0],
@@ -277,21 +282,34 @@ export class SidebarComponent implements OnInit, OnDestroy {
       .indexOf(transformationDatabaseIndex);
     const transformation = this.transformations[transformationListIndex];
 
-    const newTransform = {
-      xfspec: {
-        entry: {
-          expr: 'dummy',
-          type: 'xpath',
-        },
-        sense: {
-          expr: 'dummy',
-          type: 'xpath',
-        },
+    const dummyHw = {
+      selector: {
+        expr: 'dummy',
+        type: 'xpath',
       },
+      type: 'simple',
+      attr: PseudoAttributes.ElementInnerText,
+    };
+
+    const newTransform = {
+      entry: {
+        expr: 'dummy',
+        type: 'xpath',
+      },
+      sense: {
+        expr: 'dummy',
+        type: 'xpath',
+      },
+      hw: this.transformationService.transformation && this.transformationService.transformation.hw
+        ? this.transformationService.transformation.hw : dummyHw,
+    };
+
+    const newSpec = {
+      xfspec: this.transformationService.prependSelectorsRelatively(newTransform),
     };
 
     this.transformationApiService
-      .patchTransformation(transformation.id, newTransform)
+      .patchTransformation(transformation.id, newSpec)
       .pipe(
         tap(() => {
           // TODO: API should return the updated transformation

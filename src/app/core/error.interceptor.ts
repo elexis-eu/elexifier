@@ -58,7 +58,8 @@ export class ErrorInterceptor implements HttpInterceptor {
               message = 'Invalid email or password. Please, try again!';
               break;
             default:
-              message = JSON.stringify(res);
+              // message = JSON.stringify(res);
+              message = 'We encountered a slight hiccup';
               console.log('Unhandled Exception');
           }
 

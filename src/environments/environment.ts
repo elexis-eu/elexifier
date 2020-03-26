@@ -7,7 +7,8 @@ import { SentryEnvironment } from '@elexifier/shared/type/sentry-environment.enu
 
 export const environment: Environment = {
   production: false,
-  apiUrl: 'http://localhost:5000/api',
+  // apiUrl: 'http://localhost:5000/api',
+  apiUrl: 'http://elexifier.blazinglyfast.io/api',
   sentryDsn: '',
   sentryEnvironment: SentryEnvironment.Dev,
   revision: '%REVISION%',

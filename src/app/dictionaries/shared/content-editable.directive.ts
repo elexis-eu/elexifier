@@ -18,11 +18,21 @@ export class ContentEditableFormDirective implements ControlValueAccessor {
   public constructor(private elementRef: ElementRef, private renderer: Renderer2) { }
 
   @HostListener('blur') public onBlur(): void {
-    this.onTouched();
+    const text = this.elementRef.nativeElement.innerText;
+    if (text[text.length - 1] === '/') {
+      this.onChange(text.substring(0, text.length - 1));
+      this.elementRef.nativeElement.innerText = text.substring(0, text.length - 1);
+    }
   }
 
-  @HostListener('document:keydown.enter') public onEnter(): void {
-    this.elementRef.nativeElement.blur();
+  // @HostListener('document:keydown.enter') public onEnter(): void {
+  //   this.elementRef.nativeElement.blur();
+  // }
+
+  @HostListener('keydown.enter', ['$event']) public onEnter(e): void {
+    e.preventDefault();
+
+    this.elementRef.nativeElement.focus();
   }
 
   @HostListener('input') public onInput(): void {
@@ -44,5 +54,14 @@ export class ContentEditableFormDirective implements ControlValueAccessor {
 
   public writeValue(value: string): void {
     this.renderer.setProperty(this.elementRef.nativeElement, 'innerText', value || '');
+
+    if (this.elementRef.nativeElement.childNodes[0]) {
+      const rangeobj = document.createRange();
+      const selectobj = window.getSelection();
+      rangeobj.setStart(this.elementRef.nativeElement.childNodes[0], this.elementRef.nativeElement.innerText.length);
+      rangeobj.collapse(true);
+      selectobj.removeAllRanges();
+      selectobj.addRange(rangeobj);
+    }
   }
 }

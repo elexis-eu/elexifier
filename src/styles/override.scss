@@ -223,3 +223,14 @@ p-calendar {
   align-self: center;
   color: $grey;
 }
+
+.dropdown-menu {
+  .dropdown-item {
+    font-size: 14px;
+    color: #333333;
+    font-weight: 400 !important;
+    &:hover, &.active {
+      background: #eaeaea !important;
+    }
+  }
+}

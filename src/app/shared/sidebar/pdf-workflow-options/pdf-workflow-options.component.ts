@@ -2,6 +2,9 @@ import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@
 import { DictionaryApiService } from '@elexifier/dictionaries/core/dictionary-api.service';
 import { Subject, timer } from 'rxjs';
 import { startWith, switchMap, take, takeUntil } from 'rxjs/operators';
+import {FileTypes} from '@elexifier/dictionaries/core/type/file-types.enum';
+import {MessageService} from 'primeng/api';
+import { saveAs } from 'file-saver';
 
 enum PdfStatuses {
   Lex2MlError= 'Lex2ML_Error',
@@ -40,6 +43,7 @@ export class PdfWorkflowOptionsComponent implements OnInit, OnDestroy, OnChanges
 
   public constructor(
     private readonly dictionaryApiService: DictionaryApiService,
+    private readonly messageService: MessageService,
   ) {
     this.pollingInterval = 15000;
     this.destroy$ = new Subject();
@@ -73,6 +77,13 @@ export class PdfWorkflowOptionsComponent implements OnInit, OnDestroy, OnChanges
       .subscribe(() => this.askForStatusUpdate());
   }
 
+  public sendAdditionalPages(): void {
+    this.dictionaryApiService.startAnnotateProcess(this.dictionaryId, true)
+      .subscribe((res) => {
+        this.askForStatusUpdate();
+      });
+  }
+
   public onStartAnnotateProcessClick(): void {
     if (window.confirm('Are you sure?')) {
       this.dictionaryApiService.startAnnotateProcess(this.dictionaryId)
@@ -99,5 +110,31 @@ export class PdfWorkflowOptionsComponent implements OnInit, OnDestroy, OnChanges
     this.annotateUrl = res.lexonomy_edit;
     this.previewUrl = res.lexonomy_ml_edit;
     this.downloadUrl = res.xml_ml_out;
+  }
+
+  public isAnnotateDisabled() {
+    return (this.status === PdfStatuses.AnnotateStarting || this.status === PdfStatuses.AnnotateProcessing);
+  }
+
+  public isPreviewDisabled() {
+    return (this.status === PdfStatuses.PreviewStarting || this.status === PdfStatuses.PreviewProcessing);
+  }
+
+  public onDownloadPdf() {
+    this.dictionaryApiService.downloadTransformedPdf(this.dictionaryId)
+      .subscribe((res) => {
+        const blob = new Blob([res], {type: FileTypes.AppXml});
+        saveAs(blob, `Dictionary ${ this.dictionaryId } - Transformed`);
+      }, err => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error downloading selected file. Try again later.',
+        });
+      });
+  }
+
+  public canDownload() {
+    return (this.status === PdfStatuses.LexFormat || this.status === PdfStatuses.PreviewReady);
   }
 }

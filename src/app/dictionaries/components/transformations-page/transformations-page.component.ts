@@ -48,9 +48,6 @@ export class TransformationsPageComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     public transformationService: TransformationService,
     private highlightService: HighlightService,
-    private xmlPrettierPipe: XmlPrettifierPipe,
-    private router: Router,
-    private messageService: MessageService,
     private transformationApiService: TransformationApiService,
     private sidebarStore: SidebarStore,
     private fullpageLoader: FullpageLoaderStore,
@@ -138,7 +135,9 @@ export class TransformationsPageComponent implements OnInit, OnDestroy {
       };
 
       this.workflowStore.selectedHeadword =
-        this.workflowStore.selectedHeadword || this.workflowStore.selectedTransformation.entities[0];
+        (this.workflowStore.selectedHeadword && this.workflowStore.selectedHeadword.dsid === this.workflowStore.selectedDictionary.id)
+          ? this.workflowStore.selectedHeadword
+          : this.workflowStore.selectedTransformation.entities[0];
     } else {
       this.loading.outputTei = false;
       this.loading.originalXml = false;

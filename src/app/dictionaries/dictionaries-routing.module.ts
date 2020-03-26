@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { DictionariesComponent } from '@elexifier/dictionaries/dictionaries.component';
 import { DictionariesPageComponent } from '@elexifier/dictionaries/components/dictionaries-page/dictionaries-page.component';
 import { TransformationsPageComponent } from '@elexifier/dictionaries/components/transformations-page/transformations-page.component';
+import {CharacterMappingPageComponent} from '@elexifier/dictionaries/components/character-mapping-page/character-mapping-page.component';
 
 export const routes: Routes = [
   {
@@ -17,6 +18,11 @@ export const routes: Routes = [
       {
         path: ':dictionaryId/transformations/:transformId',
         component: TransformationsPageComponent,
+        pathMatch: 'full',
+      },
+      {
+        path: ':dictionaryId/character-mapping',
+        component: CharacterMappingPageComponent,
         pathMatch: 'full',
       },
       {
