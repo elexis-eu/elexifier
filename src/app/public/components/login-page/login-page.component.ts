@@ -29,7 +29,6 @@ export class LoginPageComponent implements OnInit {
   ) {}
 
   public ngOnInit() {
-    console.log(this.sketchLoginReturn)
     const { sketch_token } = this.route.snapshot.queryParams;
 
     if (sketch_token) {
