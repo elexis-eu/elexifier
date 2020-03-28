@@ -74,7 +74,6 @@ export class CharacterMappingPageComponent implements OnInit {
         formattedObject.character_map[k.key] = k.value;
       }
     });
-    console.log(formattedObject);
 
     this.dictionaryApiService.setCharacterMap(this.dictionaryId, formattedObject)
       .pipe(
@@ -90,7 +89,6 @@ export class CharacterMappingPageComponent implements OnInit {
         }),
       )
       .subscribe((res) => {
-        console.log(res);
         this.loadCharacterMapToForm(res.character_map);
       });
   }

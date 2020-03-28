@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import { AuthService } from '@elexifier/core/auth.service';
 import { environment } from '@env/environment';
+import { UserStore } from '@elexifier/store/user.store';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login-page',
@@ -26,6 +28,7 @@ export class LoginPageComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private route: ActivatedRoute,
+    private userStore: UserStore,
   ) {}
 
   public ngOnInit() {
@@ -58,7 +61,9 @@ export class LoginPageComponent implements OnInit {
     }
 
     this.authService.login(this.loginFG.value)
-      .subscribe(() => {
+      .pipe(switchMap(() => this.authService.getLoggedInUser()))
+      .subscribe((loggedInUser) => {
+        this.userStore.user = loggedInUser;
         this.router.navigate(['/dictionaries']);
       });
   }

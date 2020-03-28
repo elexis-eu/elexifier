@@ -15,12 +15,12 @@ export const routes: Routes = [
     loadChildren: () => import('./dictionaries/dictionaries.module').then(m => m.DictionariesModule),
   },
   {
-    path: '',
+    path: 'dictionaries',
     redirectTo: 'dictionaries/xml',
     pathMatch: 'full',
   },
   {
-    path: 'dictionaries',
+    path: '',
     redirectTo: 'dictionaries/xml',
     pathMatch: 'full',
   },
