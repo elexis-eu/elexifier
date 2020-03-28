@@ -15,7 +15,7 @@ jobs:
         proxy_username: ${{ secrets.PROXY_USERNAME }}
         proxy_password: ${{ secrets.PROXY_PASSWORD }}
         proxy_port: ${{ secrets.PROXY_PORT }}
-        host: ${{ secrets.HOST }}
+        host: ${{ secrets.STAGING_HOST }}
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
