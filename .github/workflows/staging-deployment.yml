@@ -1,0 +1,26 @@
+
+name: Staging Deployment
+on:
+  push:
+    branches: [ develop ]
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - name: deploying via ssh to staging environment
+      uses: appleboy/ssh-action@master
+      with:
+        proxy_host: ${{ secrets.PROXY_HOST }}
+        proxy_username: ${{ secrets.PROXY_USERNAME }}
+        proxy_password: ${{ secrets.PROXY_PASSWORD }}
+        proxy_port: ${{ secrets.PROXY_PORT }}
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
+        port: ${{ secrets.PORT }}
+        script: |
+          cd ${{ secrets.PASSWORD }}
+          git reset --hard
+          git pull
+          npm run deploy:staging
