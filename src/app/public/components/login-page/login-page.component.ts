@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import { AuthService } from '@elexifier/core/auth.service';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'app-login-page',
@@ -18,6 +19,8 @@ export class LoginPageComponent implements OnInit {
   public loginFG: FormGroup;
   public showErrors = false;
 
+  public sketchLoginReturn = encodeURI(`${environment.appUrl}/login?sketch_token=&elexifier=1`);
+
   public constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -26,6 +29,7 @@ export class LoginPageComponent implements OnInit {
   ) {}
 
   public ngOnInit() {
+    console.log(this.sketchLoginReturn)
     const { sketch_token } = this.route.snapshot.queryParams;
 
     if (sketch_token) {
