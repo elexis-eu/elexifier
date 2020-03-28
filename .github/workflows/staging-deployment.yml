@@ -20,7 +20,7 @@ jobs:
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
         script: |
-          cd ${{ secrets.PASSWORD }}
+          cd ${{ secrets.PROJECT_PATH }}
           git reset --hard
           git pull
           npm run deploy:staging
