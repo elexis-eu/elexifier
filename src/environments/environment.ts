@@ -9,6 +9,7 @@ export const environment: Environment = {
   production: false,
   // apiUrl: 'http://localhost:5000/api',
   apiUrl: 'http://elexifier.blazinglyfast.io/api',
+  appUrl: 'https://staging.elexifier.elex.is',
   sentryDsn: '',
   sentryEnvironment: SentryEnvironment.Dev,
   revision: '%REVISION%',
