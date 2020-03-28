@@ -18,6 +18,7 @@ import { FullpageLoaderStore } from '@elexifier/store/fullpage-loader.store';
 import { WorkflowStore } from '@elexifier/store/workflow.store';
 import {PseudoAttributes} from '@elexifier/dictionaries/core/type/pseudo-attributes.enum';
 import {UserStore} from '@elexifier/store/user.store';
+import { AuthenticatedUser } from '@elexifier/shared/type/authenticated-user.interface';
 
 @Component({
   selector: 'app-sidebar',
@@ -31,6 +32,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   public filteredHeadwords: Headword[] = [];
   public headwordSearch$ = new BehaviorSubject<string>('');
   public headwordSearchString = '';
+  public user: AuthenticatedUser;
 
   public loading = {
     dictionaries: true,
@@ -72,7 +74,13 @@ export class SidebarComponent implements OnInit, OnDestroy {
     public fullpageLoaderService: FullpageLoaderStore,
     public workflowStore: WorkflowStore,
     public userStore: UserStore,
-  ) {}
+  ) {
+    userStore.user$.pipe(
+      takeUntil(this.unsubscribe$),
+    ).subscribe((user) => {
+      this.user = user;
+    });
+  }
 
   public filterColumn(array, value, targetArray, propertyToCheck) {
     const regexp = new RegExp(value, 'i');
