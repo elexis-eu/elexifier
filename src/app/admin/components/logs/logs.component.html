@@ -9,6 +9,7 @@
         </tr>
       </thead>
       <tbody>
+      <ng-container *ngIf="logs.length > 0; else empty">
         <tr *ngFor="let log of logs">
           <td>{{ log.id }}</td>
           <td>{{ log.dsid }}</td>
@@ -17,6 +18,14 @@
             <a [routerLink]="[log.id]">Check</a>
           </td>
         </tr>
+      </ng-container>
+      <ng-template #empty>
+        <tr>
+          <td colspan="3" class="text-muted text-center">
+            Logs empty
+          </td>
+        </tr>
+      </ng-template>
       </tbody>
     </table>
   </ng-container>

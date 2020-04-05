@@ -3,4 +3,5 @@ export interface Log {
   id: number;
   message: string;
   time: Date;
+  tag: string;
 }
