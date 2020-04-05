@@ -9,8 +9,9 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./logs.component.scss'],
 })
 export class LogsComponent implements OnInit {
-  public logs: Log[];
+  public errorOnly: boolean;
   public filteredLogs: Log[];
+  public logs: Log[];
 
   public constructor(
     private logsApiService: LogsApiService,
@@ -18,7 +19,14 @@ export class LogsComponent implements OnInit {
   ) {
     route.queryParamMap.subscribe((queryParams) => {
       const errorOnly = !!queryParams.get('errorOnly');
+      this.errorOnly = errorOnly;
       this.loadLogs(errorOnly);
+    });
+  }
+
+  public filterLogs(e) {
+    this.filteredLogs = this.logs.filter(l => {
+      return l.dsid.toString().indexOf(e.target.value) > -1 && (this.errorOnly ? l.tag === 'ml_error' : true);
     });
   }
 
@@ -36,10 +44,6 @@ export class LogsComponent implements OnInit {
 
   public ngOnInit() {
     // this.loadLogs();
-  }
-
-  public filterLogs(e) {
-    this.filteredLogs = this.logs.filter(l => l.dsid.toString().indexOf(e.target.value) > -1);
   }
 
 }
