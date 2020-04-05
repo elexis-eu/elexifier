@@ -4,13 +4,13 @@
       <thead>
         <tr>
           <td>ID</td>
-          <td>Dataset ID</td>
+          <td>Dataset ID <input (input)="filterLogs($event)" class="one-line-input" placeholder="DSID..."></td>
           <td>Time Logged</td>
         </tr>
       </thead>
       <tbody>
-      <ng-container *ngIf="logs.length > 0; else empty">
-        <tr *ngFor="let log of logs">
+      <ng-container *ngIf="filteredLogs.length > 0; else empty">
+        <tr *ngFor="let log of filteredLogs">
           <td>{{ log.id }}</td>
           <td>{{ log.dsid }}</td>
           <td>{{ log.time }}</td>
