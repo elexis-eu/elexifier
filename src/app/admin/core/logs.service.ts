@@ -36,9 +36,16 @@ export class LogsApiService {
     );
   }
 
-  public getLogs(): Observable<LogsResponse> {
+  public getLogs(errorOnly = false): Observable<LogsResponse> {
     return this.http.get<LogsResponse>(
       `${environment.apiUrl}/support/list`,
+    );
+  }
+
+  public downloadPdf(id: string): Observable<any> {
+    return this.http.get(
+      `${environment.apiUrl}/support/${id}?pdf=1`,
+      { responseType: 'text'},
     );
   }
 }
