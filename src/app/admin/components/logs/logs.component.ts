@@ -10,6 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class LogsComponent implements OnInit {
   public logs: Log[];
+  public filteredLogs: Log[];
 
   public constructor(
     private logsApiService: LogsApiService,
@@ -24,17 +25,21 @@ export class LogsComponent implements OnInit {
   public loadLogs(errorOnly = false) {
     this.logsApiService.getLogs(errorOnly)
       .subscribe((res) => {
-        const allLogs = res.logs;
+        this.logs = res.logs;
         if (errorOnly) {
-          this.logs = allLogs.filter(l => l.tag === 'ml_error');
+          this.filteredLogs = this.logs.filter(l => l.tag === 'ml_error');
         } else {
-          this.logs = res.logs;
+          this.filteredLogs = res.logs;
         }
       });
   }
 
   public ngOnInit() {
     // this.loadLogs();
+  }
+
+  public filterLogs(e) {
+    this.filteredLogs = this.logs.filter(l => l.dsid.toString().indexOf(e.target.value) > -1);
   }
 
 }
