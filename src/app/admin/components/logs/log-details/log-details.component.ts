@@ -16,7 +16,8 @@ export class LogDetailsComponent implements OnInit {
   public constructor(
     private logService: LogsApiService,
     private route: ActivatedRoute,
-  ) { }
+  ) {
+  }
 
   public ngOnInit() {
     this.logId = this.route.snapshot.paramMap.get('id');
@@ -34,6 +35,14 @@ export class LogDetailsComponent implements OnInit {
       });
   }
 
+  public onDownloadPdf() {
+    this.logService.downloadPdf(this.logId)
+      .subscribe((res: any) => {
+        const blob = new Blob([res]);
+        saveAs(blob, `PDF - ${this.logId}.pdf`);
+      });
+  }
+
   public onDownloadXml() {
     this.logService.downloadOriginalXml(this.logId)
       .subscribe((res: any) => {
@@ -41,5 +50,4 @@ export class LogDetailsComponent implements OnInit {
         saveAs(blob, `OriginalXml - ${this.logId}`);
       });
   }
-
 }

@@ -8,11 +8,25 @@
     </div>
     <div class="sidebar-column--content">
       <ul class="sidebar-column-menu">
-        <li class="sidebar-column-menu-item hover">
+        <li
+          [routerLink]="['logs']"
+          routerLinkActive="selected"
+          [routerLinkActiveOptions]="{exact: true}"
+          class="sidebar-column-menu-item hover">
           <div
-            [routerLink]="['logs']"
             class="sidebar-column-menu-item--name sidebar-column-menu-item--name-pdf">
             Logs
+          </div>
+        </li>
+        <li
+          [routerLink]="['logs']"
+          [queryParams]="{errorOnly: true}"
+          routerLinkActive="selected"
+          [routerLinkActiveOptions]="{exact: true}"
+          class="sidebar-column-menu-item hover">
+          <div
+            class="sidebar-column-menu-item--name sidebar-column-menu-item--name-pdf">
+            Errors
           </div>
         </li>
       </ul>

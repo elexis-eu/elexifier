@@ -20,7 +20,7 @@
         </i>
       </a>
       <a
-        *ngIf="(userStore.user$ | async).admin"
+        *ngIf="user && user.admin"
         class="sidebar-menu-item d-block"
         [routerLink]="['/admin']"
         routerLinkActive="active"
