@@ -22,7 +22,7 @@ jobs:
         script: |
           cd ${{ secrets.PROJECT_PATH }}
           git checkout develop
-          git reset --hard
-          git pull
+          git fetch
+          git reset --hard origin/develop
           npm install
           npm run deploy:staging
