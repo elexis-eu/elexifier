@@ -20,7 +20,7 @@ jobs:
         port: ${{ secrets.PORT }}
         script: |
           cd ${{ secrets.PROJECT_PATH }}
-          git checkout develop
+          git checkout master
           git reset --hard
           git pull
           npm run deploy:prod
