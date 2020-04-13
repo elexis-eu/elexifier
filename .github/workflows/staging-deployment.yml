@@ -24,4 +24,5 @@ jobs:
           git checkout develop
           git reset --hard
           git pull
+          npm install
           npm run deploy:staging
