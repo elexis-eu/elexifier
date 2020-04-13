@@ -14,7 +14,8 @@
     "ng": "ng",
     "prebuild:staging": "npm run inject-revision",
     "start": "ng serve",
-    "test": "ng test"
+    "test": "ng test",
+    "preinstall": "npx npm-force-resolutions"
   },
   "private": true,
   "dependencies": {
@@ -28,7 +29,7 @@
     "@angular/platform-browser": "~9.1.1",
     "@angular/platform-browser-dynamic": "~9.1.1",
     "@angular/router": "~9.1.1",
-    "@babel/compat-data": "^7.8.0",
+    "@babel/compat-data": "^7.9.0",
     "@fullcalendar/core": "^4.4.0",
     "@ng-bootstrap/ng-bootstrap": "5.1.4",
     "@sentry/browser": "5.6.3",
@@ -53,7 +54,7 @@
     "@angular/cli": "~9.1.1",
     "@angular/compiler-cli": "~9.1.1",
     "@angular/language-service": "~9.1.1",
-    "@sentry/cli": "^1.52.0",
+    "@sentry/cli": "^1.52.1",
     "@types/jasmine": "~3.3.8",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "^12.11.1",
@@ -61,15 +62,22 @@
     "codelyzer": "^5.1.2",
     "jasmine-core": "~3.4.0",
     "jasmine-spec-reporter": "~4.2.1",
-    "karma": "^4.4.1",
+    "karma": "^5.0.1",
     "karma-chrome-launcher": "~2.2.0",
     "karma-coverage-istanbul-reporter": "~2.0.1",
     "karma-jasmine": "~2.0.1",
     "karma-jasmine-html-reporter": "1.4.0",
-    "protractor": "~5.4.0",
+    "kind-of": "^6.0.3",
+    "minimist": "^1.2.5",
+    "protractor": "^5.4.3",
     "ts-node": "~7.0.0",
     "tslint": "~5.15.0",
     "tslint-sonarts": "1.9.0",
     "typescript": "~3.8.3"
+  },
+  "resolutions": {
+    "minimist": "^1.2.5",
+    "acorn": "^6.4.1",
+    "kind-of": "^6.0.3"
   }
 }
