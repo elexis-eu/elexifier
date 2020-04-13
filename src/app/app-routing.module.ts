@@ -26,12 +26,12 @@ export const routes: Routes = [
   },
   {
     path: '',
-    loadChildren: './public/public.module#PublicModule',
+    loadChildren: () => import('./public/public.module').then(m => m.PublicModule),
   },
   {
     path: '',
     canActivate: [AuthGuard],
-    loadChildren: './user/user.module#UserModule',
+    loadChildren: () => import('./user/user.module').then(m => m.UserModule),
   },
 ];
 

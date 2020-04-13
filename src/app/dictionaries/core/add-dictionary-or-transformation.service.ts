@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CreateDictionaryAndOrTransformationModalComponent } from '@elexifier/dictionaries/components/create-dictionary-and-or-transformation-modal/create-dictionary-and-or-transformation-modal.component';
-import { DialogService, DynamicDialogRef } from 'primeng/api';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import {CreateDictionaryComponent} from '@elexifier/dictionaries/components/create-dictionary/create-dictionary.component';
 
 @Injectable({

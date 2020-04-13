@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {DynamicDialogRef} from 'primeng/api';
+import {DynamicDialogRef} from 'primeng/dynamicdialog';
 import {FileTypes} from '@elexifier/dictionaries/core/type/file-types.enum';
 import {WorkflowStore} from '@elexifier/store/workflow.store';
 import {TransformationApiService} from '@elexifier/dictionaries/core/transformation-api.service';
