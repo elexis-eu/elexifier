@@ -61,7 +61,7 @@ import { Selector } from '@elexifier/dictionaries/core/type/selector.interface';
 export interface Transformer {
   attr?: string;
   attr_type?: string;
-  const?: string;
+  const?: any;
   expr?: string;
   rex?: string;
   rexGroup?: string;
