@@ -519,11 +519,17 @@
                       Language
                     </div>
                     <div class="selector-setting--value">
+                      <ng-template #rt let-r="result" let-t="term">
+                        <ngb-highlight [result]="r.country + ' (' + r.iso + ')'" [term]="t"></ngb-highlight>
+                      </ng-template>
                       <input
                         type="text"
                         [(ngModel)]="getLanguageTransformer(transformer.id).const"
                         [ngbTypeahead]="searchLanguages"
                         #instance="ngbTypeahead"
+                        [resultTemplate]="rt"
+                        placeholder="Search..."
+                        [inputFormatter]="languageInputFormatter"
                         [ngModelOptions]="{standalone: true}"
                         class="one-line-input" />
                     </div>
@@ -1031,11 +1037,17 @@
                       Language
                     </div>
                     <div class="selector-setting--value">
+                      <ng-template #rt2 let-r="result" let-t="term">
+                        <ngb-highlight [result]="r.country + ' (' + r.iso + ')'" [term]="t"></ngb-highlight>
+                      </ng-template>
                       <input
                         type="text"
                         [(ngModel)]="getLanguageTransformer(transformer.id).const"
                         [ngbTypeahead]="searchLanguages"
                         #instance="ngbTypeahead"
+                        [resultTemplate]="rt2"
+                        placeholder="Search..."
+                        [inputFormatter]="languageInputFormatter"
                         [ngModelOptions]="{standalone: true}"
                         class="one-line-input" />
                     </div>
