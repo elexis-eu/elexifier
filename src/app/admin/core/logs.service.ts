@@ -45,7 +45,7 @@ export class LogsApiService {
   public downloadPdf(id: string): Observable<any> {
     return this.http.get(
       `${environment.apiUrl}/support/${id}?pdf=1`,
-      { responseType: 'text'},
+      { responseType: 'arraybuffer'},
     );
   }
 }
