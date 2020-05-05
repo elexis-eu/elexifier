@@ -70,7 +70,7 @@ import { CharacterMappingPageComponent } from './components/character-mapping-pa
   entryComponents: [
     CreateDictionaryAndOrTransformationModalComponent,
     DownloadTransformationComponent,
-    CreateDictionaryComponent
+    CreateDictionaryComponent,
   ],
 })
 export class DictionariesModule {}

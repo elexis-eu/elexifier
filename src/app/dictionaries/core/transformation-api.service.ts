@@ -67,7 +67,7 @@ export class TransformationApiService {
   public downloadTransformation(transformId: number, dictionaryId: number, stripNs = false) { // TODO: interface
     return this.http.get(
       `${environment.apiUrl}/transform/${transformId}/download/${dictionaryId}?strip_ns=${stripNs}`,
-      {responseType: 'text'},
+      {responseType: 'text', observe: 'response' as 'response'},
     );
   }
 

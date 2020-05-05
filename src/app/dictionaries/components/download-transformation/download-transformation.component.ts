@@ -6,6 +6,7 @@ import {TransformationApiService} from '@elexifier/dictionaries/core/transformat
 import { saveAs } from 'file-saver';
 import { interval, Subscription } from 'rxjs';
 import { switchMap} from 'rxjs/operators';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-download-transformation',
@@ -42,9 +43,9 @@ export class DownloadTransformationComponent implements OnInit, OnDestroy {
     this.transformationApiService.downloadTransformation(
       this.workflowStore.selectedTransformation.transformation.id,
       this.workflowStore.selectedDictionary.id,
-    ).subscribe((file) => {
+    ).subscribe((fileResponse) => {
       this.ref.close();
-      this.handleReceivedFile(file);
+      this.handleReceivedFile(fileResponse);
       this.fileChecker.unsubscribe();
     });
   }
@@ -75,8 +76,8 @@ export class DownloadTransformationComponent implements OnInit, OnDestroy {
       });
   }
 
-  private handleReceivedFile(data) {
-    const blob = new Blob([data], {type: FileTypes.AppXml});
-    saveAs(blob, `${ this.workflowStore.selectedDictionary.name } - ${ this.workflowStore.selectedTransformation.transformation.name }`);
+  private handleReceivedFile(data: HttpResponse<any>) {
+    const blob = new Blob([data.body], {type: FileTypes.AppXml});
+    saveAs(blob, data.headers.get('x-suggested-filename'));
   }
 }
