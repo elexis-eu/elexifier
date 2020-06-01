@@ -255,7 +255,7 @@
                           ></span>
                           <span
                             class="selector-value--dropdown"
-                            [ngClass]="{'visible': op1.visible}"
+                            [ngClass]="{'visible': op1.overlayVisible}"
                             (click)="op1.toggle($event)"
                             #actual1
                           >
@@ -327,7 +327,7 @@
                           </span>
                           <span
                             class="selector-value--dropdown"
-                            [ngClass]="{'visible': op2.visible}"
+                            [ngClass]="{'visible': op2.overlayVisible}"
                             (click)="op2.toggle($event)"
                             #actual2
                           >
@@ -401,7 +401,7 @@
                         <span
                           #actual
                           class="selector-value--dropdown"
-                          [ngClass]="{'visible': op.visible}"
+                          [ngClass]="{'visible': op.overlayVisible}"
                           (click)="op.toggle($event)"
                         >
                           <i-feather
@@ -519,11 +519,17 @@
                       Language
                     </div>
                     <div class="selector-setting--value">
+                      <ng-template #rt let-r="result" let-t="term">
+                        <ngb-highlight [result]="r.country + ' (' + r.iso + ')'" [term]="t"></ngb-highlight>
+                      </ng-template>
                       <input
                         type="text"
                         [(ngModel)]="getLanguageTransformer(transformer.id).const"
                         [ngbTypeahead]="searchLanguages"
                         #instance="ngbTypeahead"
+                        [resultTemplate]="rt"
+                        placeholder="Search..."
+                        [inputFormatter]="languageInputFormatter"
                         [ngModelOptions]="{standalone: true}"
                         class="one-line-input" />
                     </div>
@@ -650,7 +656,7 @@
                       >
                         <span
                           class="content"
-                          [ngClass]="{'focus': op1.visible, 'invalid': val1.errors}"
+                          [ngClass]="{'focus': op1.overlayVisible, 'invalid': val1.errors}"
                           appContenteditable="true"
                           contenteditable="true"
                           (ngModelChange)="onChangeSelector(transformer.id, $event); op1.show($event, actual1);"
@@ -671,7 +677,7 @@
                         </span>
                         <span
                           class="selector-value--dropdown"
-                          [ngClass]="{'visible': op1.visible}"
+                          [ngClass]="{'visible': op1.overlayVisible}"
                           (click)="op1.toggle($event)"
                           #actual1
                         >
@@ -726,7 +732,7 @@
                       >
                         <span
                           class="content"
-                          [ngClass]="{'focus': op2.visible, 'invalid': val2.errors}"
+                          [ngClass]="{'focus': op2.overlayVisible, 'invalid': val2.errors}"
                           appContenteditable="true"
                           contenteditable="true"
                           (ngModelChange)="onChangeSelector(transformer.id, $event); op2.show($event, actual);"
@@ -748,7 +754,7 @@
                         <span
                           #actual
                           class="selector-value--dropdown"
-                          [ngClass]="{'visible': op2.visible}"
+                          [ngClass]="{'visible': op2.overlayVisible}"
                           (click)="op2.toggle($event)"
                         >
                           <i-feather
@@ -805,7 +811,7 @@
                     >
                       <span
                         class="content"
-                        [ngClass]="{'focus': op.visible, 'invalid': val.errors, 'disabled': transformer.id === 'entry'}"
+                        [ngClass]="{'focus': op.overlayVisible, 'invalid': val.errors, 'disabled': transformer.id === 'entry'}"
                         appContenteditable="true"
                         contenteditable="true"
                         (ngModelChange)="onChangeSelector(transformer.id, $event); op.show($event, actual);"
@@ -824,7 +830,7 @@
                       </span>
                       <span
                         class="selector-value--dropdown"
-                        [ngClass]="{'visible': op.visible, 'disabled': transformer.id === 'entry'}"
+                        [ngClass]="{'visible': op.overlayVisible, 'disabled': transformer.id === 'entry'}"
                         (click)="op.toggle($event)"
                         #actual
                       >
@@ -1031,11 +1037,17 @@
                       Language
                     </div>
                     <div class="selector-setting--value">
+                      <ng-template #rt2 let-r="result" let-t="term">
+                        <ngb-highlight [result]="r.country + ' (' + r.iso + ')'" [term]="t"></ngb-highlight>
+                      </ng-template>
                       <input
                         type="text"
                         [(ngModel)]="getLanguageTransformer(transformer.id).const"
                         [ngbTypeahead]="searchLanguages"
                         #instance="ngbTypeahead"
+                        [resultTemplate]="rt2"
+                        placeholder="Search..."
+                        [inputFormatter]="languageInputFormatter"
                         [ngModelOptions]="{standalone: true}"
                         class="one-line-input" />
                     </div>

@@ -6,14 +6,14 @@ import {PseudoAttributes} from '@elexifier/dictionaries/core/type/pseudo-attribu
 import {ActivatedRoute} from '@angular/router';
 import {TransformationApiService} from '@elexifier/dictionaries/core/transformation-api.service';
 import {MessageService} from 'primeng/api';
-import {debounceTime, distinctUntilChanged, filter, map, switchMap} from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, map, switchMap, tap } from 'rxjs/operators';
 import {NgForm} from '@angular/forms';
 import {merge, Observable, of, Subject} from 'rxjs';
 import {WorkflowStore} from '@elexifier/store/workflow.store';
 import { Transformer } from '@elexifier/dictionaries/core/type/transformer.interface';
 import {DictionaryApiService} from '@elexifier/dictionaries/core/dictionary-api.service';
 import {PathBuilder} from '@elexifier/dictionaries/core/path-builder';
-import { langs } from '@elexifier/dictionaries/core/data/languages';
+import { countryMap, langs } from '@elexifier/dictionaries/core/data/languages';
 import {NgbTypeahead} from '@ng-bootstrap/ng-bootstrap';
 
 enum TransformerElementsWorthOfExplanation {
@@ -228,10 +228,12 @@ export class TransformationTreeComponent implements OnInit, OnChanges {
     const inputFocus$ = this.focus$;
 
     return merge(debouncedText$, inputFocus$, clicksWithClosedPopup$).pipe(
-      map(term => (term === '' ? langs
-        : langs.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1)).slice(0, 10)),
+      map(term => (term === '' ? countryMap
+        : countryMap.filter(v => v.country.toLowerCase().indexOf(term.toLowerCase()) > -1)).slice(0, 10)),
     );
   }
+
+  public languageInputFormatter = (x: {country: string, iso: string}) => `${x.country} (${x.iso})`;
 
 
   public ngOnChanges(): void {

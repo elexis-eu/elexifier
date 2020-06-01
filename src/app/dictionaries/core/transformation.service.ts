@@ -309,7 +309,7 @@ export class TransformationService {
     };
 
     data.xfspec = this.prepareTransformationForSaving();
-
+    data.xfspec = DataHelperService.serializeLanguageModels(data.xfspec);
     // TODO: Save in parent
 
     this.transformationApiService.patchTransformation(this.transformationId, data)
@@ -487,7 +487,6 @@ export class TransformationService {
     //     //   transformer.xlat = DataHelperService.mirrorObject(transformer.xlat);
     //     // }
     transformation = this.prependSelectorsRelatively(transformation);
-
     return transformation;
   }
 

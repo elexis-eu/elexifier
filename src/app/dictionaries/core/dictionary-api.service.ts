@@ -58,7 +58,7 @@ export class DictionaryApiService {
   public downloadTransformedPdf(dictionaryId): Observable<any> {
     return this.http.get(
       `${ environment.apiUrl }/ml/${dictionaryId}?xml_format=True`,
-      {responseType: 'text'},
+      {responseType: 'text', observe: 'response' as 'response'},
     );
   }
 

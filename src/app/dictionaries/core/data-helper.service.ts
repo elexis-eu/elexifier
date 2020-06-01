@@ -1,4 +1,8 @@
 import { Injectable } from '@angular/core';
+import { Transformation } from '@elexifier/dictionaries/core/type/transformation.interface';
+import { transcode } from 'buffer';
+import { Transformer } from '@elexifier/dictionaries/core/type/transformer.interface';
+import { getLangaugeByIso } from '@elexifier/dictionaries/core/data/languages';
 
 @Injectable({
   providedIn: 'root',
@@ -76,6 +80,8 @@ export class DataHelperService {
     ['ex_tr', 'ex_tr_lang'],
   ];
 
+  public static languageElements = ['entry_lang', 'hw_tr_lang', 'ex_tr_lang'];
+
   public static putElementsInOrder(transformation) {
     const orderedTransformation = {};
 
@@ -86,6 +92,46 @@ export class DataHelperService {
     });
 
     return orderedTransformation;
+  }
+
+  public static serializeLanguageModels(transformation: Transformation): Transformation {
+    const _transformation = JSON.parse(JSON.stringify(transformation));
+
+    Object.keys(_transformation).forEach((t) => {
+      if (this.languageElements.indexOf(t) > -1) {
+        const transformer = _transformation[t] as Transformer;
+
+        if (transformer.const && transformer.const.iso) {
+          _transformation[t].const = transformer.const.iso;
+        }
+      }
+    });
+
+    return _transformation;
+  }
+
+  public static deserializeLanguageModels(transformation: Transformation): Transformation {
+    const _transformation = JSON.parse(JSON.stringify(transformation));
+
+    Object.keys(_transformation).forEach((t) => {
+      if (this.languageElements.indexOf(t) > -1) {
+        const transformer = _transformation[t] as Transformer;
+        if (transformer.const) {
+          const language = getLangaugeByIso(transformer.const);
+
+          if (language) {
+            _transformation[t].const = language;
+          } else {
+            _transformation[t].const = {
+              country: transformer.const,
+              iso: 'FIX ME!',
+            };
+          }
+        }
+      }
+    });
+
+    return _transformation;
   }
 
   public static metadata = [

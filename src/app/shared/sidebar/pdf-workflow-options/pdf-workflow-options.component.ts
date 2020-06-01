@@ -36,6 +36,7 @@ export class PdfWorkflowOptionsComponent implements OnInit, OnDestroy, OnChanges
   public PdfStatuses: typeof PdfStatuses = PdfStatuses;
   public previewUrl: string;
   public status: PdfStatuses;
+  public preparingDownload = false;
 
   private readonly destroy$: Subject<number>;
   private readonly pollingInterval: number;
@@ -121,10 +122,13 @@ export class PdfWorkflowOptionsComponent implements OnInit, OnDestroy, OnChanges
   }
 
   public onDownloadPdf() {
+    this.preparingDownload = true;
+
     this.dictionaryApiService.downloadTransformedPdf(this.dictionaryId)
       .subscribe((res) => {
-        const blob = new Blob([res], {type: FileTypes.AppXml});
-        saveAs(blob, `Dictionary ${ this.dictionaryId } - Transformed`);
+        this.preparingDownload = false;
+        const blob = new Blob([res.body], {type: FileTypes.AppXml});
+        saveAs(blob, res.headers.get('x-suggested-filename'));
       }, err => {
         this.messageService.add({
           severity: 'error',

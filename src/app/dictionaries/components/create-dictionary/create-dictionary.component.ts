@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import {DialogService, DynamicDialogConfig, DynamicDialogRef, MessageService} from 'primeng/api';
+import { MessageService} from 'primeng/api';
+import { DialogService, DynamicDialogConfig, DynamicDialogRef, } from 'primeng/dynamicdialog';
 import { DictionaryApiService } from '@elexifier/dictionaries/core/dictionary-api.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FileUpload } from 'primeng/primeng';
@@ -17,7 +18,7 @@ export class CreateDictionaryComponent implements OnInit, AfterViewInit {
   public editingField = '';
   public editingIndex = -1;
 
-  @ViewChild('fileInput', {static: false}) public fileInput: FileUpload;
+  @ViewChild('fileInput') public fileInput: FileUpload;
   @Output() public fileInputReady: EventEmitter<FileUpload>;
   public fileType: string;
   public FileTypes: typeof FileTypes = FileTypes;

@@ -185,13 +185,14 @@
     </li>
     <li class="sidebar-column-menu-item hover">
       <div class="sidebar-column-menu-item--name sidebar-column-menu-item--name-pdf">
-        <a
+        <button
           (click)="onDownloadPdf()"
           *ngIf="canDownload()"
+          [disabled]="preparingDownload"
           class="button button-primary mr-auto mb-2 w-100 text-center fw-500"
         >
-          Download
-        </a>
+          {{ preparingDownload ? 'Downloading, wait...' : 'Download' }}
+        </button>
       </div>
     </li>
   </ul>

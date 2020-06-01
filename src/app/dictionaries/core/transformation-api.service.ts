@@ -67,7 +67,7 @@ export class TransformationApiService {
   public downloadTransformation(transformId: number, dictionaryId: number, stripNs = false) { // TODO: interface
     return this.http.get(
       `${environment.apiUrl}/transform/${transformId}/download/${dictionaryId}?strip_ns=${stripNs}`,
-      {responseType: 'text'},
+      {responseType: 'text', observe: 'response' as 'response'},
     );
   }
 
@@ -92,7 +92,8 @@ export class TransformationApiService {
     return this.http.get<TransformationEntityResponse>(`${environment.apiUrl}/transform/${id}?page_num=${page}`)
       .pipe(
         switchMap((res) => {
-          const transformation = res.transform[0].transform;
+          res.transform[0].transform = DataHelperService.deserializeLanguageModels(res.transform[0].transform);
+
           // if (transformer && transformer.xlat) {
           //   const mirroredXlat = DataHelperService.mirrorObject(transformer.xlat);
           //   transformer.xlat = mirroredXlat;
