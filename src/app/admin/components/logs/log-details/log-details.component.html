@@ -18,8 +18,7 @@
   </div>
   <div class="card p-3">
     <h5>Message:</h5>
-    <div class="terminal">
-      {{ log.message }}
+    <div class="terminal" [innerHTML]="log.message">
     </div>
   </div>
 </div>
