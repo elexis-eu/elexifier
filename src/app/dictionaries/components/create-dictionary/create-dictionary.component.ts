@@ -5,7 +5,7 @@ import { DictionaryApiService } from '@elexifier/dictionaries/core/dictionary-ap
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FileUpload } from 'primeng/primeng';
 import { FileTypes } from '@elexifier/dictionaries/core/type/file-types.enum';
-import { DataHelperService } from '@elexifier/dictionaries/core/data-helper.service';
+import { DataHelperService, MetadataItem } from '@elexifier/dictionaries/core/data-helper.service';
 import { NEW_TRANSFORMATION_TOOLTIP_TEXT } from '@elexifier/dictionaries/components/create-dictionary-and-or-transformation-modal/create-dictionary-and-or-transformation-modal.component';
 
 @Component({
@@ -23,7 +23,7 @@ export class CreateDictionaryComponent implements OnInit, AfterViewInit {
   public fileType: string;
   public FileTypes: typeof FileTypes = FileTypes;
   public isEdit = false;
-  public metadataFields = [];
+  public metadataFields: MetadataItem[] = [];
   public NEW_TRANSFORMATION_TOOLTIP_TEXT = NEW_TRANSFORMATION_TOOLTIP_TEXT;
 
   @Output() public ready: EventEmitter<FormGroup>;
