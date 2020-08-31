@@ -1,6 +1,6 @@
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { MessageService } from 'primeng/api';
 import { AuthService } from '@elexifier/core/auth.service';
@@ -69,7 +69,7 @@ export class ErrorInterceptor implements HttpInterceptor {
             detail: message,
           });
 
-          return;
+          return of(null);
         }),
       );
   }
