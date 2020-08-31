@@ -3,17 +3,20 @@
     <h4 class="">Log ID: {{log.id}}</h4>
     <div>
       <button
+        [disabled]="downloadingAnnotations"
         class="button button-primary d-inline-block mr-3"
         (click)="onDownloadAnnotations()"
-      >Download Annotations</button>
+      >{{ downloadingAnnotations ? 'Processing, please wait...' : 'Download Annotations'}}</button>
       <button
+        [disabled]="downloadingXml"
         class="button button-primary d-inline-block mr-3"
         (click)="onDownloadXml()"
-      >Download XML</button>
+      >{{ downloadingXml ? 'Processing, please wait...' : 'Download XML'}}</button>
       <button
+        [disabled]="downloadingPdf"
         class="button button-primary d-inline-block"
         (click)="onDownloadPdf()"
-      >Download PDF</button>
+      >{{ downloadingPdf ? 'Processing, please wait...' : 'Download PDF'}}</button>
     </div>
   </div>
   <div class="card p-3">

@@ -8,53 +8,88 @@
         <div
           class="col-12 pt-3"
         >
+          <div class="mb-3" >
+            <p-checkbox (onChange)="toggleFromConfiguration($event)"
+                        styleClass="small"
+                        [binary]="true"></p-checkbox>&nbsp;<span class="fs-12 fw-300">Create from configuration</span>
+          </div>
           <div class="row">
-            <div class="col-12 mb-2">
-              <div class="row">
-                <div class="col-6">
-                  <span class="upload-form-label">Entry element</span>
-                  <i
-                    [pTooltip]="ENTRY_ELEMENT_TOOLTIP_TEXT"
-                    class="pi pi-question-circle elex-pi-question-circle"
-                  ></i>
-                </div>
-                <div class="col-6">
-                  <input
-                    type="text"
-                    class="w-100 one-line-input blue"
-                    pInputText
-                    formControlName="entry_spec"
-                  />
-                  <app-form-validation
-                    [control]="createTransformationFormGroup.controls.entry_spec"
-                    [showErrors]="showErrors"
-                  ></app-form-validation>
-                </div>
-              </div>
-            </div>
-            <div class="col-12 mb-2">
-              <div class="row">
-                <div class="col-6">
-                  <span class="upload-form-label">Headword element</span>
-                  <i
-                    [pTooltip]="HEADWORD_ELEMENT_TOOLTIP_TEXT"
-                    class="pi pi-question-circle elex-pi-question-circle"
-                  ></i>
-                </div>
-                <div class="col-6">
-                  <input
-                    type="text"
-                    class="w-100 one-line-input blue"
-                    pInputText
-                    formControlName="hw"
-                  />
-                  <app-form-validation
-                    [control]="createTransformationFormGroup.controls.hw"
-                    [showErrors]="showErrors"
-                  ></app-form-validation>
+            <ng-container *ngIf="fromConfiguration; else scratch">
+              <div class="col-12 mb-2">
+                <div class="row">
+                  <div class="col-6">
+                    <span class="upload-form-label">Configuration</span>
+                    <i
+                      [pTooltip]="ENTRY_ELEMENT_TOOLTIP_TEXT"
+                      class="pi pi-question-circle elex-pi-question-circle"
+                    ></i>
+                  </div>
+                  <div class="col-6">
+                    <p-dropdown
+                      appendTo="body"
+                      (onChange)="onSelectedConfigurationChange($event.value)"
+                      class="mr-auto"
+                      [options]="existingConfigurations"
+                      optionLabel="label"
+                      styleClass="upload-modal-dropdown"
+                    >
+                    </p-dropdown>
+                    <app-form-validation
+                      [control]="createTransformationFormGroup.controls.entry_spec"
+                      [showErrors]="showErrors"
+                    ></app-form-validation>
+                  </div>
                 </div>
               </div>
-            </div>
+            </ng-container>
+            <ng-template #scratch>
+              <div class="col-12 mb-2">
+                <div class="row">
+                  <div class="col-6">
+                    <span class="upload-form-label">Entry element</span>
+                    <i
+                      [pTooltip]="ENTRY_ELEMENT_TOOLTIP_TEXT"
+                      class="pi pi-question-circle elex-pi-question-circle"
+                    ></i>
+                  </div>
+                  <div class="col-6">
+                    <input
+                      type="text"
+                      class="w-100 one-line-input blue"
+                      pInputText
+                      formControlName="entry_spec"
+                    />
+                    <app-form-validation
+                      [control]="createTransformationFormGroup.controls.entry_spec"
+                      [showErrors]="showErrors"
+                    ></app-form-validation>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 mb-2">
+                <div class="row">
+                  <div class="col-6">
+                    <span class="upload-form-label">Headword element</span>
+                    <i
+                      [pTooltip]="HEADWORD_ELEMENT_TOOLTIP_TEXT"
+                      class="pi pi-question-circle elex-pi-question-circle"
+                    ></i>
+                  </div>
+                  <div class="col-6">
+                    <input
+                      type="text"
+                      class="w-100 one-line-input blue"
+                      pInputText
+                      formControlName="hw"
+                    />
+                    <app-form-validation
+                      [control]="createTransformationFormGroup.controls.hw"
+                      [showErrors]="showErrors"
+                    ></app-form-validation>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
           </div>
         </div>
         <div class="col-12 mb-3">
