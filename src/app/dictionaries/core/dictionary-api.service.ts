@@ -122,11 +122,11 @@ export class DictionaryApiService {
   }
 
   public startAnnotateProcess(dictionaryId: string, sendNext20 = false) { // TODO: add type
-    return this.http.get(`${ environment.apiUrl }/lexonomy/${dictionaryId}?add_pages=${sendNext20}`);
+    return this.http.get(`${ environment.apiUrl }/ml/${dictionaryId}/annotate?add_pages=${sendNext20}`);
   }
 
   public startMlProcess(dictionaryId: string) { // TODO: add type
-    return this.http.get(`${ environment.apiUrl }/ml/${dictionaryId}?run_ml=True`);
+    return this.http.get(`${ environment.apiUrl }/ml/${dictionaryId}/run`);
   }
 
   public startPreviewProcess(dictionaryId: string) { // TODO: add type

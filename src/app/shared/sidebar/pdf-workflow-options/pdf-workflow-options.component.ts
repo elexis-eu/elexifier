@@ -25,6 +25,35 @@ enum PdfStatuses {
   StartingMl = 'Starting_ML',
 }
 
+enum PdfAnnotateStatus {
+  Starting = 'Starting',
+  Processing = 'Processing',
+  LexonomyError = 'Lexonomy_Error',
+  Ready = 'Ready',
+}
+
+enum PdfMLStatus {
+  StartingML = 'Starting_ML',
+  Lex2MlError = 'Lex2ML_Error',
+  MlFormat = 'ML_Format',
+  MlError = 'ML_Error',
+  MlAnnotated = 'ML_Annotated',
+  Ml2LexError = 'ML2Lex_Error',
+  LexFormat = 'Lex_Format',
+}
+
+enum PdfPreviewStatus {
+  Starting = 'Starting',
+  Processing = 'Processing',
+  LexonomyError = 'Lexonomy_Error',
+  Ready = 'Ready',
+}
+
+enum PdfDownloadStatus {
+  PreparingDownload = 'Preparing_download',
+  Ready = 'Ready',
+}
+
 @Component({
   selector: 'app-pdf-workflow-options',
   templateUrl: './pdf-workflow-options.component.html',
@@ -33,10 +62,16 @@ export class PdfWorkflowOptionsComponent implements OnInit, OnDestroy, OnChanges
   public annotateUrl: string;
   @Input() public dictionaryId: string;
   public downloadUrl: string;
+
+  public PdfAnnotateStatus = PdfAnnotateStatus;
+  public PdfDownloadStatus = PdfDownloadStatus;
+  public PdfMLStatus = PdfMLStatus;
+  public PdfPreviewStatus = PdfPreviewStatus;
+
   public PdfStatuses: typeof PdfStatuses = PdfStatuses;
-  public previewUrl: string;
-  public status: PdfStatuses;
   public preparingDownload = false;
+  public previewUrl: string;
+  public status: { annotate: string, download: string, ml: null, preview: null };
 
   private readonly destroy$: Subject<number>;
   private readonly pollingInterval: number;
@@ -49,6 +84,18 @@ export class PdfWorkflowOptionsComponent implements OnInit, OnDestroy, OnChanges
     this.pollingInterval = 15000;
     this.destroy$ = new Subject();
     this.timer$ = new Subject();
+  }
+
+  public canDownload() {
+    return (this.status.ml === PdfMLStatus.LexFormat || this.status.preview === PdfPreviewStatus.Ready);
+  }
+
+  public isAnnotateDisabled() {
+    return (this.status.annotate === PdfAnnotateStatus.Starting || this.status.annotate === PdfAnnotateStatus.Processing);
+  }
+
+  public isPreviewDisabled() {
+    return (this.status.preview === PdfPreviewStatus.Starting || this.status.preview === PdfPreviewStatus.Processing);
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
@@ -71,18 +118,28 @@ export class PdfWorkflowOptionsComponent implements OnInit, OnDestroy, OnChanges
       .subscribe(res => this.setTemplateValuesFromStatusResponse(res));
   }
 
+  public onDownloadPdf() {
+    this.preparingDownload = true;
+
+    this.dictionaryApiService.downloadTransformedPdf(this.dictionaryId)
+      .subscribe((res) => {
+        this.preparingDownload = false;
+        const blob = new Blob([res.body], {type: FileTypes.AppXml});
+        saveAs(blob, res.headers.get('x-suggested-filename'));
+      }, err => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error downloading selected file. Try again later.',
+        });
+      });
+  }
+
   public onOpenPreviewClick(): void {
 
     this.dictionaryApiService.startPreviewProcess(this.dictionaryId)
       .pipe(take(1))
       .subscribe(() => this.askForStatusUpdate());
-  }
-
-  public sendAdditionalPages(): void {
-    this.dictionaryApiService.startAnnotateProcess(this.dictionaryId, true)
-      .subscribe((res) => {
-        this.askForStatusUpdate();
-      });
   }
 
   public onStartAnnotateProcessClick(): void {
@@ -101,6 +158,13 @@ export class PdfWorkflowOptionsComponent implements OnInit, OnDestroy, OnChanges
       .subscribe(() => this.askForStatusUpdate());
   }
 
+  public sendAdditionalPages(): void {
+    this.dictionaryApiService.startAnnotateProcess(this.dictionaryId, true)
+      .subscribe((res) => {
+        this.askForStatusUpdate();
+      });
+  }
+
   private askForStatusUpdate(): void {
     this.timer$.next();
   }
@@ -111,34 +175,5 @@ export class PdfWorkflowOptionsComponent implements OnInit, OnDestroy, OnChanges
     this.annotateUrl = res.lexonomy_edit;
     this.previewUrl = res.lexonomy_ml_edit;
     this.downloadUrl = res.xml_ml_out;
-  }
-
-  public isAnnotateDisabled() {
-    return (this.status === PdfStatuses.AnnotateStarting || this.status === PdfStatuses.AnnotateProcessing);
-  }
-
-  public isPreviewDisabled() {
-    return (this.status === PdfStatuses.PreviewStarting || this.status === PdfStatuses.PreviewProcessing);
-  }
-
-  public onDownloadPdf() {
-    this.preparingDownload = true;
-
-    this.dictionaryApiService.downloadTransformedPdf(this.dictionaryId)
-      .subscribe((res) => {
-        this.preparingDownload = false;
-        const blob = new Blob([res.body], {type: FileTypes.AppXml});
-        saveAs(blob, res.headers.get('x-suggested-filename'));
-      }, err => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Error downloading selected file. Try again later.',
-        });
-      });
-  }
-
-  public canDownload() {
-    return (this.status === PdfStatuses.LexFormat || this.status === PdfStatuses.PreviewReady);
   }
 }
