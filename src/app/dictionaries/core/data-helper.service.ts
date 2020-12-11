@@ -3,7 +3,17 @@ import { Transformation } from '@elexifier/dictionaries/core/type/transformation
 import { transcode } from 'buffer';
 import { Transformer } from '@elexifier/dictionaries/core/type/transformer.interface';
 import { getLangaugeByIso } from '@elexifier/dictionaries/core/data/languages';
-
+export interface MetadataItem {
+  formattedName?: string;
+  name: string;
+  objects?: {
+    label?: string;
+    name?: string;
+    type?: string
+  }[];
+  tooltip?: string;
+  type?: string;
+}
 @Injectable({
   providedIn: 'root',
 })
@@ -59,6 +69,12 @@ export class DataHelperService {
     addable: true,
   }];
 
+  public static elementLanguagePairs = [
+    ['entry', 'entry_lang'],
+    ['hw_tr', 'hw_tr_lang'],
+    ['ex_tr', 'ex_tr_lang'],
+  ];
+
   public static elementList = [
     'entry',
     'hw',
@@ -74,102 +90,54 @@ export class DataHelperService {
     'ex_tr_lang',
   ];
 
-  public static elementLanguagePairs = [
-    ['entry', 'entry_lang'],
-    ['hw_tr', 'hw_tr_lang'],
-    ['ex_tr', 'ex_tr_lang'],
-  ];
-
   public static languageElements = ['entry_lang', 'hw_tr_lang', 'ex_tr_lang'];
 
-  public static putElementsInOrder(transformation) {
-    const orderedTransformation = {};
-
-    DataHelperService.elementList.forEach((el) => {
-      if (transformation[el]) {
-        orderedTransformation[el] = transformation[el];
-      }
-    });
-
-    return orderedTransformation;
-  }
-
-  public static serializeLanguageModels(transformation: Transformation): Transformation {
-    const _transformation = JSON.parse(JSON.stringify(transformation));
-
-    Object.keys(_transformation).forEach((t) => {
-      if (this.languageElements.indexOf(t) > -1) {
-        const transformer = _transformation[t] as Transformer;
-
-        if (transformer.const && transformer.const.iso) {
-          _transformation[t].const = transformer.const.iso;
-        }
-      }
-    });
-
-    return _transformation;
-  }
-
-  public static deserializeLanguageModels(transformation: Transformation): Transformation {
-    const _transformation = JSON.parse(JSON.stringify(transformation));
-
-    Object.keys(_transformation).forEach((t) => {
-      if (this.languageElements.indexOf(t) > -1) {
-        const transformer = _transformation[t] as Transformer;
-        if (transformer.const) {
-          const language = getLangaugeByIso(transformer.const);
-
-          if (language) {
-            _transformation[t].const = language;
-          } else {
-            _transformation[t].const = {
-              country: transformer.const,
-              iso: 'FIX ME!',
-            };
-          }
-        }
-      }
-    });
-
-    return _transformation;
-  }
-
-  public static metadata = [
+  public static metadata: MetadataItem[] = [
     {
       name: 'bibliographicCitation',
+      formattedName: 'bibliographic citation',
       type: 'text',
+      tooltip: 'A bibliographic reference for the resource.',
     },
     {
       name: 'title',
       type: 'text',
+      tooltip: 'The title of the resource.',
     },
     {
       name: 'publisher',
       type: 'text',
+      tooltip: 'The publisher of This Resource.',
     },
     {
       name: 'license',
       type: 'text',
+      tooltip: 'The license that can be used to republish this data.',
     },
     {
       name: 'created',
       type: 'date',
+      tooltip: 'Date of creation of the resource.',
     },
     {
       name: 'extent',
       type: 'text',
+      tooltip: 'The size or duration of the resource.',
     },
     {
       name: 'identifier',
       type: 'text',
+      tooltip: 'An unambiguous reference to the resource within a given context.',
     },
     {
       name: 'source',
       type: 'text',
+      tooltip: 'A related resource from which the described resource is derived.',
     },
     {
       name: 'creator',
       type: 'arrayOfObject',
+      tooltip: 'The creator of the resource.',
       objects: [
         {
           name: 'name',
@@ -191,6 +159,7 @@ export class DataHelperService {
     {
       name: 'contributor',
       type: 'arrayOfObject',
+      tooltip: 'An entity responsible for making contributions to the resource.',
       objects: [
         {
           name: 'name',
@@ -279,6 +248,30 @@ export class DataHelperService {
     return object;
   }
 
+  public static deserializeLanguageModels(transformation: Transformation): Transformation {
+    const _transformation = JSON.parse(JSON.stringify(transformation));
+
+    Object.keys(_transformation).forEach((t) => {
+      if (this.languageElements.indexOf(t) > -1) {
+        const transformer = _transformation[t] as Transformer;
+        if (transformer.const) {
+          const language = getLangaugeByIso(transformer.const);
+
+          if (language) {
+            _transformation[t].const = language;
+          } else {
+            _transformation[t].const = {
+              country: transformer.const,
+              iso: 'FIX ME!',
+            };
+          }
+        }
+      }
+    });
+
+    return _transformation;
+  }
+
   public static extractTransformers(transformation) {
     const transformers = [];
     Object.keys(transformation).forEach((k) => {
@@ -365,5 +358,33 @@ export class DataHelperService {
     });
 
     return o;
+  }
+
+  public static putElementsInOrder(transformation) {
+    const orderedTransformation = {};
+
+    DataHelperService.elementList.forEach((el) => {
+      if (transformation[el]) {
+        orderedTransformation[el] = transformation[el];
+      }
+    });
+
+    return orderedTransformation;
+  }
+
+  public static serializeLanguageModels(transformation: Transformation): Transformation {
+    const _transformation = JSON.parse(JSON.stringify(transformation));
+
+    Object.keys(_transformation).forEach((t) => {
+      if (this.languageElements.indexOf(t) > -1) {
+        const transformer = _transformation[t] as Transformer;
+
+        if (transformer.const && transformer.const.iso) {
+          _transformation[t].const = transformer.const.iso;
+        }
+      }
+    });
+
+    return _transformation;
   }
 }

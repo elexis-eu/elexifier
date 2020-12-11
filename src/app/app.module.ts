@@ -28,11 +28,11 @@ export class SentryErrorHandler implements ErrorHandler {
 
     this.user = get('user');
 
-    Sentry.init({
-      dsn: environment.sentryDsn,
-      environment: environment.sentryEnvironment,
-      release: environment.revision,
-    });
+    // Sentry.init({
+    //   dsn: environment.sentryDsn,
+    //   environment: environment.sentryEnvironment,
+    //   release: environment.revision,
+    // });
   }
 
   public handleError(error) {

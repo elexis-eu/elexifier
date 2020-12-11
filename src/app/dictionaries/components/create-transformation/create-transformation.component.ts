@@ -9,6 +9,7 @@ import { TransformationApiService } from '@elexifier/dictionaries/core/transform
   styleUrls: ['./create-transformation.component.scss'],
 })
 export class CreateTransformationComponent implements OnInit {
+  public fromConfiguration = false;
   public configurations = [];
   public createTransformationFormGroup: FormGroup;
   public ENTRY_ELEMENT_TOOLTIP_TEXT = 'Select the XML element used to denote entries in your dictionary.';
@@ -28,15 +29,15 @@ export class CreateTransformationComponent implements OnInit {
 
   public ngOnInit() {
     this.createTransformationFormGroup = this.fb.group({
+      configurationId: [null],
       entry_spec: ['', Validators.required],
       hw: [''],
       xfname: ['', Validators.required],
     });
 
-    this.transformationApiService.getSavedConfigurations()
+    this.transformationApiService.getExistingConfigurations()
       .subscribe((configurations) => {
         this.configurations = configurations;
-
         this.existingConfigurations = this.configurations.map(c => {
           return {
             label: c.name,
@@ -49,5 +50,22 @@ export class CreateTransformationComponent implements OnInit {
       });
 
     this.ready.emit(this.createTransformationFormGroup);
+  }
+
+  public onSelectedConfigurationChange(e) {
+    this.createTransformationFormGroup.get('configurationId').patchValue(e.value.id);
+    this.createTransformationFormGroup.get('entry_spec').patchValue(e.value.entry_spec);
+  }
+
+  public toggleFromConfiguration(value: boolean) {
+    if (value) {
+      this.createTransformationFormGroup.get('entry_spec').clearValidators();
+      this.createTransformationFormGroup.get('xfname').clearValidators();
+      this.createTransformationFormGroup.get('configurationId').patchValue(this.configurations[0].id);
+    } else {
+      this.createTransformationFormGroup.get('entry_spec').setValidators(Validators.required);
+      this.createTransformationFormGroup.get('xfname').setValidators(Validators.required);
+    }
+    this.fromConfiguration = value;
   }
 }

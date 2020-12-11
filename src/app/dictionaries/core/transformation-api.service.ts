@@ -41,6 +41,12 @@ export class TransformationApiService {
       }));
   }
 
+  public getExistingConfigurations(): Observable<any> {
+    return this.http.get(
+      `${environment.apiUrl}/transform/list`,
+    );
+  }
+
   public checkFileStatus(transformId: number, dictionaryId: number): Observable<any> {
     return this.http.get(
       `${environment.apiUrl}/transform/${transformId}/download/${dictionaryId}?status=true`,
