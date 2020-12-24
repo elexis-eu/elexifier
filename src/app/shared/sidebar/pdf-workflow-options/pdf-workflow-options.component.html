@@ -28,25 +28,25 @@
         <div class="sidebar-column-menu-item--text-small">
           <ng-container [ngSwitch]="true">
             <span
-              *ngSwitchCase="status.annotate === PdfAnnotateStatus.Starting"
+              *ngSwitchCase="status?.annotate === PdfAnnotateStatus.Starting"
               class="text-warning"
             >
               Asking Lexonomy to start processing your file
             </span>
             <span
-              *ngSwitchCase="status.annotate === PdfAnnotateStatus.Processing"
+              *ngSwitchCase="status?.annotate === PdfAnnotateStatus.Processing"
               class="text-warning"
             >
               Lexonomy is processing your file...
             </span>
             <span
-              *ngSwitchCase="status.annotate === PdfAnnotateStatus.Ready"
+              *ngSwitchCase="status?.annotate === PdfAnnotateStatus.Ready"
               class="text-success"
             >
               Hooray, your file is ready to be annotated
             </span>
             <span
-              *ngSwitchCase="status.annotate === PdfAnnotateStatus.LexonomyError"
+              *ngSwitchCase="status?.annotate === PdfAnnotateStatus.LexonomyError"
               class="text-danger"
             >
               Sending annotated dictionary to Lexonomy failed
@@ -76,49 +76,49 @@
           class="sidebar-column-menu-item--text-small"
         >
           <span
-            *ngSwitchCase="status.ml === PdfMLStatus.MlAnnotated"
+            *ngSwitchCase="status?.ml === PdfMLStatus.MlAnnotated"
             class="text-success"
           >
             Annotated file is ready for ML
           </span>
           <span
-            *ngSwitchCase="status.ml === PdfMLStatus.StartingML"
+            *ngSwitchCase="status?.ml === PdfMLStatus.StartingML"
             class="text-warning"
           >
             Starting ML process
           </span>
           <span
-            *ngSwitchCase="status.ml === PdfMLStatus.MlFormat"
+            *ngSwitchCase="status?.ml === PdfMLStatus.MlFormat"
             class="text-warning"
           >
             Running ML on annotated file
           </span>
           <span
-            *ngSwitchCase="status.ml === PdfMLStatus.MlAnnotated"
+            *ngSwitchCase="status?.ml === PdfMLStatus.MlAnnotated"
             class="text-warning"
           >
             Finished ML on file, converting output to xml
           </span>
           <span
-            *ngSwitchCase="status.ml === PdfMLStatus.LexFormat"
+            *ngSwitchCase="status?.ml === PdfMLStatus.LexFormat"
             class="text-warning"
           >
             ML output was transformed to xml and is ready to be downloaded or sent to preview
           </span>
           <span
-            *ngSwitchCase="status.ml === PdfMLStatus.Lex2MlError"
+            *ngSwitchCase="status?.ml === PdfMLStatus.Lex2MlError"
             class="text-danger"
           >
             Transformation to ML format failed
           </span>
           <span
-            *ngSwitchCase="status.ml === PdfMLStatus.Ml2LexError"
+            *ngSwitchCase="status?.ml === PdfMLStatus.Ml2LexError"
             class="text-danger"
           >
             Transformation to Lexonomy format failed
           </span>
           <span
-            *ngSwitchCase="status.ml === PdfMLStatus.MlError"
+            *ngSwitchCase="status?.ml === PdfMLStatus.MlError"
             class="text-danger"
           >
             Running ML on transformed file failed
@@ -138,25 +138,25 @@
         <div class="sidebar-column-menu-item--text-small">
           <ng-container [ngSwitch]="true">
             <span
-              *ngSwitchCase="status.preview === PdfPreviewStatus.Starting"
+              *ngSwitchCase="status?.preview === PdfPreviewStatus.Starting"
               class="text-warning"
             >
               Asking Lexonomy to start processing your file
             </span>
             <span
-              *ngSwitchCase="status.preview === PdfPreviewStatus.Processing"
+              *ngSwitchCase="status?.preview === PdfPreviewStatus.Processing"
               class="text-warning"
             >
               Lexonomy is processing your file...
             </span>
             <span
-              *ngSwitchCase="status.preview === PdfPreviewStatus.Ready"
+              *ngSwitchCase="status?.preview === PdfPreviewStatus.Ready"
               class="text-success"
             >
               Hooray, your file is ready for preview
             </span>
             <span
-              *ngSwitchCase="status.preview === PdfPreviewStatus.LexonomyError"
+              *ngSwitchCase="status?.preview === PdfPreviewStatus.LexonomyError"
               class="text-danger"
             >
               Sending preview dictionary to Lexonomy failed
@@ -183,7 +183,7 @@
         </button>
       </div>
     </li>
-    <li class="sidebar-column-menu-item hover">
+    <li class="sidebar-column-menu-item hover" [ngbTooltip]="'Download preparation may take up to 1 minute'">
       <div class="sidebar-column-menu-item--name sidebar-column-menu-item--name-pdf">
         <button
           (click)="onDownloadPdf()"
@@ -193,6 +193,9 @@
         >
           {{ preparingDownload ? 'Downloading, wait...' : 'Download' }}
         </button>
+        <span style="font-size: 11px" class="text-muted" *ngIf="preparingDownload">
+          Download may take up to 1 minute
+        </span>
       </div>
     </li>
   </ul>

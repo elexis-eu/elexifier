@@ -57,7 +57,7 @@ export class DictionaryApiService {
 
   public downloadTransformedPdf(dictionaryId): Observable<any> {
     return this.http.get(
-      `${ environment.apiUrl }/ml/${dictionaryId}?xml_format=True`,
+      `${ environment.apiUrl }/ml/${dictionaryId}/download`,
       {responseType: 'text', observe: 'response' as 'response'},
     );
   }
@@ -133,12 +133,8 @@ export class DictionaryApiService {
     return this.http.get(`${ environment.apiUrl }/ml/${dictionaryId}?send_file=True`);
   }
 
-  // TODO: this should be done on the backend - there should be only 1 endpoint and it should contain the logic below
-  public triggerMlWorkflow(dictionaryId: string) { // TODO: add type
-    return this.fetchFileFromLexonomy(dictionaryId)
-      .pipe(
-        switchMap(() => this.startMlProcess(dictionaryId)),
-      );
+  public triggerMlWorkflow(dictionaryId: string) {
+    return this.startMlProcess(dictionaryId);
   }
 
   public uploadDictionary(data): Observable<UploadDictionaryResponse> { // TODO: add interface
