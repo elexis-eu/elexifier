@@ -120,7 +120,12 @@ export class PdfWorkflowOptionsComponent implements OnInit, OnDestroy, OnChanges
 
   public onDownloadPdf() {
     this.preparingDownload = true;
-
+    this.messageService.add({
+      severity: 'warn',
+      summary: 'Download preparation started',
+      detail: 'This process may take up to 1 minute',
+      life: 10000,
+    });
     const req =  this.dictionaryApiService.downloadTransformedPdf(this.dictionaryId).pipe(map((res) => {
       let isFile = false;
 
@@ -141,7 +146,13 @@ export class PdfWorkflowOptionsComponent implements OnInit, OnDestroy, OnChanges
           const blob = new Blob([res.body], {type: FileTypes.AppXml});
           saveAs(blob, res.headers.get('x-suggested-filename'));
         }
+      }, err => {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Error downloading selected file. Try again later.',
       });
+    });
   }
 
   public onOpenPreviewClick(): void {
