@@ -13,7 +13,6 @@ import { TooltipModule } from 'primeng/tooltip';
 import { FullpageLoaderComponent } from '@elexifier/shared/fullpage-loader/fullpage-loader.component';
 import { NgbDropdownModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PdfWorkflowOptionsComponent } from '@elexifier/shared/sidebar/pdf-workflow-options/pdf-workflow-options.component';
-import { DialogModule } from 'primeng/dialog';
 import { ProgressSpinnerModule } from 'primeng';
 
 @NgModule({
