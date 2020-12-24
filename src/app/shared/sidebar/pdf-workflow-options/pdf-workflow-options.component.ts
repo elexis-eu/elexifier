@@ -147,6 +147,7 @@ export class PdfWorkflowOptionsComponent implements OnInit, OnDestroy, OnChanges
           saveAs(blob, res.headers.get('x-suggested-filename'));
         }
       }, err => {
+      this.preparingDownload = false;
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
