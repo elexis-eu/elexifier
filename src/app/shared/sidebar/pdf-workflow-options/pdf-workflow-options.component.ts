@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { DictionaryApiService } from '@elexifier/dictionaries/core/dictionary-api.service';
-import { Subject, timer } from 'rxjs';
-import { startWith, switchMap, take, takeUntil } from 'rxjs/operators';
+import { of, Subject, timer } from 'rxjs';
+import { delay, expand, map, retryWhen, startWith, switchMap, take, takeUntil, takeWhile } from 'rxjs/operators';
 import {FileTypes} from '@elexifier/dictionaries/core/type/file-types.enum';
 import {MessageService} from 'primeng/api';
 import { saveAs } from 'file-saver';
@@ -87,15 +87,15 @@ export class PdfWorkflowOptionsComponent implements OnInit, OnDestroy, OnChanges
   }
 
   public canDownload() {
-    return (this.status.ml === PdfMLStatus.LexFormat || this.status.preview === PdfPreviewStatus.Ready);
+    return (this.status?.ml === PdfMLStatus.LexFormat || this.status?.preview === PdfPreviewStatus.Ready);
   }
 
   public isAnnotateDisabled() {
-    return (this.status.annotate === PdfAnnotateStatus.Starting || this.status.annotate === PdfAnnotateStatus.Processing);
+    return (this.status?.annotate === PdfAnnotateStatus.Starting || this.status?.annotate === PdfAnnotateStatus.Processing);
   }
 
   public isPreviewDisabled() {
-    return (this.status.preview === PdfPreviewStatus.Starting || this.status.preview === PdfPreviewStatus.Processing);
+    return (this.status?.preview === PdfPreviewStatus.Starting || this.status?.preview === PdfPreviewStatus.Processing);
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
@@ -120,19 +120,40 @@ export class PdfWorkflowOptionsComponent implements OnInit, OnDestroy, OnChanges
 
   public onDownloadPdf() {
     this.preparingDownload = true;
+    this.messageService.add({
+      severity: 'warn',
+      summary: 'Download preparation started',
+      detail: 'This process may take up to 1 minute',
+      life: 10000,
+    });
+    const req =  this.dictionaryApiService.downloadTransformedPdf(this.dictionaryId).pipe(map((res) => {
+      let isFile = false;
 
-    this.dictionaryApiService.downloadTransformedPdf(this.dictionaryId)
-      .subscribe((res) => {
-        this.preparingDownload = false;
-        const blob = new Blob([res.body], {type: FileTypes.AppXml});
-        saveAs(blob, res.headers.get('x-suggested-filename'));
+      try {
+        JSON.parse(res.body);
+      } catch (e) {
+        isFile = true;
+      }
+      return {isFile, res};
+    }));
+
+    req.pipe(
+      expand(({isFile, res}) => {
+        return isFile ? of() : req.pipe(delay(5000));
+      })).subscribe(({isFile, res}) => {
+        if (res && isFile) {
+          this.preparingDownload = false;
+          const blob = new Blob([res.body], {type: FileTypes.AppXml});
+          saveAs(blob, res.headers.get('x-suggested-filename'));
+        }
       }, err => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Error downloading selected file. Try again later.',
-        });
+      this.preparingDownload = false;
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Error downloading selected file. Try again later.',
       });
+    });
   }
 
   public onOpenPreviewClick(): void {
