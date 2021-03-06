@@ -6,9 +6,9 @@ import {PseudoAttributes} from '@elexifier/dictionaries/core/type/pseudo-attribu
 import {ActivatedRoute} from '@angular/router';
 import {TransformationApiService} from '@elexifier/dictionaries/core/transformation-api.service';
 import {MessageService} from 'primeng/api';
-import { debounceTime, distinctUntilChanged, filter, map, switchMap, tap } from 'rxjs/operators';
+import { debounce, debounceTime, distinctUntilChanged, filter, map, switchMap, tap } from 'rxjs/operators';
 import {NgForm} from '@angular/forms';
-import {merge, Observable, of, Subject} from 'rxjs';
+import { BehaviorSubject, merge, Observable, of, Subject } from 'rxjs';
 import {WorkflowStore} from '@elexifier/store/workflow.store';
 import { Transformer } from '@elexifier/dictionaries/core/type/transformer.interface';
 import {DictionaryApiService} from '@elexifier/dictionaries/core/dictionary-api.service';
@@ -89,6 +89,8 @@ export class TransformationTreeComponent implements OnInit, OnChanges {
   public click$ = new Subject<string>();
 
   public selectorSearch$ = new Subject<string>();
+
+  public posElementChange$ = new Subject();
 
   public constructor(
     private messageService: MessageService,
@@ -185,6 +187,12 @@ export class TransformationTreeComponent implements OnInit, OnChanges {
     this.selectorSearch$.next(partialElement);
   }
 
+  public selectorsChanged(transformerId: string) {
+    if (transformerId === 'pos') {
+      this.posElementChange$.next();
+    }
+  }
+
   public getUnusedPosItems(item) {
     return DataHelperService.getUnusedPartOfSpeechElements(this.transformation).map(t => t.name);
   }
@@ -201,7 +209,9 @@ export class TransformationTreeComponent implements OnInit, OnChanges {
   }
 
   public loadPartOfSpeechElements() {
-    const posElementValue = this.transformation.pos.selector.expr;
+    const transformer = this.transformation.pos;
+    const posElementValue = this.transformationService.getSelectorValuesForPosFilter(transformer);
+
     const allPseudoAttributes = [
       PseudoAttributes.Constant.toString(),
       PseudoAttributes.ElementInnerText.toString(),
@@ -217,7 +227,13 @@ export class TransformationTreeComponent implements OnInit, OnChanges {
       .getAvailablePartOfSpeech(this.workflowStore.selectedDictionary.id, posElementValue, attributeName)
       .subscribe((res) => {
         if (res && res.pos.length > 0) {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Pos elements loaded',
+          });
           this.unusedPosElements = res.pos;
+          this.transformationService.setAllPosElements(res.pos);
         }
       });
   }
@@ -243,6 +259,12 @@ export class TransformationTreeComponent implements OnInit, OnChanges {
   }
 
   public ngOnInit() {
+    this.posElementChange$.pipe(
+      debounceTime(1000),
+    ).subscribe(() => {
+      this.loadPartOfSpeechElements();
+    });
+
     const { dictionaryId } = this.route.snapshot.params;
 
     this.selectedDictionaryDatabaseIndex = dictionaryId;
@@ -360,6 +382,7 @@ export class TransformationTreeComponent implements OnInit, OnChanges {
 
     this.transformationService.removeSelectorFromList(arrayIndex, transformerId);
     this.refreshUnusedTransformers();
+    this.selectorsChanged(transformerId);
   }
 
   public onSaveTransformation(valid: boolean) {

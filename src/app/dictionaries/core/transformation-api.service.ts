@@ -83,7 +83,10 @@ export class TransformationApiService {
 
 
   public getAvailablePartOfSpeech(dictionaryId, posElement, attributeName?): Observable<any> { // TODO: Add interface
-    return this.http.get(`${environment.apiUrl}/xml_pos/${dictionaryId}?pos_element=${posElement}&attribute_name=${attributeName || ''}`);
+    return this.http.post(`${environment.apiUrl}/xml_pos/${dictionaryId}`, {
+      pos_element: posElement.filter(e => e.length > 0),
+      attribute_name: attributeName.length ? attributeName : null,
+    });
   }
 
   public getAvailablePaths(dictionaryId): Observable<any> { // TODO: Add interface
