@@ -90,65 +90,65 @@
           (click)="onToggleCollapsed(transformer.id)"
         >
           <span>
-            {{ transformer.name }}
+            {{ transformer?.name }}
           </span>
           <ng-container [ngSwitch]="true">
             <i
-              *ngSwitchCase="transformer.name === TransformerElementsWorthOfExplanation.Entry"
+              *ngSwitchCase="transformer?.name === TransformerElementsWorthOfExplanation.Entry"
               [pTooltip]="ENTRY_TOOLTIP_TEXT"
               [tooltipPosition]="'top'"
               class="pi pi-question-circle elex-pi-question-circle pl-1"
             ></i>
             <i
-              *ngSwitchCase="transformer.name === TransformerElementsWorthOfExplanation.Headword"
+              *ngSwitchCase="transformer?.name === TransformerElementsWorthOfExplanation.Headword"
               [pTooltip]="HEADWORD_TOOLTIP_TEXT"
               [tooltipPosition]="'top'"
               class="pi pi-question-circle elex-pi-question-circle pl-1"
             ></i>
             <i
-              *ngSwitchCase="transformer.name === TransformerElementsWorthOfExplanation.Sense"
+              *ngSwitchCase="transformer?.name === TransformerElementsWorthOfExplanation.Sense"
               [pTooltip]="SENSE_TOOLTIP_TEXT"
               [tooltipPosition]="'top'"
               class="pi pi-question-circle elex-pi-question-circle pl-1"
             ></i>
             <i
-              *ngSwitchCase="transformer.name === TransformerElementsWorthOfExplanation.PartOfSpeech"
+              *ngSwitchCase="transformer?.name === TransformerElementsWorthOfExplanation.PartOfSpeech"
               [pTooltip]="PART_OF_SPEECH_TOOLTIP_TEXT"
               [tooltipPosition]="'top'"
               class="pi pi-question-circle elex-pi-question-circle pl-1"
             ></i>
             <i
-              *ngSwitchCase="transformer.name === TransformerElementsWorthOfExplanation.SecondaryHeadword"
+              *ngSwitchCase="transformer?.name === TransformerElementsWorthOfExplanation.SecondaryHeadword"
               [pTooltip]="SECONDARY_HEADWORD_TOOLTIP_TEXT"
               [tooltipPosition]="'top'"
               class="pi pi-question-circle elex-pi-question-circle pl-1"
             ></i>
             <i
-              *ngSwitchCase="transformer.name === TransformerElementsWorthOfExplanation.EntryLanguage"
+              *ngSwitchCase="transformer?.name === TransformerElementsWorthOfExplanation.EntryLanguage"
               [pTooltip]="ENTRY_LANGUAGE_TOOLTIP_TEXT"
               [tooltipPosition]="'top'"
               class="pi pi-question-circle elex-pi-question-circle pl-1"
             ></i>
             <i
-              *ngSwitchCase="transformer.name === TransformerElementsWorthOfExplanation.HeadwordTranslationLanguage"
+              *ngSwitchCase="transformer?.name === TransformerElementsWorthOfExplanation.HeadwordTranslationLanguage"
               [pTooltip]="HEADWORD_TRANSLATION_LANGUAGE_TOOLTIP_TEXT"
               [tooltipPosition]="'top'"
               class="pi pi-question-circle elex-pi-question-circle pl-1"
             ></i>
             <i
-              *ngSwitchCase="transformer.name === TransformerElementsWorthOfExplanation.Definition"
+              *ngSwitchCase="transformer?.name === TransformerElementsWorthOfExplanation.Definition"
               [pTooltip]="DEFINITION_TOOLTIP_TEXT"
               [tooltipPosition]="'top'"
               class="pi pi-question-circle elex-pi-question-circle pl-1"
             ></i>
             <i
-              *ngSwitchCase="transformer.name === TransformerElementsWorthOfExplanation.HeadwordTranslation"
+              *ngSwitchCase="transformer?.name === TransformerElementsWorthOfExplanation.HeadwordTranslation"
               [pTooltip]="HEADWORD_TRANSLATION_TOOLTIP_TEXT"
               [tooltipPosition]="'top'"
               class="pi pi-question-circle elex-pi-question-circle pl-1"
             ></i>
             <i
-              *ngSwitchCase="transformer.name === TransformerElementsWorthOfExplanation.Example"
+              *ngSwitchCase="transformer?.name === TransformerElementsWorthOfExplanation.Example"
               [pTooltip]="EXAMPLE_TOOLTIP_TEXT"
               [tooltipPosition]="'top'"
               class="pi pi-question-circle elex-pi-question-circle pl-1"
