@@ -67,6 +67,8 @@ export interface Transformer {
   rexGroup?: string;
   selector?: {
     expr?: string;
+    left?: Selector;
+    right?: Selector;
     selector?: Selector;
     selectors?: Selector[];
     type?: string;

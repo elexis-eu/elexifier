@@ -71,6 +71,11 @@ export class TransformationService {
     transformer.xlat[posElement] = '';
   }
 
+  public removePosElement(posElement: string) {
+    const transformer = this._transformation.pos as Transformer;
+    delete transformer.xlat[posElement];
+  }
+
   public addSelector(elementName, selector: Selector) {
     const transformer = this._transformation[elementName] as Transformer;
     const transformerType = this.getTransformerType(elementName) as string;
@@ -335,6 +340,22 @@ export class TransformationService {
       .subscribe();
   }
 
+  public setAllPosElements(elements: string[]) {
+    const transformer = this._transformation.pos;
+    let cachedXlat = {};
+    if (transformer.xlat) {
+      cachedXlat = {...transformer.xlat};
+    }
+    transformer.xlat = {};
+    elements.filter(e => e.length).forEach(e => transformer.xlat[e] = '');
+
+    Object.keys(cachedXlat).forEach(e => {
+      if (Object.prototype.hasOwnProperty.call(transformer.xlat, e)) {
+        transformer.xlat[e] = cachedXlat[e];
+      }
+    });
+  }
+
   public subtractSelector(transformerName: string, id?: number) {
     const transformer: Transformer = this._transformation[transformerName];
 
@@ -407,6 +428,22 @@ export class TransformationService {
 
       return newSelector;
     }
+  }
+
+  public getSelectorValuesForPosFilter(transformer: Transformer): string[] {
+    const isUnion = transformer.selector.selectors;
+
+    let value;
+    if (isUnion) {
+      value = transformer.selector.selectors.map(s => {
+        return s.left ? s.left.expr : s.expr;
+      });
+    } else {
+      const isSubtracted = !!transformer.selector?.left;
+      value = isSubtracted ? [transformer.selector?.left.expr] : [transformer.selector.expr];
+    }
+
+    return value;
   }
 
   private _convertSelectorElementType(elementName: string, type: string) {

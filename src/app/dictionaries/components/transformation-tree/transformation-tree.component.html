@@ -90,65 +90,65 @@
           (click)="onToggleCollapsed(transformer.id)"
         >
           <span>
-            {{ transformer.name }}
+            {{ transformer?.name }}
           </span>
           <ng-container [ngSwitch]="true">
             <i
-              *ngSwitchCase="transformer.name === TransformerElementsWorthOfExplanation.Entry"
+              *ngSwitchCase="transformer?.name === TransformerElementsWorthOfExplanation.Entry"
               [pTooltip]="ENTRY_TOOLTIP_TEXT"
               [tooltipPosition]="'top'"
               class="pi pi-question-circle elex-pi-question-circle pl-1"
             ></i>
             <i
-              *ngSwitchCase="transformer.name === TransformerElementsWorthOfExplanation.Headword"
+              *ngSwitchCase="transformer?.name === TransformerElementsWorthOfExplanation.Headword"
               [pTooltip]="HEADWORD_TOOLTIP_TEXT"
               [tooltipPosition]="'top'"
               class="pi pi-question-circle elex-pi-question-circle pl-1"
             ></i>
             <i
-              *ngSwitchCase="transformer.name === TransformerElementsWorthOfExplanation.Sense"
+              *ngSwitchCase="transformer?.name === TransformerElementsWorthOfExplanation.Sense"
               [pTooltip]="SENSE_TOOLTIP_TEXT"
               [tooltipPosition]="'top'"
               class="pi pi-question-circle elex-pi-question-circle pl-1"
             ></i>
             <i
-              *ngSwitchCase="transformer.name === TransformerElementsWorthOfExplanation.PartOfSpeech"
+              *ngSwitchCase="transformer?.name === TransformerElementsWorthOfExplanation.PartOfSpeech"
               [pTooltip]="PART_OF_SPEECH_TOOLTIP_TEXT"
               [tooltipPosition]="'top'"
               class="pi pi-question-circle elex-pi-question-circle pl-1"
             ></i>
             <i
-              *ngSwitchCase="transformer.name === TransformerElementsWorthOfExplanation.SecondaryHeadword"
+              *ngSwitchCase="transformer?.name === TransformerElementsWorthOfExplanation.SecondaryHeadword"
               [pTooltip]="SECONDARY_HEADWORD_TOOLTIP_TEXT"
               [tooltipPosition]="'top'"
               class="pi pi-question-circle elex-pi-question-circle pl-1"
             ></i>
             <i
-              *ngSwitchCase="transformer.name === TransformerElementsWorthOfExplanation.EntryLanguage"
+              *ngSwitchCase="transformer?.name === TransformerElementsWorthOfExplanation.EntryLanguage"
               [pTooltip]="ENTRY_LANGUAGE_TOOLTIP_TEXT"
               [tooltipPosition]="'top'"
               class="pi pi-question-circle elex-pi-question-circle pl-1"
             ></i>
             <i
-              *ngSwitchCase="transformer.name === TransformerElementsWorthOfExplanation.HeadwordTranslationLanguage"
+              *ngSwitchCase="transformer?.name === TransformerElementsWorthOfExplanation.HeadwordTranslationLanguage"
               [pTooltip]="HEADWORD_TRANSLATION_LANGUAGE_TOOLTIP_TEXT"
               [tooltipPosition]="'top'"
               class="pi pi-question-circle elex-pi-question-circle pl-1"
             ></i>
             <i
-              *ngSwitchCase="transformer.name === TransformerElementsWorthOfExplanation.Definition"
+              *ngSwitchCase="transformer?.name === TransformerElementsWorthOfExplanation.Definition"
               [pTooltip]="DEFINITION_TOOLTIP_TEXT"
               [tooltipPosition]="'top'"
               class="pi pi-question-circle elex-pi-question-circle pl-1"
             ></i>
             <i
-              *ngSwitchCase="transformer.name === TransformerElementsWorthOfExplanation.HeadwordTranslation"
+              *ngSwitchCase="transformer?.name === TransformerElementsWorthOfExplanation.HeadwordTranslation"
               [pTooltip]="HEADWORD_TRANSLATION_TOOLTIP_TEXT"
               [tooltipPosition]="'top'"
               class="pi pi-question-circle elex-pi-question-circle pl-1"
             ></i>
             <i
-              *ngSwitchCase="transformer.name === TransformerElementsWorthOfExplanation.Example"
+              *ngSwitchCase="transformer?.name === TransformerElementsWorthOfExplanation.Example"
               [pTooltip]="EXAMPLE_TOOLTIP_TEXT"
               [tooltipPosition]="'top'"
               class="pi pi-question-circle elex-pi-question-circle pl-1"
@@ -237,11 +237,11 @@
                             class="content"
                             appContenteditable="true"
                             contenteditable="true"
-                            (ngModelChange)="onChangeSelector(transformer.id, $event); op1.show($event, actual1);"
+                            (ngModelChange)="onChangeSelector(transformer.id, $event); op1.show($event, actual1); selectorsChanged(transformer.id)"
                             (keyup.arrowDown)="goDownSelectorList()"
                             (keyup.arrowUp)="goUpSelectorList()"
                             (keyup.escape)="input1.blur(); op1.hide(); selectorSearch$.next('');"
-                            (keydown.enter)="$event.preventDefault(); selectSelector(getSelectorData(transformer.id)[i].left);"
+                            (keydown.enter)="$event.preventDefault(); selectSelector(getSelectorData(transformer.id)[i].left); selectorsChanged(transformer.id)"
                             [disabled]="!editable"
                             [(ngModel)]="getSelectorData(transformer.id)[i].left.expr"
                             [appAvailableNodesValidator]="allowedSelectorValues"
@@ -285,7 +285,7 @@
                                     [ngClass]="{'selected': j === highlightedSelectorIndex}"
                                     class="dropdown-selector-menu--item"
                                     *ngFor="let node of filteredXmlNodes let j = index;"
-                                    (click)="getSelectorData(transformer.id)[i].left.expr = node; op1.hide()"
+                                    (click)="getSelectorData(transformer.id)[i].left.expr = node; op1.hide(); selectorsChanged(transformer.id)"
                                   >
                                     {{ node }}
                                   </div>
@@ -308,11 +308,11 @@
                             class="content"
                             appContenteditable="true"
                             contenteditable="true"
-                            (ngModelChange)="onChangeSelector(transformer.id, $event); op2.show($event, actual2);"
+                            (ngModelChange)="onChangeSelector(transformer.id, $event); op2.show($event, actual2); selectorsChanged(transformer.id)"
                             (keyup.arrowDown)="goDownSelectorList()"
                             (keyup.arrowUp)="goUpSelectorList()"
                             (keyup.escape)=" input2.blur(); op2.hide(); selectorSearch$.next('');"
-                            (keydown.enter)="$event.preventDefault(); selectSelector(getSelectorData(transformer.id)[i].right);"
+                            (keydown.enter)="$event.preventDefault(); selectSelector(getSelectorData(transformer.id)[i].right); selectorsChanged(transformer.id)"
                             [disabled]="!editable"
                             [(ngModel)]="getSelectorData(transformer.id)[i].right.expr"
                             [appAvailableNodesValidator]="allowedSelectorValues"
@@ -357,7 +357,7 @@
                                     [ngClass]="{'selected': j === highlightedSelectorIndex}"
                                     class="dropdown-selector-menu--item"
                                     *ngFor="let node of filteredXmlNodes; let j = index;"
-                                    (click)="getSelectorData(transformer.id)[i].right.expr = node; op2.hide()"
+                                    (click)="getSelectorData(transformer.id)[i].right.expr = node; op2.hide(); selectorsChanged(transformer.id)"
                                   >
                                     {{ node }}
                                   </div>
@@ -383,11 +383,11 @@
                           class="content"
                           appContenteditable="true"
                           contenteditable="true"
-                          (ngModelChange)="onChangeSelector(transformer.id, $event); op.show($event, actual);"
+                          (ngModelChange)="onChangeSelector(transformer.id, $event); op.show($event, actual); selectorsChanged(transformer.id)"
                           (keyup.arrowDown)="goDownSelectorList()"
                           (keyup.arrowUp)="goUpSelectorList()"
                           (keyup.escape)=" input.blur(); op.hide(); selectorSearch$.next('');"
-                          (keydown.enter)="$event.preventDefault(); selectSelector(getSelectorData(transformer.id)[i]);"
+                          (keydown.enter)="$event.preventDefault(); selectSelector(getSelectorData(transformer.id)[i]); selectorsChanged(transformer.id)"
                           [disabled]="!editable"
                           [(ngModel)]="getSelectorData(transformer.id)[i].expr"
                           [name]="'selector-'+transformer.id+i"
@@ -421,7 +421,7 @@
                                   [ngClass]="{'selected': j === highlightedSelectorIndex}"
                                   class="dropdown-selector-menu--item"
                                   *ngFor="let node of filteredXmlNodes; let j = index"
-                                  (click)="getSelectorData(transformer.id)[i].expr = node; op.hide()"
+                                  (click)="getSelectorData(transformer.id)[i].expr = node; op.hide(); selectorsChanged(transformer.id)"
                                 >
                                   {{ node }}
                                 </div>
@@ -616,8 +616,88 @@
                   >
                 </div>
               </div>
+              <ng-container *ngIf="transformer.id === 'pos'">
+                <div class="py-4">
+                  <button
+                    (click)="$event.preventDefault();loadPartOfSpeechElements();"
+                    class="button button-primary mb-1 button-xs">Load all POS elements</button>
+                  <i
+                    [pTooltip]="'List of POS elements should be updated every time the POS element structure changes. You can trigger this manually here as well.'"
+                    [tooltipPosition]="'top'"
+                    class="pi pi-question-circle elex-pi-question-circle pl-1"
+                  ></i>
+                </div>
+                <!--            <div class="pt-2 pb-3" ngbDropdown>-->
+                <!--              &lt;!&ndash;                  <p-menu&ndash;&gt;-->
+                <!--              &lt;!&ndash;                      #unusedTransformersMenu&ndash;&gt;-->
+                <!--              &lt;!&ndash;                      [popup]="true"&ndash;&gt;-->
+                <!--              &lt;!&ndash;                      appendTo="body"&ndash;&gt;-->
+                <!--              &lt;!&ndash;                      [model]="unusedPosElements"&ndash;&gt;-->
+                <!--              &lt;!&ndash;                  ></p-menu>&ndash;&gt;-->
+                <!--              <a-->
+                <!--                (click)="loadPartOfSpeechElements();"-->
+                <!--                ngbDropdownToggle-->
+                <!--                class="fs-12 text-uppercase"-->
+                <!--              >-->
+                <!--                POS-->
+                <!--              </a>-->
+                <!--              <div-->
+                <!--                ngbDropdownMenu-->
+                <!--              >-->
+                <!--                <div-->
+                <!--                  ngbDropdownItem-->
+                <!--                  *ngFor="let i of unusedPosElements"-->
+                <!--                  (click)="transformationService.addPosElement(i)"-->
+                <!--                >-->
+                <!--                  {{ i }}-->
+                <!--                </div>-->
+                <!--              </div>-->
+                <!--            </div>-->
+                <ng-container *ngIf="transformation[transformer.id].xlat">
+                  <div
+                    class="transformer-setting"
+                    *ngFor="let posElement of objectKeys(transformation[transformer.id].xlat)"
+                  >
+                    <div class="selector-setting--name text-lowercase d-flex justify-content-between">
+                      {{ posElement }} <span class="text-danger" style="cursor: pointer" (click)="transformationService.removePosElement(posElement)">X</span>
+                    </div>
+                    <div class="selector-setting--value">
+                      <div
+                        class=""
+                        ngbDropdown>
+                        <!--                        <p-menu-->
+                        <!--                          #unusedPosMenu-->
+                        <!--                          [popup]="true"-->
+                        <!--                          appendTo="body"-->
+                        <!--                          [model]="getUnusedPosItems(posElement)"-->
+                        <!--                        ></p-menu>-->
+                        <a
+                          ngbDropdownToggle
+                          class="fs-12 text-uppercase position-relative"
+                        >
+                          <span
+                            class="one-line-input text-uppercase d-inline-block w-100"
+                          >{{transformation[transformer.id].xlat[posElement]}}</span>
+                        </a>
+                        <div
+                          ngbDropdownMenu
+                        >
+                          <div
+                            ngbDropdownItem
+                            *ngFor="let i of getUnusedPosItems(posElement)"
+                            (click)="transformationService.applyPosValue(posElement, i)"
+                          >
+                            {{ i }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+              </ng-container>
             </div>
           </div>
+          <!-- XLAT settings -->
         </ng-container>
         <ng-template #singleSelector>
           <div
@@ -659,11 +739,11 @@
                           [ngClass]="{'focus': op1.overlayVisible, 'invalid': val1.errors}"
                           appContenteditable="true"
                           contenteditable="true"
-                          (ngModelChange)="onChangeSelector(transformer.id, $event); op1.show($event, actual1);"
+                          (ngModelChange)="onChangeSelector(transformer.id, $event); op1.show($event, actual1); selectorsChanged(transformer.id)"
                           (keyup.arrowDown)="goDownSelectorList()"
                           (keyup.arrowUp)="goUpSelectorList()"
                           (keyup.escape)="input.blur(); op1.hide(); selectorSearch$.next('');"
-                          (keydown.enter)="$event.preventDefault(); selectSelector(getSelectorData(transformer.id).left);"
+                          (keydown.enter)="$event.preventDefault(); selectSelector(getSelectorData(transformer.id).left); selectorsChanged(transformer.id)"
                           [disabled]="!editable"
                           [name]="'selector-'+transformer.id+'-left'"
                           [(ngModel)]="getSelectorData(transformer.id).left.expr"
@@ -707,7 +787,7 @@
                                   [ngClass]="{'selected': j === highlightedSelectorIndex}"
                                   class="dropdown-selector-menu--item"
                                   *ngFor="let node of filteredXmlNodes; let j = index"
-                                  (click)="getSelectorData(transformer.id).left.expr = node; op1.hide()"
+                                  (click)="getSelectorData(transformer.id).left.expr = node; op1.hide(); selectorsChanged(transformer.id)"
                                 >
                                   {{ node }}
                                 </div>
@@ -735,11 +815,11 @@
                           [ngClass]="{'focus': op2.overlayVisible, 'invalid': val2.errors}"
                           appContenteditable="true"
                           contenteditable="true"
-                          (ngModelChange)="onChangeSelector(transformer.id, $event); op2.show($event, actual);"
+                          (ngModelChange)="onChangeSelector(transformer.id, $event); op2.show($event, actual); selectorsChanged(transformer.id)"
                           (keyup.arrowDown)="goDownSelectorList()"
                           (keyup.arrowUp)="goUpSelectorList()"
                           (keyup.escape)="input.blur(); op2.hide(); selectorSearch$.next('');"
-                          (keydown.enter)="$event.preventDefault(); selectSelector(getSelectorData(transformer.id).right);"
+                          (keydown.enter)="$event.preventDefault(); selectSelector(getSelectorData(transformer.id).right); selectorsChanged(transformer.id)"
                           [disabled]="!editable"
                           [name]="'selector-'+transformer.id+'-right'"
                           [(ngModel)]="getSelectorData(transformer.id).right.expr"
@@ -783,7 +863,7 @@
                                   [ngClass]="{'selected': j === highlightedSelectorIndex}"
                                   class="dropdown-selector-menu--item"
                                   *ngFor="let node of filteredXmlNodes; let j = index"
-                                  (click)="getSelectorData(transformer.id).right.expr = node; op2.hide()"
+                                  (click)="getSelectorData(transformer.id).right.expr = node; op2.hide(); selectorsChanged(transformer.id)"
                                 >
                                   {{ node }}
                                 </div>
@@ -814,11 +894,11 @@
                         [ngClass]="{'focus': op.overlayVisible, 'invalid': val.errors, 'disabled': transformer.id === 'entry'}"
                         appContenteditable="true"
                         contenteditable="true"
-                        (ngModelChange)="onChangeSelector(transformer.id, $event); op.show($event, actual);"
+                        (ngModelChange)="onChangeSelector(transformer.id, $event); op.show($event, actual); selectorsChanged(transformer.id)"
                         (keyup.arrowDown)="goDownSelectorList()"
                         (keyup.arrowUp)="goUpSelectorList()"
                         (keyup.escape)=" input.blur(); op.hide(); selectorSearch$.next('');"
-                        (keydown.enter)="$event.preventDefault(); selectSelector(getSelectorData(transformer.id));"
+                        (keydown.enter)="$event.preventDefault(); selectSelector(getSelectorData(transformer.id)); selectorsChanged(transformer.id)"
                         [disabled]="!editable"
                         [name]="'selector-'+transformer.id"
                         [(ngModel)]="getSelectorData(transformer.id).expr"
@@ -852,7 +932,7 @@
                                 class="dropdown-selector-menu--item"
                                 [ngClass]="{'selected': j === highlightedSelectorIndex}"
                                 *ngFor="let node of filteredXmlNodes; let j = index;"
-                                (click)="getSelectorData(transformer.id).expr = node; op.hide()"
+                                (click)="getSelectorData(transformer.id).expr = node; op.hide(); selectorsChanged(transformer.id)"
                                 >
                                 {{ node }}
                               </div>
@@ -875,7 +955,7 @@
             </div>
             <div
               class="add-selector-button"
-              *ngIf="editable && transformer.id !== 'pos' && transformer.id !== 'entry'"
+              *ngIf="editable && transformer.id !== 'entry'"
             >
               <span
                 (click)="onAddSelector(transformer.id)"
@@ -960,39 +1040,49 @@
 
               <!-- XLAT settings -->
               <ng-container *ngIf="transformer.id === 'pos'">
-                <div class="pt-2 pb-3" ngbDropdown>
-<!--                  <p-menu-->
-<!--                      #unusedTransformersMenu-->
-<!--                      [popup]="true"-->
-<!--                      appendTo="body"-->
-<!--                      [model]="unusedPosElements"-->
-<!--                  ></p-menu>-->
-                  <a
-                    (click)="loadPartOfSpeechElements();"
-                    ngbDropdownToggle
-                    class="fs-12 text-uppercase"
-                  >
-                    POS
-                  </a>
-                  <div
-                    ngbDropdownMenu
-                  >
-                    <div
-                      ngbDropdownItem
-                      *ngFor="let i of unusedPosElements"
-                      (click)="transformationService.addPosElement(i)"
-                    >
-                      {{ i }}
-                    </div>
-                  </div>
+                <div class="py-4">
+                  <button
+                    (click)="$event.preventDefault();loadPartOfSpeechElements();"
+                    class="button button-primary mb-1 button-xs">Load all POS elements</button>
+                  <i
+                    [pTooltip]="'List of POS elements should be updated every time the POS element structure changes. You can trigger this manually here as well.'"
+                    [tooltipPosition]="'top'"
+                    class="pi pi-question-circle elex-pi-question-circle pl-1"
+                  ></i>
                 </div>
+<!--                <div class="pt-2 pb-3" ngbDropdown>-->
+<!--&lt;!&ndash;                  <p-menu&ndash;&gt;-->
+<!--&lt;!&ndash;                      #unusedTransformersMenu&ndash;&gt;-->
+<!--&lt;!&ndash;                      [popup]="true"&ndash;&gt;-->
+<!--&lt;!&ndash;                      appendTo="body"&ndash;&gt;-->
+<!--&lt;!&ndash;                      [model]="unusedPosElements"&ndash;&gt;-->
+<!--&lt;!&ndash;                  ></p-menu>&ndash;&gt;-->
+<!--                  <a-->
+<!--                    (click)="loadPartOfSpeechElements();"-->
+<!--                    ngbDropdownToggle-->
+<!--                    class="fs-12 text-uppercase"-->
+<!--                  >-->
+<!--                    POS-->
+<!--                  </a>-->
+<!--                  <div-->
+<!--                    ngbDropdownMenu-->
+<!--                  >-->
+<!--                    <div-->
+<!--                      ngbDropdownItem-->
+<!--                      *ngFor="let i of unusedPosElements"-->
+<!--                      (click)="transformationService.addPosElement(i)"-->
+<!--                    >-->
+<!--                      {{ i }}-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
                 <ng-container *ngIf="transformation[transformer.id].xlat">
                   <div
                     class="transformer-setting"
                     *ngFor="let posElement of objectKeys(transformation[transformer.id].xlat)"
                   >
-                    <div class="selector-setting--name text-lowercase">
-                      {{ posElement }}
+                    <div class="selector-setting--name text-lowercase d-flex justify-content-between">
+                      {{ posElement }} <span class="text-danger" style="cursor: pointer" (click)="transformationService.removePosElement(posElement)">X</span>
                     </div>
                     <div class="selector-setting--value">
                       <div

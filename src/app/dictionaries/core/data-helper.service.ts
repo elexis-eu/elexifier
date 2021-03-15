@@ -302,13 +302,11 @@ export class DataHelperService {
     if (transformer && transformer.xlat) {
       const elements = [];
       this.partOfSpeechElementList.forEach((k) => {
-        if (!transformer.xlat[k] && transformer.xlat[k] !== '') {
           const posElement = {
             id: k,
             name: k,
           };
           elements.push(posElement);
-        }
       });
       return elements;
     }
