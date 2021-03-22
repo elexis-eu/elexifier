@@ -67,6 +67,14 @@ export class DataHelperService {
     name: 'secondary headword',
     id: 'sec_hw',
     addable: true,
+  }, {
+    name: 'variant headword',
+    id: 'variant',
+    addable: true,
+  }, {
+    name: 'inflected forms',
+    id: 'inflected',
+    addable: true,
   }];
 
   public static elementLanguagePairs = [
@@ -88,6 +96,8 @@ export class DataHelperService {
     'entry_lang',
     'hw_tr_lang',
     'ex_tr_lang',
+    'variant',
+    'inflected',
   ];
 
   public static languageElements = ['entry_lang', 'hw_tr_lang', 'ex_tr_lang'];
@@ -339,7 +349,8 @@ export class DataHelperService {
    * {
    *   "userInput": "staticKey"
    * }
-   * This structure can not be used in current input binding method so we mirror this object so we can use staticKey as a
+   * This structure can not be used in current input
+   * binding method so we mirror this object so we can use staticKey as a
    * ngModel bind and userInput as the value of staticKey
    *
    * Results in:
