@@ -72,8 +72,20 @@ export class DataHelperService {
     id: 'variant',
     addable: true,
   }, {
-    name: 'inflected forms',
+    name: 'inflected form',
     id: 'inflected',
+    addable: true,
+  }, {
+    name: 'usg',
+    id: 'usg',
+    addable: true,
+  }, {
+    name: 'gloss',
+    id: 'gloss',
+    addable: true,
+  }, {
+    name: 'note',
+    id: 'note',
     addable: true,
   }];
 
@@ -98,6 +110,9 @@ export class DataHelperService {
     'ex_tr_lang',
     'variant',
     'inflected',
+    'usg',
+    'gloss',
+    'note',
   ];
 
   public static languageElements = ['entry_lang', 'hw_tr_lang', 'ex_tr_lang'];
