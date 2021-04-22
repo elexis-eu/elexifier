@@ -11,6 +11,7 @@ export interface MetadataItem {
     name?: string;
     type?: string
   }[];
+  required?: boolean;
   tooltip?: string;
   type?: string;
 }
@@ -128,6 +129,12 @@ export class DataHelperService {
       name: 'title',
       type: 'text',
       tooltip: 'The title of the resource.',
+    },
+    {
+      name: 'acronym',
+      type: 'text',
+      tooltip: 'The acronym of the resource.',
+      required: true,
     },
     {
       name: 'publisher',
