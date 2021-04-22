@@ -34,14 +34,17 @@
       [ngClass]="{'pt-3': isEdit}"
     >
       <div class="row" formGroupName="metaData">
+        <div class="col-12 mb-2">
+          <span style="font-size: 12px">Fields with * are required</span>
+        </div>
         <ng-container *ngFor="let field of metadataFields; let i = index">
           <div
             class="col-12 d-table-row"
-            *ngIf="i < 3 || showAllFields"
+            *ngIf="i < 4 || showAllFields"
           >
             <div class="row">
               <div class="col-12 col-md-6">
-                <span class="upload-form-label">{{ field.formattedName  || field.name }}</span>
+                <span class="upload-form-label">{{ field.formattedName  || field.name }}<span *ngIf="field.required">*</span></span>
                 <i
                   *ngIf="field.tooltip"
                   [pTooltip]="field.tooltip"
@@ -163,6 +166,7 @@
         <button
           pButton
           (click)="onSave()"
+          [disabled]="!createDictionaryFormGroup.get('metaData.acronym').value"
           class="button button-primary mb-3"
           icon="pi pi-save"
           label="Save"
