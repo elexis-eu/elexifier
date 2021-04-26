@@ -51,7 +51,7 @@
           class="button button-primary mb-3"
           icon="pi pi-save"
           label="Create"
-          [disabled]="uploadInProgress || (!fileType && !dictionaryId) || !dictionaryAndOrTransformationFormGroup.get('dictionary.metaData.acronym').value"
+          [disabled]="uploadInProgress || (!fileType && !dictionaryId) || (!dictionaryId && !dictionaryAndOrTransformationFormGroup.get('dictionary.metaData.acronym')?.value)"
         ></button>
       </div>
     </div>
