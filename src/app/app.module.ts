@@ -69,9 +69,9 @@ setup({ framework: 'Angular' });
     DictionariesModule,
     UserModule,
   ],
-  // providers: [
-  //   { provide: ErrorHandler, useClass: SentryErrorHandler },
-  // ],
+  providers: [
+    { provide: ErrorHandler, useClass: SentryErrorHandler },
+  ],
   bootstrap: [
     AppComponent,
   ],
