@@ -61,7 +61,7 @@ export class CreateTransformationComponent implements OnInit {
     if (value) {
       this.createTransformationFormGroup.get('entry_spec').clearValidators();
       this.createTransformationFormGroup.get('xfname').clearValidators();
-      this.createTransformationFormGroup.get('configurationId').patchValue(this.configurations[0].id);
+      this.createTransformationFormGroup.get('configurationId').patchValue(this.configurations[0]?.id);
     } else {
       this.createTransformationFormGroup.get('entry_spec').setValidators(Validators.required);
       this.createTransformationFormGroup.get('xfname').setValidators(Validators.required);

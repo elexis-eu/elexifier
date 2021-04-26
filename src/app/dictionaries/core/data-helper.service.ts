@@ -77,16 +77,20 @@ export class DataHelperService {
     id: 'inflected',
     addable: true,
   }, {
-    name: 'usg',
+    name: 'label',
     id: 'usg',
     addable: true,
   }, {
-    name: 'gloss',
+    name: 'sense indicator',
     id: 'gloss',
     addable: true,
   }, {
     name: 'note',
     id: 'note',
+    addable: true,
+  }, {
+    name: 'cross reference',
+    id: 'xr',
     addable: true,
   }];
 
@@ -114,6 +118,7 @@ export class DataHelperService {
     'usg',
     'gloss',
     'note',
+    'xr',
   ];
 
   public static languageElements = ['entry_lang', 'hw_tr_lang', 'ex_tr_lang'];
