@@ -3,23 +3,30 @@
 Welcome to the *Elexifier User Guide*. Elexifier is an app that allows you to transform XML and PDF dictionaries into an *Elexis Data Model* compliant format. Note that the app is currently in a *Public Beta* release and it is likely that you will encounter bugs and/or unwanted behaviour. For assistance, don't hesitate to contact <elexifier@ijs.si>.
 
 ---
+# Login
+Elexifier is available on [elexifier.elex.is](elexifier.elex.is). You can create a user account or login with your *Sketch Engine* credentials.
+Once you have logged in, you will be able to choose the XML or the PDF transformation.
+<!-- ADD MAYBE SCREENDUMP OPENING SCREEN -->
+
+---
 
 # Table of contents
 
 <!-- vscode-markdown-toc -->
 * 1. [XML transformation](#XMLtransformation)
 	* 1.1. [Upload a new dictionary](#Uploadanewdictionary)
-	* 1.2. [Edit transformation](#Edittransformation)
-		* 1.2.1. [Overview](#Overview)
-		* 1.2.2. [Adding core elements](#Addingcoreelements)
-		* 1.2.3. [Editing core elements](#Editingcoreelements)
-		* 1.2.4. [Selecting XML elements](#SelectingXMLelements)
-		* 1.2.5. [Examples](#Examples)
+	* 1.2. [Transform the dictionary](#Edittransformation_OR_Transform_the_dictionary)
+<!--		* 1.2.1. [Overview](#Overview) -->
+		* 1.2.1. [Adding core elements](#Addingcoreelements)
+		* 1.2.2. [Editing core elements](#Editingcoreelements)
+<!--		* 1.2.3. [Selecting XML elements](#SelectingXMLelements) -->
+		* 1.2.3. [Examples](#Examples)
+		* 1.2.3. [Best practices](#Best practices)
 	* 1.3. [Download transformed dictionary](#Downloadtransformeddictionary)
-	* 1.4. [Removing transformations](#Removingtransformations)
-	* 1.5. [Reseting transformations](#Resetingtransformations)
-	* 1.6. [Deleting dictionaries](#Deletingdictionaries)
-	* 1.7. [7. Editing dictionary metadata](#Editingdictionarymetadata)
+<!--	* 1.4. [Removing transformations](#Removingtransformations) -->
+<!--	* 1.5. [Resetting transformations](#Resetingtransformations) -->
+<!--	* 1.6. [Deleting dictionaries](#Deletingdictionaries) -->
+<!--	* 1.7. [7. Editing dictionary metadata](#Editingdictionarymetadata) -->
 * 2. [PDF transformation](#PDFtransformation)
 	* 2.1. [Sending dictionary to Lexonomy for annotation](#SendingdictionarytoLexonomyforannotation)
 	* 2.2. [Annotating dictionary](#Annotatingdictionary)
@@ -34,13 +41,14 @@ Welcome to the *Elexifier User Guide*. Elexifier is an app that allows you to tr
 
 ---
 
-# Login
-Elexifier is available on [elexifier.elex.is](elexifier.elex.is). You can create a user account or login with your *Sketch Engine* credentials.
-
 
 ---
 
 ##  1. <a name='XMLtransformation'></a>XML transformation
+The XML transformation consists of three steps:
+* 1.1. [Upload a new XML dictionary]
+* 1.2. [Transform the dictionary]
+* 1.3. [Download the transformed dictionary]
 
 ###  1.1. <a name='Uploadanewdictionary'></a>Upload a new dictionary
 ![](images/new-dict-link.png)
@@ -49,73 +57,93 @@ Click NEW DICTIONARY in the bottom left corner of the app.
 
 ![](images/new-dict.png)
 
-To transform an XML dictionary, on the next screen:
+A pop-up window appears where you can:
 1. Upload your dictionary.
-3. Define its metadata.
-4. Enter the basic parameters for the transformation:
+<!-- LAYOUT -->
+You can drag the file you want to upload in the upload box with the dashed line or you can use the choose button to go to the correct folder on your computer and choose the file you want to upload.
+
+**Note**: Make sure you upload a well-formed XML file. <!-- ADD You can check the well-formedness of you file by ... -->
+
+2. Define its metadata.
+3. Enter the basic parameters for the transformation:
 - ENTRY ELEMENT: the XML element denoting entries (see Elexis Data Model)
 - HEADWORD ELEMENT: the XML element denoting headwords (see Elexis Data Model)
 - TRANSFORMATION NAME: select a name for your transformation
 
-**Note**: The ENTRY and HEADWORD parameters will be used for the initial segmentation of your dictionary. The current version of Elexifer does not support subsequent re-segmentation according to different values of the ENTRY and HEADWORD parameters. If you want change the segmentation, create a new transformation.
+**Note**: XPATH notation is used. <!-- ADD EXAMPLE OD SIMPLE PATH AND ONE WHERE YOU NEED TO SPECIFY ENTRY/HEADWORD + POINTER TO SOME MORE COMPLEX CASES, IE. THE HEADWORD IS AN ATTRIBUTE IN THE ENTRY TAG -->
 
----
+**Note**: The ENTRY and HEADWORD parameters will be used for the initial segmentation of your dictionary. The current version of Elexifier does not support subsequent re-segmentation according to different values of the ENTRY and HEADWORD parameters. If you want to change the segmentation, create a new transformation.
+<!-- ADD  AN EXPLANATION FOR THE OPTION CREATE FROM TRANSFORMATION -->
 
-###  1.2. <a name='Edittransformation'></a>Edit transformation
+If your upload is successful, you will see the following screen, divided into three panes. Going from left to right, you see the XML dictionary/dictionaries in your account. By clicking on the three dots behind the ditionary file name, you can delete the dictionary or you can edit the metadata. In the next pane, you see the transformation(s) associated with the dictionary you are currently transforming and in the right pane you see a preview of your data. In the top row, four options are offered: you can download your transformed dictionary, you can edit the transformation or you can reset or remove your transformation.
+We start with editing the transformation.
+<!-- WHAT HAPPENS EXACTLY WHEN YOU RESET THE TRANSFORMATION = RESET TO UPLOAD VALUES? -->
+<!-- ADD SCREENDUMP -->
 ![](images/top-row.png)
-
-To edit the transformation, click **Edit** in the top row.
-
 ---
 
-####  1.2.1. <a name='Overview'></a>Overview
+###  1.2. <a name='edittransformation'></a>Transform the dictionary
+
+To transform your dictionary, click **Edit** in the top row. This will open the Edit Transformation screen.
 ![](images/edit-screen.png)
 
 The Edit Transformation screen consists of:
-- A list of entries on the left hand side. 100 entries are displayed by default and you can search for additional entries using the search box.
-- The preview pane showing the *Before* and *After* state of the dictionary. You can use the **Strip namespaces** and **Strip dictScrap** checkboxes for easier preview of the transformed dictionary.
-- The core element definition pane where you define your transformation.
+- The list of entries on the left hand side. 100 entries are displayed by default and you can search for additional entries using the search box.
+- The preview pane showing the *Before* and *After* state of the dictionary. You can use the **Strip namespaces** and **Strip dictScrap** checkboxes for easier to read preview of the transformed dictionary.
+- The Transformation editing pane where you can further define your transformation. By default, the elements ENTR, HEADWORD and SENSE are already selected. In the following subsections, we explain how you can add more core elements to your transformation and edit them.
 
 ---
 
-####  1.2.2. <a name='Addingcoreelements'></a>Adding core elements
+####  1.2.1. <a name='Addingcoreelements'></a>Adding core elements
 ![](images/add-core-element.png)
 
-Click ADD CORE ELEMENT at the top and select one, or click an existing core element.
+Click ADD CORE ELEMENT at the top and select one, or click on an existing core element.
 
 ---
 
-####  1.2.3. <a name='Editingcoreelements'></a>Editing core elements
+####  1.2.2. <a name='Editingcoreelements'></a>Editing core elements
 ![](images/edit-core-element.png)
 
-To edit a core element:
-1. Select an XML element from the list or define a custom path.
-2. Optionally, define the **EXCL.** element which will not be included in the transformed dictionary.
-2. Select the value to be included in the transformed dictionary:
-    - **Element inner text**: extract the inner text of the element
-    - **Subtree text**: extract the inner text of the element and all of its descendants
-    - **Attribute value**: extract the value of the selected attribute
-    - **Constant**: return a constant value instead of extracting the value from the XML
-3. Optionally, run regex expressions on the extracted values.
-4. Click **Update** to update the transformation.
+To edit a core element select an XML element from the list or define a custom path.
 
----
-
-####  1.2.4. <a name='SelectingXMLelements'></a>Selecting XML elements
-
+<!-- REMOVE? ####  1.2.4. <a name='SelectingXMLelements'></a>Selecting XML elements -->
 Elexifier helps you with the selection of XML elements by validating paths and providing suggestions. Start by selecting one of the XML elements from the list (you can type a few characters to filter the list) and then use the up and down keys to select one of the suggested sub-elements. Confirm selection by pressing the Enter key.
 
 ![](images/xml-suggestions.png)
 
 **NOTE:** The elements search is case-sensitive.
+Once you are happy with the path that you have defined, click **Update** in the top-right corner to update the transformation. See [<a name='Asimpletransformation'></a>A simple transformation].
 
+#### 1.2.3. Advanced editing options
+1. Optionally, use **EXCL.** to define the element which should not be included in the transformed dictionary. See [<a name='Excludeelements'></a>Exclude elements]
+2. You can join elements to transform multiple XML elements in the input into one core element. See [<a name='Joinelements'></a>Join elements]
+2. Select the value to be included in the transformed dictionary:
+    - **Element inner text**: extract the inner text of the element
+    - **Subtree text**: extract the inner text of the element and all of its descendants
+    - **Attribute value**: extract the value of the selected attribute.
+    See [<a name='Usingattributevaluesinthetransformeddictionary'></a>Using attribute values in the transformed dictionary]
+    - **Constant**: return a constant value instead of extracting the value from the XML
+<!-- ADD EXAMPLES FOR ALL THESE OPTIONS -->
+3. Optionally, run regex expressions on the extracted values.
+<!-- ADD EXAMPLE -->
+4. Click **Update** to update the transformation.
 
-####  1.2.5. <a name='Examples'></a>Examples
+---
+
+<!-- REMOVE OLD ####  1.2.4. <a name='SelectingXMLelements'></a>Selecting XML elements -->
+
+<!-- Elexifier helps you with the selection of XML elements by validating paths and providing suggestions. Start by selecting one of the XML elements from the list (you can type a few characters to filter the list) and then use the up and down keys to select one of the suggested sub-elements. Confirm selection by pressing the Enter key. -->
+
+<!-- ![](images/xml-suggestions.png) -->
+
+<!-- **NOTE:** The elements search is case-sensitive.-->
+
+####  1.2.4. <a name='Examples'></a>Transformation Examples
 This section contains example transformations that ilustrate the various options offered by Elexifier.
 
 ---
 
-##### 3.1.2.5.1. <a name='Asimpletransformation'></a>A simple transformation
+##### 1.2.4.1. <a name='Asimpletransformation'></a>A simple transformation
 Let's transform a simple XML element `hw` into its Elexis Data Model representation:
 
     <hw>babble</hw>
@@ -132,7 +160,7 @@ The transformed dictionary looks like this:
 
 ---
 
-##### 3.1.2.5.2. <a name='Usingattributevaluesinthetransformeddictionary'></a>Using attribute values in the transformed dictionary
+##### 1.2.4.2. <a name='Usingattributevaluesinthetransformeddictionary'></a>Using attribute values in the transformed dictionary
 Let's say we want to transform attribute values into Elexis Data Model elements.
 
     <Lemma writtenForm="X ray" partOfSpeech="n"/>
@@ -149,7 +177,7 @@ The transformed dictionary looks like this:
 
 ---
 
-##### 3.1.2.5.3. <a name='Excludeelements'></a>Exclude elements
+##### 1.2.4.3. <a name='Excludeelements'></a>Exclude elements
 Let's say we have a `tr` element that can denote a headword translation and an example translation. The transformation needs to take into account where the `tr` element appears in the original XML. We can achieve this by using the **EXCL.** option.
 
     <tr>žlobudranje; blebetanje, čvekanje, kvasanje; <ic>o otroku</ic>čebljanje;<ic>npr. o potoku</ic>žuborenje, šumenje</tr>
@@ -197,9 +225,9 @@ This results in the correct transformation:
 
 ---
 
-##### 3.1.2.5.4. <a name='Joinelements'></a>Join elements
+##### 1.2.4.4. <a name='Joinelements'></a>Join elements
 
-You can transform multiple XML elements have into one Elexis Data Model core element. The following dictionary uses `s1` and `s2` to denote senses:
+You can transform multiple XML elements into one Elexis Data Model core element. The following dictionary uses `s1` and `s2` to denote senses:
 
     <s1>
         <hg st="3">
@@ -240,9 +268,12 @@ Both elements are transformed as senses:
         </sense>
 
 ---
+####  1.2.5. <a name='Best practices'></a>Some best practices
+This section contains a few best practices for editing your transformation.
+<!-- WHAT ELSE SHOULD WE MENTION HERE? -->
 
-##### 3.1.2.5.5. <a name='Addtranslationlanguage'></a>Add translation language
-To add a `lang` attribute to an element, the **Entry**, **Headword Translation** and **Example Translation** have a dedicated **Language** field where you can select and ISO 639-2 language code. Simply start typing and then select a value from the list.
+##### 1.2.5.1. <a name='Addlanguage'></a>Add language
+The **Entry**, **Headword Translation** and **Example Translation** have a dedicated **Language** field where you can select and ISO 639-2 language code. Simply start typing and then select a value from the list.
 
 ![](images/language.png)
 
@@ -252,9 +283,11 @@ The resulting dictionary looks like this (note the `xml:lang` attribute):
         <quote xml:lang="slv">blejanje, beketanje</quote>
         </cit>
 
+**Recommendation** Add language to these three elements in your transformation. 
+
 ---
 
-##### 3.1.2.5.6. <a name='Editpart-of-speechcoreelement'></a>Edit part-of-speech core element
+##### 1.2.5.2. <a name='Editpart-of-speechcoreelement'></a>Edit part-of-speech core element
 
 The part-of-speech core element is unique among core elements, because you have to specify an additional mapping table for each value found in the part-of-speech element of the original XML file. In the example below, the `ps` element contains the POS information.
 
@@ -262,7 +295,7 @@ The part-of-speech core element is unique among core elements, because you have 
 
 ![](images/pos-1.png)
 
-Start by defining the original XML file part-of-speech element and its value as usual.
+Start by definng the original XML file part-of-speech element and its value as usual.
 
 ![](images/pos-2.png)
 
@@ -278,6 +311,8 @@ The transformed dictionary looks like this:
         <gram type="pos">noun</gram>
     </gramGrp>
 
+**Recommendation** Map the part of speech tags in the input to the corresponding tags in Universal Dependencies.
+
 ---
 
 ###  1.3. <a name='Downloadtransformeddictionary'></a>Download transformed dictionary
@@ -290,27 +325,29 @@ To download the transformed dictionary, click the **Download** button in the top
 In the window that opens, you can select to download the dictionary:
 - **With namespaces**, which keeps the information on the original xml elements
 - **Without namespaces**, which discards the information on the original xml elements
+The processing starts in the background. Once it is done, you will see a **Download** button which you can use to download the transformed dictionary.
 
 ![](images/download-ready.png)
 
-The processing starts in the background. Once it is done, you will see a **Download** button which you can use to download the transformed dictionary.
 
 ---
-
+<!-- SEPARATE SECTION NOT NECESSARY
 ###  1.4. <a name='Removingtransformations'></a>Removing transformations
 ![](images/top-row.png)
 
-Click **Remove** in the top row.
+Click **Remove** in the top row. 
+-->
 
 ---
-
-###  1.5. <a name='Resetingtransformations'></a>Reseting transformations
+<!-- SEPARATE SECTION NOT NECESSARY
+###  1.5. <a name='Resettingtransformations'></a>Resetting transformations
 ![](images/top-row.png)
 
 Click **Reset** in the top row.
-
+-->
 ---
 
+<!-- DO WE NEED THESE AS SEPARATE SECTIONS, IS NOW ALREADY MENTIONED WHEN UPLOAD IS SUCCESSFUL 
 ###  1.6. <a name='Deletingdictionaries'></a>Deleting dictionaries
 ![](images/delete-dictionary.png)
 
@@ -320,6 +357,7 @@ Click the three dots next to the dictionary name and then click **Delete diction
 ![](images/metadata.png)
 
 Click the three dots next to the dictionary name and then click **Edit metadata**. You can edit the metadata in the popup window.
+-->
 
 ##  2. <a name='PDFtransformation'></a>PDF transformation
 
