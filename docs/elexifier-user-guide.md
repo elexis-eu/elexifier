@@ -368,14 +368,14 @@ Tips for best results:
 - The algorithm uses information about font size, font type, position etc. to learn the annotations. As such, it works best on dictionaries that consistently use different fonts for different elements (headwords, examples, part-of-speech tags etc.).
 - While the algorithms work well in general, the result will not be perfect, even in the best of cases, a small number of mistakes may need to be manually corrected.
 - Machine learning needs a large enough sample of annotated data. Annotate **at least** four (4) pages of the original PDF. Smaller samples may still work, but they are more prone to errors. If you annotated at least 4 pages and still encounter errors or the results are not satisfactory, contact <elexifier@ijs.si>.
-
+>**Note** Your PDF text does not have to be searchable, i.e. you do not have to run OCR on the PDF file you are about to transform.
 ###  2.1. <a name='SendingdictionarytoLexonomyforannotation'></a>Sending dictionary to Lexonomy for annotation
 
 Select the PDF icon on the left-hand side of your screen and upload your dictionary. After uploading a dictionary, click Annotate and wait while the PDF dictionary is converted and sent to [Lexonomy](https://lexonomy.elex.is).
 ![](images/pdf-options.png)
 
 Click the link that appears and log into Lexonomy. 
->**Note** You a Lexonomy account linked to the same email address as your Elexifier account in order to annotate the file. 
+>**Note** You need a Lexonomy account linked to the same email address as your Elexifier account in order to annotate the file. 
  
 By default, Elexifier sends the first 20 pages to Lexonomy. In rare cases where you need to annotate more than 20 pages, you can use the **+** sign to send another batch of 20 pages to Lexonomy. Once the file is sent to Lexonomy, you can use the **Reset annotations** button in Elexifier to delete all existing annotations and start annotating from scratch.
 <!-- IS THIS CORRECT -->
@@ -386,7 +386,9 @@ By default, Elexifier sends the first 20 pages to Lexonomy. In rare cases where 
 Select your data (i.e. *pages 1-20* below) from the list in Lexonomy to open it for editing.
 ![](images/lex-view2.png)
 
-Annotate the following elements: `entry`, `headword`, `part of speech`, `sense`, `definition`, `translation`, `example` (of course depending on the availability of these elements in your dictionary). Using the mouse, highlight the words that form an individual element and then double-click to select an annotation label from the list.
+You can annotate the following elements: `entry`, `headword`, `part of speech`, `sense`, `definition`, `translation`, `example` (of course depending on the availability of these elements in your dictionary). The obligatory elements of an entry are headword, part of speech and sense. Right after the headword, either a part of speech or a sense element is expected. If in your dictionary the headword is not immediately followed by one of these two elements, but other information occurs in between, you should annotate this information as dictScrap. You do this by typing 'dictScrap'in the text box next to 'other' instead of using the drop-down list. 
+To perform the annotation, select the words that form an individual element, by clicking on the first word and then dragging your mouse til the last word. A yellow highlight will appear. Double-click the highlighted text and select an annotation label from the drop-down list.
+<!-- dictScrap needs to be explained in a note -->
 
 ![](images/lex-highlight.png)
 ![](images/lex-selection.png)
@@ -397,7 +399,7 @@ The annotations will be visible in the preview window. Lexonomy implements a few
 
 ![](images/lex-annotate-rules.png)
 
-
+**Note**: You can undo the annotation of an individual element by double-clicking the annotated element name.
 
 ###  2.3. <a name='Startingmachinelearning'></a>Starting machine learning
 
