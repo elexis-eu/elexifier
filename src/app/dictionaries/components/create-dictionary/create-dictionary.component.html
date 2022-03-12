@@ -62,7 +62,7 @@
                   />
                 </ng-container>
                 <ng-template #datepicker>
-                  <ng-container *ngIf="field.type === 'date'; else objectArray">
+                  <ng-container *ngIf="field.type === 'date'; else stringArray">
                     <p-calendar
                       [showIcon]="true"
                       appendTo="body"
@@ -70,6 +70,40 @@
                       inputStyleClass="one-line-input blue d-inline-block"
                       [formControlName]="field.name"
                     ></p-calendar>
+                  </ng-container>
+                </ng-template>
+                <ng-template #stringArray>
+                  <ng-container *ngIf="field.type === 'arrayOfString'; else boolean">
+                    <div [formArrayName]="field.name" class="mt-2">
+                      <div *ngFor="let control of getMetaFieldControlArray(field.name)['controls']; let i = index" class="mb-3 position-relative">
+                        <input class="one-line-input blue pr-4" [formControl]="control"/>
+                        <div class="position-absolute text-danger" style="right: 0px; top: 50%; transform: translateY(-50%)" (click)="onClickRemoveArrayItem(field.name, i)">
+                          <i-feather
+                            name="trash2"
+                            class="icon icon-red icon-small hover"
+                            style="cursor: pointer"
+                            [pTooltip]="'Delete'"
+                            [tooltipPosition]="'top'"
+                          ></i-feather>
+                        </div>
+                      </div>
+                      <div>
+                        <button
+                          pButton
+                          (click)="addControlToField(field.name)"
+                          class="button button-primary button-small mb-3"
+                          icon="pi pi-plus"
+                          label="Add"
+                        ></button>
+                      </div>
+                    </div>
+                  </ng-container>
+                </ng-template>
+                <ng-template #boolean>
+                  <ng-container *ngIf="field.type === 'boolean'; else objectArray">
+                    <div class="mt-2">
+                      <input [formControlName]="field.name" type="checkbox"/>
+                    </div>
                   </ng-container>
                 </ng-template>
                 <ng-template #objectArray>
