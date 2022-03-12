@@ -7,6 +7,7 @@ import {SharedModule} from '@elexifier/shared/shared.module';
 import {AdminRoutingModule} from '@elexifier/admin/admin-routing.module';
 import { LogDetailsComponent } from './components/logs/log-details/log-details.component';
 import {ButtonModule} from 'primeng/button';
+import { XmlLogsComponent } from './components/xml-logs/xml-logs.component';
 
 
 
@@ -15,6 +16,7 @@ import {ButtonModule} from 'primeng/button';
     AdminComponent,
     LogsComponent,
     LogDetailsComponent,
+    XmlLogsComponent,
   ],
     imports: [
         CommonModule,

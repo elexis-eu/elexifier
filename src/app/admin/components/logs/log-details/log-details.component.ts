@@ -16,6 +16,7 @@ export class LogDetailsComponent implements OnInit {
   public downloadingAnnotations = false;
   public downloadingXml = false;
   public downloadingPdf = false;
+  public hideDownloadButtons = false;
 
   public constructor(
     private logService: LogsApiService,
@@ -25,6 +26,8 @@ export class LogDetailsComponent implements OnInit {
 
   public ngOnInit() {
     this.logId = this.route.snapshot.paramMap.get('id');
+    this.hideDownloadButtons = this.route.snapshot.routeConfig.path.includes('xml');
+    
     this.logService.getLogById(this.logId)
       .subscribe((res) => {
         this.log = res;

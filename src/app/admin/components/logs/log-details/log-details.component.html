@@ -1,7 +1,7 @@
 <div class="p-5">
   <div class="d-flex align-items-center justify-content-between mb-4">
     <h4 class="">Log ID: {{log.id}}</h4>
-    <div>
+    <div *ngIf="!hideDownloadButtons">
       <button
         [disabled]="downloadingAnnotations"
         class="button button-primary d-inline-block mr-3"

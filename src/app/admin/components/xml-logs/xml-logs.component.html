@@ -1,0 +1,37 @@
+<div>
+  <ng-container *ngIf="logs">
+    <table class="table table-borderless table-striped bg-white">
+      <thead>
+      <tr>
+        <td>ID</td>
+        <td>Dataset ID <input [(ngModel)]="dsid" (input)="filterLogs()" class="one-line-input" placeholder="DSID..."></td>
+        <td>Time Logged</td>
+        <td>Tag <select [(ngModel)]="tag" (change)="filterLogs()" class="one-line-input" placeholder="Tag...">
+          <option value=""></option>
+          <option *ngFor="let tag of availableTags" [value]="tag">{{tag}}</option>
+        </select></td>
+      </tr>
+      </thead>
+      <tbody>
+      <ng-container *ngIf="filteredLogs.length > 0; else empty">
+        <tr *ngFor="let log of filteredLogs">
+          <td>{{ log.id }}</td>
+          <td>{{ log.dsid }}</td>
+          <td>{{ log.time }}</td>
+          <td>{{ log.tag }}</td>
+          <td>
+            <a [routerLink]="[log.id]">Check</a>
+          </td>
+        </tr>
+      </ng-container>
+      <ng-template #empty>
+        <tr>
+          <td colspan="4" class="text-muted text-center">
+            Logs empty
+          </td>
+        </tr>
+      </ng-template>
+      </tbody>
+    </table>
+  </ng-container>
+</div>
