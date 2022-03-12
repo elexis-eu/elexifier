@@ -52,6 +52,7 @@ enum PdfPreviewStatus {
 enum PdfDownloadStatus {
   PreparingDownload = 'Preparing_download',
   Ready = 'Ready',
+  Error = 'Error',
 }
 
 @Component({
@@ -87,11 +88,13 @@ export class PdfWorkflowOptionsComponent implements OnInit, OnDestroy, OnChanges
   }
 
   public canDownload() {
-    return (this.status?.ml === PdfMLStatus.LexFormat || this.status?.preview === PdfPreviewStatus.Ready);
+    return (this.status?.ml === PdfMLStatus.LexFormat || this.status?.preview === PdfPreviewStatus.Ready
+      || this.status?.download === PdfDownloadStatus.Error);
   }
 
   public isAnnotateDisabled() {
-    return (this.status?.annotate === PdfAnnotateStatus.Starting || this.status?.annotate === PdfAnnotateStatus.Processing);
+    return (this.status?.annotate === PdfAnnotateStatus.Starting
+      || this.status?.annotate === PdfAnnotateStatus.Processing);
   }
 
   public isPreviewDisabled() {
