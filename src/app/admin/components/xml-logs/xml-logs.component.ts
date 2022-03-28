@@ -29,7 +29,6 @@ export class XmlLogsComponent implements OnInit {
   }
 
   public filterLogs() {
-    console.log(this.tag)
     if (!this.dsid.length && !this.tag.length) {
       this.filteredLogs = this.logs.filter(l => l.tag !== 'ml_error' && l.tag !== 'ml_finished');
     } else {

@@ -6,6 +6,8 @@ import { SidebarStore } from '@elexifier/store/sidebar.store';
 import { AddDictionaryOrTransformationService } from '@elexifier/dictionaries/core/add-dictionary-or-transformation.service';
 import { ActivatedRoute } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
+import { DictionaryApiService } from '@elexifier/dictionaries/core/dictionary-api.service';
+import { ClarinPullModalService } from '@elexifier/dictionaries/components/clarin-pull-modal/clarin-pull-modal.service';
 
 enum WorkflowType {
   Pdf = 'pdf',
@@ -28,7 +30,9 @@ export class DictionariesPageComponent implements OnInit, OnDestroy {
   public constructor(
     private readonly sidebarStore: SidebarStore,
     private readonly addDictionaryOrTransformationService: AddDictionaryOrTransformationService,
+    private readonly dictionaryApiService: DictionaryApiService,
     private readonly route: ActivatedRoute,
+    private readonly clarinPullModalService: ClarinPullModalService,
   ) {}
 
   public ngOnDestroy(): void {
@@ -47,6 +51,10 @@ export class DictionariesPageComponent implements OnInit, OnDestroy {
       .subscribe(({ workflowType }) => {
         this.workflowType = workflowType;
       });
+  }
+
+  public openPullClarinModal() {
+    this.clarinPullModalService.openClarinPullModal();
   }
 
   public openCreateDictionaryAndTransformationModal() {

@@ -36,6 +36,12 @@ interface PdfWorkflowStatusResponse {
   xml_ml_out: string;
 }
 
+interface ClarinNewResponse {
+  found: string[];
+  message: string;
+  metadata: { [key: string]: any };
+}
+
 interface MetadataResponse {
   metadata: object;
 }
@@ -139,6 +145,14 @@ export class DictionaryApiService {
 
   public uploadDictionary(data): Observable<UploadDictionaryResponse> { // TODO: add interface
     return this.http.post<UploadDictionaryResponse>(`${ environment.apiUrl }/dataset/upload`, data);
+  }
+
+  public pullClarinDictionary(handle: string): Observable<ClarinNewResponse> {
+    return this.http.post<ClarinNewResponse>(`${ environment.apiUrl }/clarin/new`, { handle });
+  }
+
+  public pullClarinDictionaryFiles(handle: string, files: string[]): Observable<ClarinNewResponse> {
+    return this.http.post<ClarinNewResponse>(`${ environment.apiUrl }/clarin/new`, { handle, files });
   }
 
   public verifyPaths(dictionaryId: string, paths: string[]): Observable<{ paths: Array<string[]>}> {

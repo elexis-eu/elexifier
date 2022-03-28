@@ -13,6 +13,7 @@ enum Exceptions {
   FileError = 'FILE_ERROR',
   PostError = 'POST_ERROR',
   LoginError = 'LOGIN_ERROR',
+  ClarinError = 'CLARIN_ERROR',
 }
 
 @Injectable()
@@ -57,6 +58,11 @@ export class ErrorInterceptor implements HttpInterceptor {
             case Exceptions.LoginError === exceptionEnum:
               message = 'Invalid email or password. Please, try again!';
               break;
+            case Exceptions.ClarinError === exceptionEnum:
+              message = 'Clarin error: ' + res.error.message;
+              // Hack to pass the error to the error handler. Done not to break any other flows
+              throw new Error(res.error);
+              break;
             default:
               // message = JSON.stringify(res);
               message = 'We encountered a slight hiccup';
@@ -69,7 +75,7 @@ export class ErrorInterceptor implements HttpInterceptor {
             detail: message,
           });
 
-          return of(null);
+          throw of(null);
         }),
       );
   }
