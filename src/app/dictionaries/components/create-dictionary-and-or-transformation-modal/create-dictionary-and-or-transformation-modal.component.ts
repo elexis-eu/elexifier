@@ -321,7 +321,8 @@ export class CreateDictionaryAndOrTransformationModalComponent implements OnInit
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: 'Error uploading the dictionary. Please try again later.',
+          life: 10000,
+          detail: 'Your dictionary file cannot be uploaded as the file is not well-formed. Well-formed XMLs info: https://elexifier.elex.is/help/',
         });
 
         break;
