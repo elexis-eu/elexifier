@@ -22,6 +22,12 @@
             {{file}}
           </label>
         </div>
+        <div class="mb-4">
+          <label><b>Set acronym</b></label>
+          <div>
+            <input placeholder="acronym" class="one-line-input" type="input" formControlName="acronym">
+          </div>
+        </div>
         <div class="d-flex">
           <button [disabled]="loadingFiles || !form.get('files').value.length" class="button button-primary ml-auto" (click)="pullClarinFiles()">
             Pull files

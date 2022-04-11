@@ -17,6 +17,7 @@ export class ClarinPullModalComponent implements OnInit {
   public form = this.fb.group({
     handle: [''],
     files: new FormArray([]),
+    acronym: 'CLRN'
   });
   public loadingDictionary: boolean;
   public loadingFiles: boolean;
@@ -73,7 +74,11 @@ export class ClarinPullModalComponent implements OnInit {
     this.loadingFiles = true;
 
     this.dictionaryApiService
-      .pullClarinDictionaryFiles(this.form.get('handle').value, this.form.get('files').value).pipe(
+      .pullClarinDictionaryFiles(
+        this.form.get('handle').value,
+        this.form.get('files').value,
+        this.form.get('acronym').value,
+      ).pipe(
       catchError((error) => {
         this.loadingDictionary = false;
 

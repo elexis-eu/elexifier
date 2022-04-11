@@ -164,8 +164,8 @@ export class DictionaryApiService {
     return this.http.post<ClarinNewResponse>(`${ environment.apiUrl }/clarin/new`, { handle });
   }
 
-  public pullClarinDictionaryFiles(handle: string, files: string[]): Observable<ClarinNewResponse> {
-    return this.http.post<ClarinNewResponse>(`${ environment.apiUrl }/clarin/new`, { handle, files });
+  public pullClarinDictionaryFiles(handle: string, files: string[], acronym = 'CLRN'): Observable<ClarinNewResponse> {
+    return this.http.post<ClarinNewResponse>(`${ environment.apiUrl }/clarin/new`, { handle, files, acronym });
   }
 
   public verifyPaths(dictionaryId: string, paths: string[]): Observable<{ paths: Array<string[]>}> {
