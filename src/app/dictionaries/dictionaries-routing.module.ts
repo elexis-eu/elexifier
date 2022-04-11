@@ -4,6 +4,7 @@ import { DictionariesComponent } from '@elexifier/dictionaries/dictionaries.comp
 import { DictionariesPageComponent } from '@elexifier/dictionaries/components/dictionaries-page/dictionaries-page.component';
 import { TransformationsPageComponent } from '@elexifier/dictionaries/components/transformations-page/transformations-page.component';
 import {CharacterMappingPageComponent} from '@elexifier/dictionaries/components/character-mapping-page/character-mapping-page.component';
+import { PosMappingPageComponent } from '@elexifier/dictionaries/components/pos-mapping-page/pos-mapping-page.component';
 
 export const routes: Routes = [
   {
@@ -23,6 +24,11 @@ export const routes: Routes = [
       {
         path: ':dictionaryId/character-mapping',
         component: CharacterMappingPageComponent,
+        pathMatch: 'full',
+      },
+      {
+        path: ':dictionaryId/pos-mapping',
+        component: PosMappingPageComponent,
         pathMatch: 'full',
       },
       {

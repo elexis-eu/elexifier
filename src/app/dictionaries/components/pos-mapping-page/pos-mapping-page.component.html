@@ -1,0 +1,83 @@
+<div
+  class="pt-5 px-5 overflow-auto h-100"
+  style="flex: 1"
+>
+  <div [formGroup]="posMap">
+    <div class="row">
+      <div class="col-12 d-flex">
+        <div class="w-100">
+          <h3>POS mapping</h3>
+          <p>
+            On this page you can map the POS elements
+          </p>
+          <p class="text-muted">
+            e.g. Key: ~ Value: č
+          </p>
+        </div>
+        <div class="ml-auto">
+          <div class="d-flex align-items-center">
+            <button type="button" (click)="loadPosMap(true)" class="button button-secondary button-outline mr-2" style="white-space: nowrap">Refresh POS</button>
+            <button [disabled]="!posMap.dirty" type="button" (click)="savePosMap()" class="button button-primary">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="loadingPosMap; else data">Loading...</div>
+    <ng-template #data>
+      <div class="row">
+        <div class="col-5">Key</div>
+        <div class="col-5">Value</div>
+        <div class="col-2"></div>
+      </div>
+      <div class="row mb-4">
+        <ng-container [formGroup]="keyPair" *ngFor="let keyPair of posMap.controls; let i = index">
+          <div class="col-5 form-group">
+            {{keyPair.value.key}}
+          </div>
+          <div class="col-5 form-group">
+            <div
+              class=""
+              ngbDropdown>
+              <a
+                ngbDropdownToggle
+                style="cursor:pointer;"
+                class="fs-12 text-uppercase position-relative"
+              >
+                <span
+                  class="one-line-input text-uppercase d-inline-block w-100"
+                >{{keyPair.value.value}}</span>
+              </a>
+              <div
+                ngbDropdownMenu
+              >
+                <div
+                  ngbDropdownItem
+                  *ngFor="let i of getPOSElementList()"
+                  (click)="applyPOSElementToMap(keyPair, i)"
+                  style="cursor: pointer"
+                >
+                  {{i}}
+                </div>
+                <div
+                  style="cursor: pointer"
+                  ngbDropdownItem
+                  (click)="applyPOSElementToMap(keyPair, null)"
+                >
+                  <i>null</i>
+                </div>
+                <div
+                  style="cursor: pointer"
+                  ngbDropdownItem
+                  (click)="applyPOSElementToMap(keyPair, '')"
+                >
+                  <i>empty string</i>
+                </div>
+              </div>
+              <!--          <input class="one-line-input" formControlName="value">-->
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </ng-template>
+  </div>
+</div>

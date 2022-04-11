@@ -29,6 +29,7 @@ import { DownloadTransformationComponent } from '@elexifier/dictionaries/compone
 import { CalendarModule } from 'primeng/calendar';
 import { CharacterMappingPageComponent } from './components/character-mapping-page/character-mapping-page.component';
 import { ClarinPullModalComponent } from './components/clarin-pull-modal/clarin-pull-modal.component';
+import { PosMappingPageComponent } from './components/pos-mapping-page/pos-mapping-page.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { ClarinPullModalComponent } from './components/clarin-pull-modal/clarin-
     DownloadTransformationComponent,
     CharacterMappingPageComponent,
     ClarinPullModalComponent,
+    PosMappingPageComponent,
   ],
     imports: [
       SharedModule,

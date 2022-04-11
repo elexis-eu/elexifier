@@ -78,6 +78,12 @@ export class DictionaryApiService {
     (`${ environment.apiUrl }/ml/${dictionaryId}/character_map`);
   }
 
+  public getPOSMap(
+    dictionaryId: string, refresh?: boolean): Observable<{ pos_map: {[key: string]: string}}> { // TODO: add type
+    return this.http.get<{ pos_map: {[key: string]: string}}>
+    (`${ environment.apiUrl }/ml/${dictionaryId}/pos_map?refresh=${refresh ? '1' : '0'}`);
+  }
+
   public getDictionaries(type?: string): Observable<Dictionary[]> {
     const dictionaryType = type === 'pdf' ? '&mimetype=' + FileTypes.AppPdf : '';
 
@@ -125,6 +131,13 @@ export class DictionaryApiService {
     charMap: { character_map: {[key: string]: string}})
     : Observable<{msg: string}> { // TODO: add type
     return this.http.post<{msg: string}>(`${ environment.apiUrl }/ml/${dictionaryId}/character_map`, charMap);
+  }
+
+  public setPOSMap(
+    dictionaryId: string,
+    posMap: { pos_map: {[key: string]: string}})
+    : Observable<{msg: string}> { // TODO: add type
+    return this.http.post<{msg: string}>(`${ environment.apiUrl }/ml/${dictionaryId}/pos_map`, posMap);
   }
 
   public startAnnotateProcess(dictionaryId: string, sendNext20 = false) { // TODO: add type
