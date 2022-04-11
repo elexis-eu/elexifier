@@ -45,8 +45,7 @@ export class XmlLogsComponent implements OnInit {
         this.logs = res.logs;
 
         // Filter out PDF ML errors from
-        this.filteredLogs = this.logs
-          //.filter(l => l.tag !== 'ml_error' && l.tag !== 'ml_finished');
+        this.filterLogs();
       });
   }
 
