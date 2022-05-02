@@ -149,7 +149,7 @@ export class DictionaryApiService {
   }
 
   public startPreviewProcess(dictionaryId: string) { // TODO: add type
-    return this.http.get(`${ environment.apiUrl }/ml/${dictionaryId}?send_file=True`);
+    return this.http.get(`${ environment.apiUrl }/ml/${dictionaryId}/preview`);
   }
 
   public triggerMlWorkflow(dictionaryId: string) {
