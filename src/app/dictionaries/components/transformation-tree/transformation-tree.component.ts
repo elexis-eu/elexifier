@@ -130,6 +130,11 @@ export class TransformationTreeComponent implements OnInit, OnChanges {
     }, 50);
   }
 
+  public hasAdoptSelectorData(transformerName: string) {
+    const transformer = this.transformation[transformerName];
+    return !!transformer?.adoptSelector;
+  }
+
   public getSelectorData(transformerName) {
     if (this.transformation && this.transformation[transformerName]) {
       const transformer = this.transformation[transformerName];
@@ -313,6 +318,14 @@ export class TransformationTreeComponent implements OnInit, OnChanges {
         // });
       });
     }
+  }
+
+  public addAdoptSelector(transformerId): void {
+    this.transformationService.addAdoptSelector(transformerId);
+  }
+
+  public removeAdoptSelector(transformerId): void {
+    this.transformationService.removeAdoptSelector(transformerId);
   }
 
   public onAddSelector(transformerId): void {

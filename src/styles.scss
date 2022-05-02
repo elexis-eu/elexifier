@@ -267,7 +267,7 @@ tr:focus, th:focus {
   }
 }
 
-input.one-line-input {
+span.one-line-input, input.one-line-input {
   border: none;
   width: 100%;
   display: block;

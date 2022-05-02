@@ -10,6 +10,7 @@ import { MessageService } from 'primeng/api';
 import {WorkflowStore} from '@elexifier/store/workflow.store';
 import {map, switchMap} from 'rxjs/operators';
 import {SidebarStore} from '@elexifier/store/sidebar.store';
+import { element } from 'protractor';
 
 @Injectable({
   providedIn: 'root',
@@ -76,6 +77,16 @@ export class TransformationService {
     delete transformer.xlat[posElement];
   }
 
+  public addAdoptSelector(elementName: string) {
+    const transformer = this._transformation[elementName] as Transformer;
+    transformer.adoptSelector = this._getDefaultSelector();
+  }
+
+  public removeAdoptSelector(elementName: string) {
+    const transformer = this._transformation[elementName] as Transformer;
+    delete transformer.adoptSelector;
+  }
+
   public addSelector(elementName, selector: Selector) {
     const transformer = this._transformation[elementName] as Transformer;
     const transformerType = this.getTransformerType(elementName) as string;
@@ -104,7 +115,7 @@ export class TransformationService {
 
   public addTransformer(transformerName: string) {
     if (this._transformation && !this._transformation[transformerName]) {
-      const transformerData: { attr: string; selector: Selector; type: string; xlat?: any} = {
+      const transformerData: Transformer = {
         type: TransformerType.Simple,
         selector: this._getDefaultSelector(),
         attr: PseudoAttributes.ElementInnerText,
@@ -523,6 +534,11 @@ export class TransformationService {
     // if (transformer && transformer.xlat) {
     //     //   transformer.xlat = DataHelperService.mirrorObject(transformer.xlat);
     //     // }
+
+    if (!transformation?.ex?.adoptSelector?.expr?.length) {
+      delete transformation?.ex?.adoptSelector;
+    }
+
     transformation = this.prependSelectorsRelatively(transformation);
     return transformation;
   }
