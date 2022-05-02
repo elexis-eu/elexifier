@@ -65,7 +65,7 @@ export class ErrorInterceptor implements HttpInterceptor {
               break;
             default:
               // message = JSON.stringify(res);
-              message = 'We encountered a slight hiccup';
+              message = 'We encountered an error';
               console.log('Unhandled Exception');
           }
 
