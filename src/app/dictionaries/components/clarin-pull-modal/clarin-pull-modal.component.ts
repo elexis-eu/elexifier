@@ -29,6 +29,16 @@ export class ClarinPullModalComponent implements OnInit {
     private readonly messageService: MessageService,
   ) { }
 
+  public isChecked(value: any) {
+    const formArray: FormArray = this.form.get('files') as FormArray;
+
+    return formArray.controls.find((ctrl: FormControl) => {
+      if (ctrl.value === value) {
+        return true;
+      }
+    });
+  }
+
   public ngOnInit() {}
 
   public onFileCheckChange(event) {
@@ -93,5 +103,19 @@ export class ClarinPullModalComponent implements OnInit {
       });
       this.ref.close();
     });
+  }
+
+  public toggleAllFiles() {
+    const formArray: FormArray = this.form.get('files') as FormArray;
+
+    if (formArray.value.length) {
+      while (formArray.length !== 0) {
+        formArray.removeAt(0);
+      }
+    } else {
+      this.availableFiles.forEach((file) => {
+        formArray.push(new FormControl(file));
+      });
+    }
   }
 }

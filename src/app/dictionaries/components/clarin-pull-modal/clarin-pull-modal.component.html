@@ -15,10 +15,13 @@
         </div>
       </div>
       <div *ngIf="!!availableFiles.length" class="bg-gray p-3">
-        <label><b>Select files</b></label>
+        <div class="d-flex align-items-center">
+          <label><b>Select files</b></label>
+          <button class="button button-primary ml-3" (click)="toggleAllFiles()">Toggle all</button>
+        </div>
         <div *ngFor="let file of availableFiles; let i=index" class="d-flex py-2">
           <label>
-            <input type="checkbox" [value]="file" (change)="onFileCheckChange($event)">
+            <input type="checkbox" [value]="file" [checked]="isChecked(file)" (change)="onFileCheckChange($event)">
             {{file}}
           </label>
         </div>
