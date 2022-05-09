@@ -2,7 +2,7 @@ import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChil
 import { MessageService} from 'primeng/api';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef, } from 'primeng/dynamicdialog';
 import { DictionaryApiService } from '@elexifier/dictionaries/core/dictionary-api.service';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Form, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FileUpload } from 'primeng/primeng';
 import { FileTypes } from '@elexifier/dictionaries/core/type/file-types.enum';
 import { DataHelperService, MetadataItem } from '@elexifier/dictionaries/core/data-helper.service';
@@ -48,16 +48,29 @@ export class CreateDictionaryComponent implements OnInit, AfterViewInit {
   }
 
   public addControlToField(field) {
-    const fields = DataHelperService.getDefaultMetadataArrayItemFields(field);
-    const innerFields = {};
+    const _field = this.metadataFields.find(f => f.name === field);
+    let array: FormArray;
+    switch (_field.type) {
+      case 'arrayOfObject': {
+        const fields = DataHelperService.getDefaultMetadataArrayItemFields(field);
+        const innerFields = {};
 
-    fields.forEach((f) => {
-      innerFields[f] = this.fb.control('');
-    });
+        fields.forEach((f) => {
+          innerFields[f] = this.fb.control('');
+        });
 
-    this.editingField = field;
-    const array = this.createDictionaryFormGroup.get(`metaData.${ field }`) as FormArray;
-    array.push(this.fb.group({...innerFields}));
+        this.editingField = field;
+        array = this.createDictionaryFormGroup.get(`metaData.${ field }`) as FormArray;
+        array.push(this.fb.group({...innerFields}));
+
+        break;
+      }
+      case 'arrayOfString': {
+        array = this.createDictionaryFormGroup.get(`metaData.${ field }`) as FormArray;
+        array.push(this.fb.control(''));
+        break;
+      }
+    }
 
     this.editingIndex = array.length - 1;
   }
@@ -86,6 +99,11 @@ export class CreateDictionaryComponent implements OnInit, AfterViewInit {
         case 'date': {
           // TODO: Additional handling
           newControl = this.fb.control('');
+
+          break;
+        }
+        case 'arrayOfString': {
+          newControl = this.fb.array([]);
 
           break;
         }
@@ -134,6 +152,7 @@ export class CreateDictionaryComponent implements OnInit, AfterViewInit {
 
   public onClickRemoveArrayItem(field, index) {
     const array = this.createDictionaryFormGroup.get(`metaData.${ field }`) as FormArray;
+    console.log(this.createDictionaryFormGroup.value)
 
     array.removeAt(index);
   }
@@ -145,6 +164,7 @@ export class CreateDictionaryComponent implements OnInit, AfterViewInit {
   // Only when editing metadata
   public onSave() {
     const metaData = this.createDictionaryFormGroup.get('metaData').value;
+    console.log(metaData);
 
     this.dictionaryApiService.saveMetadata(this.dictionaryId, metaData)
       .subscribe((res) => {

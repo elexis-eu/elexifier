@@ -172,6 +172,87 @@ export class DataHelperService {
       tooltip: 'A related resource from which the described resource is derived.',
     },
     {
+      name: 'Type',
+      type: 'text',
+      tooltip: 'Type of the resource: "Corpus" refers to text, speech and multimodal corpora. "Lexical Conceptual Resource" includes lexica, ontologies, dictionaries, word lists etc. "language Description" covers language models and grammars. "Technology / Tool / Service" is used for tools, systems, system components etc.',
+      required: true,
+    },
+    {
+      name: 'Project URL',
+      type: 'text',
+      tooltip: 'URL of resource/project related to the submitted item (eg. project webpage). Regexp controlled (starts with http/https)',
+    },
+    {
+      name: 'Demo URL',
+      type: 'text',
+      tooltip: 'Demonstration, samples or in case of tools sample output URL. Regexp controlled (starts with http/https)',
+    },
+    {
+      name: 'Date issued',
+      type: 'date',
+      tooltip: 'The date when the submission data were issued if any e.g., 2014-01-21 or at least the year.',
+      required: true,
+    },
+    {
+      name: 'Author',
+      type: 'arrayOfString',
+      tooltip: 'Names of authors of the item. In case of collections (eg. corpora or other large database of text) you usually want to provide the name of people involved in compiling the collection, not the authors of individual pieces. A person name is stored as surname comma any other name (eg. "Smith, John Jr.").',
+      required: true,
+    },
+    {
+      name: 'Publisher',
+      type: 'arrayOfString',
+      tooltip: 'Name of the organization/entity which published any previous instance of the item, or your home institution.',
+      required: true,
+    },
+    {
+      name: 'Contact person',
+      type: 'arrayOfString',
+      tooltip: 'Person to contact in case of issues with the submission. Someone able to provide information about the resource, eg. one of the authors, or the submitter. Stored as structured string containing given name, surname, email and home organization.',
+      required: true,
+    },
+    {
+      name: 'Funding',
+      type: 'arrayOfString',
+      tooltip: 'Person to contact in case of issues with the submission. Someone able to provide information about the resource, eg. one of the authors, or the submitter. Stored as structured string containing given name, surname, email and home organization.',
+    },
+    {
+      name: 'Description',
+      type: 'arrayOfString',
+      tooltip: 'Person to contact in case of issues with the submission. Someone able to provide information about the resource, eg. one of the authors, or the submitter. Stored as structured string containing given name, surname, email and home organization.',
+      required: true,
+    },
+    {
+      name: 'Language',
+      type: 'arrayOfString',
+      tooltip: 'The language(s) of the main contenten of the item. Stored as ISO 639-3 code. Required for corpora, lexical conceptual resources and language descriptions.',
+    },
+    {
+      name: 'Subject Keywords',
+      type: 'arrayOfString',
+      tooltip: 'Keywords or phrases related to the subject of the item.',
+    },
+    {
+      name: 'Size',
+      type: 'arrayOfString',
+      tooltip: 'Extent of the submitted data, eg. the number of token, or number of files.',
+    },
+    {
+      name: 'Media type',
+      type: 'text',
+      tooltip: 'Media type of the main content of the item, eg. text or audio. Dropdown selection, required for corpora, language descriptions and lexical conceptual resources.',
+    },
+    {
+      name: 'Detailed type',
+      type: 'text',
+      tooltip: 'Further classification of the resource type. Dropdown selection, required for tools, language descriptions and lexical conceptual resources.',
+    },
+    {
+      name: 'Language Dependent',
+      type: 'boolean',
+      tooltip: 'Boolean value indicating whether the described tool/service is language dependent or not. Required for tools',
+    },
+    {
       name: 'creator',
       type: 'arrayOfObject',
       tooltip: 'The creator of the resource.',

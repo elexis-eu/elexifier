@@ -13,6 +13,7 @@ enum Exceptions {
   FileError = 'FILE_ERROR',
   PostError = 'POST_ERROR',
   LoginError = 'LOGIN_ERROR',
+  ClarinError = 'CLARIN_ERROR',
 }
 
 @Injectable()
@@ -35,31 +36,36 @@ export class ErrorInterceptor implements HttpInterceptor {
 
           switch (true) {
             case Exceptions.UserExists === exceptionEnum:
-              message = 'User already exists!';
+              message = 'User already exists';
               break;
             case Exceptions.Unauthorized === exceptionEnum:
-              message = 'You are unauthorized to access this content!';
+              message = 'You are unauthorized to access this content';
               this.authService.logout();
               break;
             case Exceptions.InvalidAuthToken === exceptionEnum:
-              message = 'Invalid auth token. Please, login again!';
+              message = 'Invalid auth token. Please, login again';
               this.authService.logout();
               break;
             case Exceptions.FileExists === exceptionEnum:
-              message = 'File already exists!';
+              message = 'File already exists';
               break;
             case Exceptions.FileError === exceptionEnum:
-              message = 'Ooops, file error!';
+              message = 'File error';
               break;
             case Exceptions.PostError === exceptionEnum:
-              message = 'Ooops, post error!';
+              message = 'Post error';
               break;
             case Exceptions.LoginError === exceptionEnum:
               message = 'Invalid email or password. Please, try again!';
               break;
+            case Exceptions.ClarinError === exceptionEnum:
+              message = 'Clarin error: ' + res.error.message;
+              // Hack to pass the error to the error handler. Done not to break any other flows
+              throw new Error(res.error);
+              break;
             default:
               // message = JSON.stringify(res);
-              message = 'We encountered a slight hiccup';
+              message = 'We encountered an error';
               console.log('Unhandled Exception');
           }
 
@@ -69,7 +75,7 @@ export class ErrorInterceptor implements HttpInterceptor {
             detail: message,
           });
 
-          return of(null);
+          throw of(null);
         }),
       );
   }

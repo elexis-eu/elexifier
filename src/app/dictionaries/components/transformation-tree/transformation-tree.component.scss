@@ -436,6 +436,7 @@ $baseIndent: 75px + 16;
                 $indent: $baseIndent + 32px * $i;
                 &.indent-#{$i} {
                   padding-left: $indent;
+                  padding-right: 24px;
                 }
               }
 
@@ -447,6 +448,7 @@ $baseIndent: 75px + 16;
                 position: relative;
                 line-height: 16px;
                 padding-left: 1rem;
+                padding-right: 60px;
 
                 &::after {
                   content: '';

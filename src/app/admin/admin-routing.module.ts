@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import {AdminComponent} from '@elexifier/admin/admin.component';
 import {LogsComponent} from '@elexifier/admin/components/logs/logs.component';
 import {LogDetailsComponent} from '@elexifier/admin/components/logs/log-details/log-details.component';
+import { XmlLogsComponent } from '@elexifier/admin/components/xml-logs/xml-logs.component';
 
 export const routes: Routes = [
   {
@@ -15,12 +16,22 @@ export const routes: Routes = [
     component: AdminComponent,
     children: [
       {
-        path: 'logs',
+        path: 'logs/pdf',
         component: LogsComponent,
         pathMatch: 'full',
       },
       {
-        path: 'logs/:id',
+        path: 'logs/pdf/:id',
+        component: LogDetailsComponent,
+        pathMatch: 'full',
+      },
+      {
+        path: 'logs/xml',
+        component: XmlLogsComponent,
+        pathMatch: 'full',
+      },
+      {
+        path: 'logs/xml/:id',
         component: LogDetailsComponent,
         pathMatch: 'full',
       },

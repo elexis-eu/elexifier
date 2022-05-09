@@ -7,9 +7,10 @@
     </span>
     </div>
     <div class="sidebar-column--content">
+      <h6 class="pt-2 pl-2">PDF</h6>
       <ul class="sidebar-column-menu">
         <li
-          [routerLink]="['logs']"
+          [routerLink]="['logs/pdf']"
           routerLinkActive="selected"
           [routerLinkActiveOptions]="{exact: true}"
           class="sidebar-column-menu-item hover">
@@ -19,7 +20,20 @@
           </div>
         </li>
         <li
-          [routerLink]="['logs']"
+          [routerLink]="['logs/pdf']"
+          [queryParams]="{errorOnly: true}"
+          routerLinkActive="selected"
+          [routerLinkActiveOptions]="{exact: true}"
+          class="sidebar-column-menu-item hover">
+          <div
+            class="sidebar-column-menu-item--name sidebar-column-menu-item--name-pdf">
+            Errors
+          </div>
+        </li>
+        <hr/>
+        <h6 class="pt-2 pl-2">XML</h6>
+        <li
+          [routerLink]="['logs/xml']"
           [queryParams]="{errorOnly: true}"
           routerLinkActive="selected"
           [routerLinkActiveOptions]="{exact: true}"

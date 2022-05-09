@@ -495,6 +495,92 @@
               </div>
               <div
                 class="transformer-setting"
+                *ngIf="transformer.id === 'ex'"
+              >
+                <div class="selector-setting--name">
+                  adoptSelector
+                </div>
+                <div class="selector-setting--value">
+                  <ng-container *ngIf="!hasAdoptSelectorData(transformer.id); else editAdoptSelector">
+                    <span class="add-selector-button" style="cursor: pointer"  (click)="addAdoptSelector(transformer.id)">Add adopt selector</span>
+                  </ng-container>
+                  <ng-template #editAdoptSelector>
+                    <div class="d-flex">
+                      <span
+                        class="content one-line-input"
+                        style="min-width: 20px; font-size: 11px; padding: 4px"
+                        appContenteditable="true"
+                        contenteditable="true"
+                        (ngModelChange)="onChangeSelector(transformer.id, $event); op9.show($event, actual1); selectorsChanged(transformer.id)"
+                        (keyup.arrowDown)="goDownSelectorList()"
+                        (keyup.arrowUp)="goUpSelectorList()"
+                        (keyup.escape)="input1.blur(); op9.hide(); selectorSearch$.next('');"
+                        (keydown.enter)="$event.preventDefault();"
+                        [disabled]="!editable"
+                        [(ngModel)]="transformation.ex.adoptSelector.expr"
+                        [appAvailableNodesValidator]="allowedSelectorValues"
+                        [name]="'selector-'+transformer.id+'-adopt'"
+                        [ngClass]="{'invalid': val1.errors}"
+                        #val1="ngModel"
+                        required
+                        #input1
+                        appAutofocus
+                        [autofocusEnabled]="autofocusEnabled"
+                      ></span>
+                      <span
+                        class="selector-value--dropdown"
+                        [ngClass]="{'visible': op9.overlayVisible}"
+                        (click)="op9.toggle($event)"
+                        #actual1
+                      >
+                              <i-feather
+                                name="chevron-down"
+                                class="icon icon-small"
+                              ></i-feather>
+                            </span>
+                      <p-overlayPanel
+                        #op9
+                        appendTo="body"
+                        styleClass="selector-dropdown elexifier-scroller"
+                      >
+                        <div>
+                          <div class="dropdown-selector-menu">
+                            <ng-container *ngIf="filteredXmlNodes.length > 0; else none">
+                              <div
+                                class="dropdown-selector-menu--item text-center"
+                                (click)="removeAdoptSelector(transformer.id)"
+                              >
+                                <feather-icon
+                                  name="trash-2"
+                                  class="icon icon-small text-danger"
+                                ></feather-icon>
+                              </div>
+                              <div
+                                [ngClass]="{'selected': j === highlightedSelectorIndex}"
+                                class="dropdown-selector-menu--item"
+                                *ngFor="let node of filteredXmlNodes let j = index;"
+                                (click)="transformation.ex.adoptSelector.expr = node; op9.hide(); selectorsChanged(transformer.id)"
+                              >
+                                {{ node }}
+                              </div>
+                            </ng-container>
+                            <ng-template #none>
+                              <div
+                                class="dropdown-selector-menu--item text-gray"
+                                (click)="op9.hide()"
+                              >
+                                None
+                              </div>
+                            </ng-template>
+                          </div>
+                        </div>
+                      </p-overlayPanel>
+                    </div>
+                  </ng-template>
+                </div>
+              </div>
+              <div
+                class="transformer-setting"
                 *ngIf="shouldShowCustomAttributeOption(transformer.id)"
               >
                 <div class="selector-setting--name">
@@ -1001,6 +1087,92 @@
                       Constant
                     </option>
                   </select>
+                </div>
+              </div>
+              <div
+                class="transformer-setting"
+                *ngIf="transformer.id === 'ex'"
+              >
+                <div class="selector-setting--name">
+                  adoptSelector
+                </div>
+                <div class="selector-setting--value">
+                  <ng-container *ngIf="!hasAdoptSelectorData(transformer.id); else editAdoptSelector">
+                    <span class="add-selector-button" style="cursor: pointer"  (click)="addAdoptSelector(transformer.id)">Add adopt selector</span>
+                  </ng-container>
+                  <ng-template #editAdoptSelector>
+                    <div class="d-flex">
+                      <span
+                        class="content one-line-input"
+                        style="min-width: 20px; font-size: 11px; padding: 4px"
+                        appContenteditable="true"
+                        contenteditable="true"
+                        (ngModelChange)="onChangeSelector(transformer.id, $event); op9.show($event, actual1); selectorsChanged(transformer.id)"
+                        (keyup.arrowDown)="goDownSelectorList()"
+                        (keyup.arrowUp)="goUpSelectorList()"
+                        (keyup.escape)="input1.blur(); op9.hide(); selectorSearch$.next('');"
+                        (keydown.enter)="$event.preventDefault()"
+                        [disabled]="!editable"
+                        [(ngModel)]="transformation.ex.adoptSelector.expr"
+                        [appAvailableNodesValidator]="allowedSelectorValues"
+                        [name]="'selector-'+transformer.id+'-adopt'"
+                        [ngClass]="{'invalid': val1.errors}"
+                        #val1="ngModel"
+                        required
+                        #input1
+                        appAutofocus
+                        [autofocusEnabled]="autofocusEnabled"
+                      ></span>
+                      <span
+                        class="selector-value--dropdown"
+                        [ngClass]="{'visible': op9.overlayVisible}"
+                        (click)="op9.toggle($event)"
+                        #actual1
+                      >
+                              <i-feather
+                                name="chevron-down"
+                                class="icon icon-small"
+                              ></i-feather>
+                            </span>
+                      <p-overlayPanel
+                        #op9
+                        appendTo="body"
+                        styleClass="selector-dropdown elexifier-scroller"
+                      >
+                        <div>
+                          <div class="dropdown-selector-menu">
+                            <ng-container *ngIf="filteredXmlNodes.length > 0; else none">
+                              <div
+                                class="dropdown-selector-menu--item text-center"
+                                (click)="removeAdoptSelector(transformer.id)"
+                              >
+                                <feather-icon
+                                  name="trash-2"
+                                  class="icon icon-small text-danger"
+                                ></feather-icon>
+                              </div>
+                              <div
+                                [ngClass]="{'selected': j === highlightedSelectorIndex}"
+                                class="dropdown-selector-menu--item"
+                                *ngFor="let node of filteredXmlNodes let j = index;"
+                                (click)="transformation.ex.adoptSelector.expr = node; op9.hide(); selectorsChanged(transformer.id)"
+                              >
+                                {{ node }}
+                              </div>
+                            </ng-container>
+                            <ng-template #none>
+                              <div
+                                class="dropdown-selector-menu--item text-gray"
+                                (click)="op9.hide()"
+                              >
+                                None
+                              </div>
+                            </ng-template>
+                          </div>
+                        </div>
+                      </p-overlayPanel>
+                    </div>
+                  </ng-template>
                 </div>
               </div>
               <div

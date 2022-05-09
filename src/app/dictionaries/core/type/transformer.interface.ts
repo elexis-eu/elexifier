@@ -59,6 +59,7 @@ import { Selector } from '@elexifier/dictionaries/core/type/selector.interface';
 
 // TODO: rename to transformer
 export interface Transformer {
+  adoptSelector?: Selector
   attr?: string;
   attr_type?: string;
   const?: any;

@@ -36,6 +36,12 @@ interface PdfWorkflowStatusResponse {
   xml_ml_out: string;
 }
 
+interface ClarinNewResponse {
+  found: string[];
+  message: string;
+  metadata: { [key: string]: any };
+}
+
 interface MetadataResponse {
   metadata: object;
 }
@@ -70,6 +76,12 @@ export class DictionaryApiService {
     dictionaryId: string): Observable<{ character_map: {[key: string]: string}}> { // TODO: add type
     return this.http.get<{ character_map: {[key: string]: string}}>
     (`${ environment.apiUrl }/ml/${dictionaryId}/character_map`);
+  }
+
+  public getPOSMap(
+    dictionaryId: string, refresh?: boolean): Observable<{ pos_map: {[key: string]: string}}> { // TODO: add type
+    return this.http.get<{ pos_map: {[key: string]: string}}>
+    (`${ environment.apiUrl }/ml/${dictionaryId}/pos_map?refresh=${refresh ? '1' : '0'}`);
   }
 
   public getDictionaries(type?: string): Observable<Dictionary[]> {
@@ -121,6 +133,13 @@ export class DictionaryApiService {
     return this.http.post<{msg: string}>(`${ environment.apiUrl }/ml/${dictionaryId}/character_map`, charMap);
   }
 
+  public setPOSMap(
+    dictionaryId: string,
+    posMap: { pos_map: {[key: string]: string}})
+    : Observable<{msg: string}> { // TODO: add type
+    return this.http.post<{msg: string}>(`${ environment.apiUrl }/ml/${dictionaryId}/pos_map`, posMap);
+  }
+
   public startAnnotateProcess(dictionaryId: string, sendNext20 = false) { // TODO: add type
     return this.http.get(`${ environment.apiUrl }/ml/${dictionaryId}/annotate?add_pages=${sendNext20}`);
   }
@@ -130,7 +149,7 @@ export class DictionaryApiService {
   }
 
   public startPreviewProcess(dictionaryId: string) { // TODO: add type
-    return this.http.get(`${ environment.apiUrl }/ml/${dictionaryId}?send_file=True`);
+    return this.http.get(`${ environment.apiUrl }/ml/${dictionaryId}/preview`);
   }
 
   public triggerMlWorkflow(dictionaryId: string) {
@@ -139,6 +158,14 @@ export class DictionaryApiService {
 
   public uploadDictionary(data): Observable<UploadDictionaryResponse> { // TODO: add interface
     return this.http.post<UploadDictionaryResponse>(`${ environment.apiUrl }/dataset/upload`, data);
+  }
+
+  public pullClarinDictionary(handle: string): Observable<ClarinNewResponse> {
+    return this.http.post<ClarinNewResponse>(`${ environment.apiUrl }/clarin/new`, { handle });
+  }
+
+  public pullClarinDictionaryFiles(handle: string, files: string[], acronym = 'CLRN'): Observable<ClarinNewResponse> {
+    return this.http.post<ClarinNewResponse>(`${ environment.apiUrl }/clarin/new`, { handle, files, acronym });
   }
 
   public verifyPaths(dictionaryId: string, paths: string[]): Observable<{ paths: Array<string[]>}> {

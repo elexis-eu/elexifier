@@ -1,0 +1,42 @@
+<div>
+  <div class="ui-dialog-titlebar d-flex">
+    <span>Pull a dictionary</span>
+    <span
+      (click)="ref.close()"
+      class="pi pi-times elex-pi-times"
+    ></span>
+  </div>
+  <div>
+    <form [formGroup]="form">
+      <div class="p-3">
+        <input placeholder="URL (e.g. https://hdl.handle.net/<id>/<id>)" class="one-line-input" formControlName="handle"/>
+        <div class="pt-2 d-flex" *ngIf="!(!!availableFiles.length)">
+          <button type="button" [disabled]="loadingDictionary" class="button button-primary ml-auto" (click)="pullClarinDictionary()">Load dictionary</button>
+        </div>
+      </div>
+      <div *ngIf="!!availableFiles.length" class="bg-gray p-3">
+        <div class="d-flex align-items-center">
+          <label><b>Select files</b></label>
+          <button class="button button-primary ml-3" (click)="toggleAllFiles()">Toggle all</button>
+        </div>
+        <div *ngFor="let file of availableFiles; let i=index" class="d-flex py-2">
+          <label>
+            <input type="checkbox" [value]="file" [checked]="isChecked(file)" (change)="onFileCheckChange($event)">
+            {{file}}
+          </label>
+        </div>
+        <div class="mb-4">
+          <label><b>Set acronym</b></label>
+          <div>
+            <input placeholder="acronym" class="one-line-input" type="input" formControlName="acronym">
+          </div>
+        </div>
+        <div class="d-flex">
+          <button [disabled]="loadingFiles || !form.get('files').value.length" class="button button-primary ml-auto" (click)="pullClarinFiles()">
+            Pull files
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

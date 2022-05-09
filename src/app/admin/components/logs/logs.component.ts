@@ -31,7 +31,7 @@ export class LogsComponent implements OnInit {
   }
 
   public loadLogs(errorOnly = false) {
-    this.logsApiService.getLogs(errorOnly)
+    this.logsApiService.getLogs()
       .subscribe((res) => {
         this.logs = res.logs;
         if (errorOnly) {

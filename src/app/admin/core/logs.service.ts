@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@env/environment';
 import {Log} from '@elexifier/admin/models/log';
+import * as queryString from 'querystring';
 
 interface LogsResponse {
   logs: Log[];
@@ -30,22 +31,22 @@ export class LogsApiService {
     );
   }
 
+  public downloadPdf(id: string): Observable<any> {
+    return this.http.get(
+      `${environment.apiUrl}/support/${id}?pdf=1`,
+      { responseType: 'arraybuffer'},
+    );
+  }
+
   public getLogById(id: string): Observable<any> {
     return this.http.get<LogsResponse>(
       `${environment.apiUrl}/support/${id}`,
     );
   }
 
-  public getLogs(errorOnly = false): Observable<LogsResponse> {
+  public getLogs(): Observable<LogsResponse> {
     return this.http.get<LogsResponse>(
       `${environment.apiUrl}/support/list`,
-    );
-  }
-
-  public downloadPdf(id: string): Observable<any> {
-    return this.http.get(
-      `${environment.apiUrl}/support/${id}?pdf=1`,
-      { responseType: 'arraybuffer'},
     );
   }
 }
