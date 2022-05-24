@@ -131,4 +131,11 @@ export class TransformationApiService {
     return this.http.get(
       `${environment.apiUrl}/transform/${transformId}/download/${dictionaryId}?strip_ns=${stripNs}`);
   }
+
+  public downloadValidationLog(transformId: number, dictionaryId: number) {
+    return this.http.get(
+      `${environment.apiUrl}/transform/${transformId}/validation/${dictionaryId}`,
+      {responseType: 'text', observe: 'response' as 'response'},
+    );
+  }
 }

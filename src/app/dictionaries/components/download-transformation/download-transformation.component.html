@@ -37,13 +37,22 @@
         <p class="mb-4 text-center">
           Your download is ready. Click the button below to start download.
         </p>
-        <div class="d-flex justify-content-center">
+        <div *ngIf="!fileDownloaded" class="d-flex justify-content-center">
           <button
             pButton
             (click)="downloadFile()"
             class="button button-primary mb-3"
             icon="pi pi-download"
             label="Download"
+          ></button>
+        </div>
+        <div *ngIf="fileDownloaded && downloadingWithoutNamespaces" class="d-flex justify-content-center">
+          <button
+            pButton
+            (click)="downloadValidationLogFile()"
+            class="button button-primary mb-3"
+            icon="pi pi-download"
+            label="Download validation log"
           ></button>
         </div>
       </ng-container>
