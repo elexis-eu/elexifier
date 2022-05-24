@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '@elexifier/core/auth.service';
-import { debounceTime, map, switchMap, take, takeUntil, tap } from 'rxjs/operators';
-import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
+import { debounceTime, filter, map, switchMap, take, takeUntil, tap } from 'rxjs/operators';
+import { BehaviorSubject, merge, Observable, of, Subject } from 'rxjs';
 import { Dictionary } from '@elexifier/dictionaries/core/type/dictionary.interface';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { TransformationService } from '@elexifier/dictionaries/core/transformation.service';
 import { Headword } from '@elexifier/dictionaries/core/type/headword.interface';
 import { SidebarStore } from '@elexifier/store/sidebar.store';
@@ -137,7 +137,18 @@ export class SidebarComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.route.params.pipe(
+    // Hack to reload the sidebar
+    const obs = merge(this.route.params, this.sidebarStore.reloader);
+
+    obs.pipe(
+      // Hack to reload the sidebar
+      switchMap((params) => {
+        if (!params) {
+          return this.route.params;
+        } else {
+          return of(params);
+        }
+      }),
       switchMap((params) => {
         this.workflowStore.type = params.workflowType;
         const isPdfWorkflow = this.workflowStore.type === 'pdf';
