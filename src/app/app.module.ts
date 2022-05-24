@@ -70,7 +70,7 @@ setup({ framework: 'Angular' });
     UserModule,
   ],
   providers: [
-    { provide: ErrorHandler, useClass: SentryErrorHandler },
+    // { provide: ErrorHandler, useClass: SentryErrorHandler },
   ],
   bootstrap: [
     AppComponent,

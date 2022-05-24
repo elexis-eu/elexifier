@@ -20,6 +20,12 @@ export class TransformationApiService {
     private http: HttpClient,
   ) { }
 
+  public validateTransformation(transformId: number, entityId: number) {
+    return this.http.get(
+      `${environment.apiUrl}/transform/${transformId}/apply/${entityId}?strip_ns=true&strip_header=false&strip_dict_scrap=false`,
+    );
+  }
+
   public applyTransformation(
     transformId: number,
     entityId: number,
