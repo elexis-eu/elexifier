@@ -15,6 +15,8 @@ import { HttpResponse } from '@angular/common/http';
 export class DownloadTransformationComponent implements OnInit, OnDestroy {
   public fileChecker: Subscription;
   public fileStatus;
+  public fileDownloaded: boolean;
+  public downloadingWithoutNamespaces: boolean;
 
   public constructor(
     public ref: DynamicDialogRef,
@@ -43,6 +45,18 @@ export class DownloadTransformationComponent implements OnInit, OnDestroy {
     this.transformationApiService.downloadTransformation(
       this.workflowStore.selectedTransformation.transformation.id,
       this.workflowStore.selectedDictionary.id,
+      this.downloadingWithoutNamespaces,
+    ).subscribe((fileResponse) => {
+      this.fileDownloaded = true;
+      this.handleReceivedFile(fileResponse);
+      this.fileChecker.unsubscribe();
+    });
+  }
+
+  public downloadValidationLogFile() {
+    this.transformationApiService.downloadValidationLog(
+      this.workflowStore.selectedTransformation.transformation.id,
+      this.workflowStore.selectedDictionary.id,
     ).subscribe((fileResponse) => {
       this.ref.close();
       this.handleReceivedFile(fileResponse);
@@ -68,6 +82,8 @@ export class DownloadTransformationComponent implements OnInit, OnDestroy {
   }
 
   public onSelectDownloadOption(stripNs) {
+    this.downloadingWithoutNamespaces = stripNs;
+
     this.transformationApiService
       .prepareTransformationDownload(this.workflowStore.selectedTransformation.transformation.id, this.workflowStore.selectedDictionary.id, stripNs)
       .subscribe((transformationData: any) => {

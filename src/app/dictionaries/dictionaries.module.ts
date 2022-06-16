@@ -30,6 +30,9 @@ import { CalendarModule } from 'primeng/calendar';
 import { CharacterMappingPageComponent } from './components/character-mapping-page/character-mapping-page.component';
 import { ClarinPullModalComponent } from './components/clarin-pull-modal/clarin-pull-modal.component';
 import { PosMappingPageComponent } from './components/pos-mapping-page/pos-mapping-page.component';
+import {
+  TransformationErrorsModalComponent
+} from '@elexifier/dictionaries/components/transformation-errors-modal/transformation-errors-modal.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +48,7 @@ import { PosMappingPageComponent } from './components/pos-mapping-page/pos-mappi
     CharacterMappingPageComponent,
     ClarinPullModalComponent,
     PosMappingPageComponent,
+    TransformationErrorsModalComponent,
   ],
     imports: [
       SharedModule,
@@ -74,6 +78,7 @@ import { PosMappingPageComponent } from './components/pos-mapping-page/pos-mappi
   entryComponents: [
     CreateDictionaryAndOrTransformationModalComponent,
     DownloadTransformationComponent,
+    TransformationErrorsModalComponent,
     CreateDictionaryComponent,
   ],
 })

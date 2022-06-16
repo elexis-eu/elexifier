@@ -15,6 +15,12 @@ import {DictionaryApiService} from '@elexifier/dictionaries/core/dictionary-api.
 import {PathBuilder} from '@elexifier/dictionaries/core/path-builder';
 import { countryMap, langs } from '@elexifier/dictionaries/core/data/languages';
 import {NgbTypeahead} from '@ng-bootstrap/ng-bootstrap';
+import {
+  ClarinPullModalComponent
+} from '@elexifier/dictionaries/components/clarin-pull-modal/clarin-pull-modal.component';
+import {
+  TransformationErrorsModalService
+} from '@elexifier/dictionaries/components/transformation-errors-modal/transformation-errors-modal.service';
 
 enum TransformerElementsWorthOfExplanation {
   Definition = 'definition',
@@ -99,6 +105,7 @@ export class TransformationTreeComponent implements OnInit, OnChanges {
     public transformationService: TransformationService,
     private workflowStore: WorkflowStore,
     private dictionaryApiService: DictionaryApiService,
+    private transformationErrorsModalService: TransformationErrorsModalService,
   ) {
     this.selectorSearch$.pipe(
       switchMap((partialElementString) => {
@@ -500,6 +507,19 @@ export class TransformationTreeComponent implements OnInit, OnChanges {
       this.onChangeSelector(transformer, transformer.expr);
       this.highlightedSelectorIndex = 0;
     }
+  }
+
+  public validateTransformation() {
+    this.transformationApiService
+      .validateTransformation(
+        this.workflowStore.selectedTransformation.transformation.id,
+        this.workflowStore.selectedHeadword.id,
+      ).subscribe((res: any) => {
+
+      if (res?.validation?.length) {
+        this.transformationErrorsModalService.openTransformationErrorsModal(res.validation)
+      }
+    });
   }
 
 }

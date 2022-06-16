@@ -1,0 +1,22 @@
+<div class="p-2">
+  <div class="text-right">
+    <span
+      (click)="ref.close()"
+      class="pi pi-times elex-pi-times"
+    ></span>
+  </div>
+  <h4>Errors</h4>
+  <div>
+    <div class="mb-3" *ngIf="!errors.length">
+      No errors
+    </div>
+    <div class="my-2" *ngFor="let errorInstance of errors; let i = index">
+      {{i + 1}}.
+      <pre class="line-numbers language-xml higlighted-code">
+        <code>
+          {{errorInstance}}
+        </code>
+      </pre>
+    </div>
+  </div>
+</div>

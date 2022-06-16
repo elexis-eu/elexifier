@@ -15,6 +15,7 @@ import { of } from 'rxjs';
 import { Router } from '@angular/router';
 import { WorkflowStore } from '@elexifier/store/workflow.store';
 import { FileTypes } from '@elexifier/dictionaries/core/type/file-types.enum';
+import { SidebarStore } from '@elexifier/store/sidebar.store';
 
 export const NEW_TRANSFORMATION_TOOLTIP_TEXT = `Define the basic parameters of the XML transformation into the
   Elexis Data Model. You will be able to customize the transformation details later.`;
@@ -46,6 +47,7 @@ export class CreateDictionaryAndOrTransformationModalComponent implements OnInit
     private transformationApiService: TransformationApiService,
     private uploadService: UploadService,
     public workflowStore: WorkflowStore,
+    public sidebarStore: SidebarStore,
   ) {
     this.dictionaryId = config && config.data && config.data.dictionaryId || null;
     this.progressPercentage = 0;
@@ -226,7 +228,7 @@ export class CreateDictionaryAndOrTransformationModalComponent implements OnInit
               ...routerPath,
             ]);
         }
-
+        this.sidebarStore.reloadSidebarContent();
         return this.closeModalAndDisplayFeedbackToUser('Operation successful.');
       });
     } else {

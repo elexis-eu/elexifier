@@ -12,7 +12,7 @@
     <div class="col-12 my-4">
       <ng-container *ngIf="!fileStatus || fileStatus === null; else fileReadyButton;">
         <p class="mb-4 text-center">
-          The downloaded file can contain information about the original XML elements in a special namespace. Note that choosing this option will not validate the dictionary against the TEI-Lex0 schema.
+          The downloaded file can contain information about the original XML elements in a special namespace. Note that choosing this option will not validate the dictionary against the TEI Lex-0 schema.
         </p>
         <div class="d-flex justify-content-center">
           <button
@@ -37,13 +37,22 @@
         <p class="mb-4 text-center">
           Your download is ready. Click the button below to start download.
         </p>
-        <div class="d-flex justify-content-center">
+        <div *ngIf="!fileDownloaded" class="d-flex justify-content-center">
           <button
             pButton
             (click)="downloadFile()"
             class="button button-primary mb-3"
             icon="pi pi-download"
             label="Download"
+          ></button>
+        </div>
+        <div *ngIf="fileDownloaded && downloadingWithoutNamespaces" class="d-flex justify-content-center">
+          <button
+            pButton
+            (click)="downloadValidationLogFile()"
+            class="button button-primary mb-3"
+            icon="pi pi-download"
+            label="Download validation log"
           ></button>
         </div>
       </ng-container>
