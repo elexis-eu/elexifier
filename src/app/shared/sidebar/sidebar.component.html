@@ -104,7 +104,7 @@
                 class="sidebar-column-menu-item"
                 *ngFor="let dictionary of filteredDictionaries; let i = index"
                 [ngClass]="{'selected': selectedDictionaryIndex === i}"
-                (click)="onSelectDictionary(i)"
+                (click)="onSelectDictionary(dictionary.id)"
               >
                 <div class="sidebar-column-menu-item--name">
                   <div class="mr-auto" style="word-break: break-all">{{ dictionary.name }}</div>
