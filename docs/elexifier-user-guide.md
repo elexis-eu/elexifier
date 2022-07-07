@@ -43,14 +43,14 @@ The XML transformation consists of three steps:
 * 1.2. [Transform the dictionary](#Transform_the_dictionary)
 * 1.3. [Download the transformed dictionary](#Downloadtransformeddictionary)
 
-###  1.1. <a name='Uploadanewdictionary'></a>Upload a new dictionary
+###  1.1. <a name='Uploadanewdictionary'></a>Add a new dictionary
 ![](images/new-dict-link.png)
 
-Click NEW DICTIONARY in the bottom left corner of the app.
+<mark>You can upload a new dictionary or pull it from the Clarin.si repository.</mark>
 
 ![](images/new-dict.png)
 
-A pop-up window appears where you can:
+<mark>If you choose to upload a dictionary,</mark> a pop-up window appears where you can:
 1. Upload your dictionary.
 <!-- LAYOUT check alignment of the text -->
 You can drag the file you want to upload in the upload box with the dashed line or you can use the choose button to go to the correct folder on your computer and choose the file you want to upload.
@@ -69,6 +69,9 @@ You can drag the file you want to upload in the upload box with the dashed line 
 <!-- ADD  AN EXPLANATION FOR THE OPTION CREATE FROM TRANSFORMATION -->
 
 If your upload is successful, you will see the following screen, divided into three panes. 
+
+<mark>If you choose to fetch a dictionary from Clarin.si, you need to enter the dictionary's unique URL handle in the following format: `http://hdl.handle.net/<id>/<id>`. You will be presented with the list of files available at this URL for you to choose from.</mark>
+
 <!-- ADD SCREENDUMP -->
 Going from left to right, you see the XML dictionary/dictionaries in your account. By clicking on the three dots behind the ditionary file name, you can delete the dictionary or you can edit the metadata. In the next pane, you see the transformation(s) associated with the dictionary you are currently transforming and in the right pane you see a preview of your data. In the top row, four options are offered: you can download your transformed dictionary, you can edit the transformation or you can reset or remove your transformation.
 <!-- ADD LINK  TO OTHER PLACES ABOUT EDITING METADATA -->
@@ -265,6 +268,12 @@ Both elements are transformed as senses:
         </sense>
 
 ---
+<mark>
+##### 1.2.4.5 <a name='Adoptselector'></a>Adopt selector
+Sometimes you need to move elements inside other elements, e.g. an **Example Translation** must be contained within an **Example** element. To achieve this, you can use the **Adopt selector** functionality, which finds all adopted elements that are descendants of the parent element and moves them inside the parent element in the final XML file.
+</mark>
+---
+
 ####  1.2.5. <a name='BestPractices'></a>Some best practices
 This section contains a few best practices for editing your transformation.
 <!-- WHAT ELSE SHOULD WE MENTION HERE? -->
