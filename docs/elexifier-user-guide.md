@@ -72,6 +72,12 @@ If your upload is successful, you will see the following screen, divided into th
 
 <mark>If you choose to fetch a dictionary from Clarin.si, you need to enter the dictionary's unique URL handle in the following format: `http://hdl.handle.net/<id>/<id>`. You will be presented with the list of files available at this URL for you to choose from.</mark>
 
+![](images/pull-from-clarin.png)
+
+<mark>
+The metadata is taken from the Clarin.si repository and you only need to define the dictionary's acronym which will be used to construct unique identifiers of individual elements. In the final step, you then need to defined the entry and headword elements and the transformation name as described above.
+</mark>
+
 <!-- ADD SCREENDUMP -->
 Going from left to right, you see the XML dictionary/dictionaries in your account. By clicking on the three dots behind the ditionary file name, you can delete the dictionary or you can edit the metadata. In the next pane, you see the transformation(s) associated with the dictionary you are currently transforming and in the right pane you see a preview of your data. In the top row, four options are offered: you can download your transformed dictionary, you can edit the transformation or you can reset or remove your transformation.
 <!-- ADD LINK  TO OTHER PLACES ABOUT EDITING METADATA -->
