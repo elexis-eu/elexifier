@@ -1,0 +1,192 @@
+<TEI xmlns:m="http://elex.is/wp1/teiLex0Mapper/meta" xmlns:a="http://elex.is/wp1/teiLex0Mapper/legacyAttributes" xmlns="http://www.tei-c.org/ns/1.0">
+  <teiHeader>
+    <fileDesc>
+      <titleStmt>
+        <title>GLOBAL French Portuguese Dictionary - Sample</title>
+      </titleStmt>
+      <extent></extent>
+      <publicationStmt>
+        <publisher>K Dictionaries Ltd</publisher>
+        <availability status="restricted">
+          <licence>RES</licence>
+        </availability>
+        <date when=""></date>
+        <idno></idno>
+      </publicationStmt>
+      <sourceDesc>
+        <p></p>
+      </sourceDesc>
+    </fileDesc>
+  </teiHeader>
+  <text>
+    <body>
+      <entry xml:lang="fre" type="null" xml:id="SD_boire_1_verb">
+        <form type="lemma">
+          <orth>boire</orth>
+        </form>
+        <dictScrap>bwaʀ</dictScrap>
+        <gramGrp>
+          <gram orig="verb" type="pos">verb</gram>
+        </gramGrp>
+        <sense xml:id="SD_boire_1_verb_1">
+          <seg>
+            <gloss>avaler</gloss>
+          </seg>
+          <def>avaler un liquide</def>
+          <seg>
+            <seg>
+              <cit type="translationEquivalent">
+                <quote xml:lang="por">beber<seg>bəˈber</seg></quote>
+              </cit>
+            </seg>
+          </seg>
+          <seg>
+            <cit type="example">
+              <quote>boire du thé</quote>
+              <cit type="translation">
+                <quote xml:lang="por">beber chá</quote>
+              </cit>
+            </cit>
+          </seg>
+          <seg>
+            <cit type="example">
+              <quote>boire un verre d'eau</quote>
+              <cit type="translation">
+                <quote xml:lang="por">beber um copo de água</quote>
+              </cit>
+            </cit>
+          </seg>
+        </sense>
+        <sense xml:id="SD_boire_1_verb_2">
+          <def>absorber</def>
+          <seg>
+            <seg>
+              <cit type="translationEquivalent">
+                <quote xml:lang="por">beber</quote>
+              </cit>
+            </seg>
+          </seg>
+          <seg>
+            <cit type="example">
+              <quote>Le sol a bu toute l'eau.</quote>
+              <cit type="translation">
+                <quote xml:lang="por">A terra bebeu a água toda.</quote>
+              </cit>
+            </cit>
+          </seg>
+        </sense>
+      </entry>
+      <entry xml:lang="fre" type="null" xml:id="SD_café_1_noun">
+        <form type="lemma">
+          <orth>café</orth>
+        </form>
+        <dictScrap>kafe</dictScrap>
+        <gramGrp>
+          <gram orig="noun" type="pos">noun</gram>
+        </gramGrp>
+        <sense xml:id="SD_café_1_noun_1">
+          <seg>
+            <gloss>boisson</gloss>
+          </seg>
+          <def>boisson obtenue à partir de graines grillées</def>
+          <seg>
+            <seg>
+              <seg>
+                <cit type="translationEquivalent">
+                  <quote xml:lang="por">café<seg>kɐ'fɛ</seg></quote>
+                </cit>
+              </seg>
+            </seg>
+          </seg>
+          <seg>
+            <cit type="example">
+              <quote>un café crème</quote>
+              <cit type="translation">
+                <quote xml:lang="por">um garoto<seg>gɐ'rotu</seg></quote>
+              </cit>
+            </cit>
+          </seg>
+          <seg>
+            <cit type="example">
+              <quote>un café au lait</quote>
+              <cit type="translation">
+                <quote xml:lang="por">um galão<seg>gɐ'lɐ̃w</seg></quote>
+              </cit>
+            </cit>
+          </seg>
+          <seg>
+            <cit type="example">
+              <quote>boire un café</quote>
+              <cit type="translation">
+                <quote xml:lang="por">beber um café</quote>
+              </cit>
+            </cit>
+          </seg>
+          <seg>
+            <cit type="example">
+              <quote>faire le café</quote>
+              <cit type="translation">
+                <quote xml:lang="por">fazer café</quote>
+              </cit>
+            </cit>
+          </seg>
+        </sense>
+        <sense xml:id="SD_café_1_noun_2">
+          <seg>
+            <gloss>produit</gloss>
+          </seg>
+          <def>produit avec lequel on prépare une boisson</def>
+          <seg>
+            <seg>
+              <cit type="translationEquivalent">
+                <quote xml:lang="por">café</quote>
+              </cit>
+            </seg>
+          </seg>
+          <seg>
+            <cit type="example">
+              <quote>acheter un paquet de café</quote>
+              <cit type="translation">
+                <quote xml:lang="por">comprar um pacote de café</quote>
+              </cit>
+            </cit>
+          </seg>
+          <seg>
+            <cit type="example">
+              <quote>du café soluble/instantané</quote>
+              <cit type="translation">
+                <quote xml:lang="por"/>
+              </cit>
+              <cit type="translation">
+                <quote xml:lang="por">café solúvel/ instantâneo</quote>
+              </cit>
+            </cit>
+          </seg>
+        </sense>
+        <sense xml:id="SD_café_1_noun_3">
+          <seg>
+            <gloss>lieu</gloss>
+          </seg>
+          <def>lieu où l'on consomme des boissons</def>
+          <seg>
+            <seg>
+              <seg>
+                <cit type="translationEquivalent">
+                  <quote xml:lang="por">bar<seg>'bar</seg></quote>
+                </cit>
+              </seg>
+            </seg>
+          </seg>
+          <seg>
+            <cit type="example">
+              <quote>se retrouver dans un café</quote>
+              <cit type="translation">
+                <quote xml:lang="por">encontrar-se num café</quote>
+              </cit>
+            </cit>
+          </seg>
+        </sense>
+      </entry>
+    </body>
+  </text>
+</TEI>

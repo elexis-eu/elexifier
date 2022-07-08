@@ -39,18 +39,18 @@ Elexifier is available on [elexifier.elex.is](elexifier.elex.is). You can create
 
 ##  1. <a name='XMLtransformation'></a>XML transformation
 The XML transformation consists of three steps:
-* 1.1. [Upload a new XML dictionary](#Uploadanewdictionary)
+* 1.1. [Add a new XML dictionary](#Uploadanewdictionary)
 * 1.2. [Transform the dictionary](#Transform_the_dictionary)
 * 1.3. [Download the transformed dictionary](#Downloadtransformeddictionary)
 
 ###  1.1. <a name='Uploadanewdictionary'></a>Add a new dictionary
 ![](images/new-dict-link.png)
 
-<mark>You can upload a new dictionary or pull it from the Clarin.si repository.</mark>
+You can upload a new dictionary or pull it from the Clarin.si repository.
 
 ![](images/new-dict.png)
 
-<mark>If you choose to upload a dictionary,</mark> a pop-up window appears where you can:
+If you choose to upload a dictionary, a pop-up window appears where you can:
 1. Upload your dictionary.
 <!-- LAYOUT check alignment of the text -->
 You can drag the file you want to upload in the upload box with the dashed line or you can use the choose button to go to the correct folder on your computer and choose the file you want to upload.
@@ -64,21 +64,21 @@ You can drag the file you want to upload in the upload box with the dashed line 
 - TRANSFORMATION NAME: select a name for your transformation
 
 >**Note**: XPath (XML Path Language) is used for selecting the elements in your XML file. To learn about XPath, see e.g. this [XPath tutorial](https://www.w3schools.com/xml/xpath_intro.asp) or this [one](https://elexis.humanistika.org/resource/posts/xpath-for-dictionary-nerds), which is particularly targeted at dictionaries.
+
 >**Note**: The ENTRY and HEADWORD parameters will be used for the initial segmentation of your dictionary. The current version of Elexifier does not support subsequent re-segmentation according to different values of the ENTRY and HEADWORD parameters. If you want to change the segmentation, create a new transformation.
 <!-- term segmentation or transformation -->
 <!-- ADD  AN EXPLANATION FOR THE OPTION CREATE FROM TRANSFORMATION -->
 
-If your upload is successful, you will see the following screen, divided into three panes. 
-
-<mark>If you choose to fetch a dictionary from Clarin.si, you need to enter the dictionary's unique URL handle in the following format: `http://hdl.handle.net/<id>/<id>`. You will be presented with the list of files available at this URL for you to choose from.</mark>
+If you choose to fetch a dictionary from Clarin.si, you need to enter the dictionary's unique URL handle in the following format: `http://hdl.handle.net/<id>/<id>`. You will be presented with the list of files available at this URL for you to choose from.
 
 ![](images/pull-from-clarin.png)
 
-<mark>
-The metadata is taken from the Clarin.si repository and you only need to define the dictionary's acronym which will be used to construct unique identifiers of individual elements. In the final step, you then need to defined the entry and headword elements and the transformation name as described above.
-</mark>
+The metadata is taken from the Clarin.si repository and you only need to define the dictionary's acronym which will be used to construct unique identifiers of individual elements. In the final step, you then need to define the entry and headword elements and the transformation name as described above.
+
 
 <!-- ADD SCREENDUMP -->
+If you successfully added a dictionary, you will see the following screen, divided into three panes. 
+![](images/three-panes.png)
 Going from left to right, you see the XML dictionary/dictionaries in your account. By clicking on the three dots behind the ditionary file name, you can delete the dictionary or you can edit the metadata. In the next pane, you see the transformation(s) associated with the dictionary you are currently transforming and in the right pane you see a preview of your data. In the top row, four options are offered: you can download your transformed dictionary, you can edit the transformation or you can reset or remove your transformation.
 <!-- ADD LINK  TO OTHER PLACES ABOUT EDITING METADATA -->
 <!-- WHAT HAPPENS EXACTLY WHEN YOU RESET THE TRANSFORMATION = RESET TO UPLOAD VALUES? -->
@@ -122,13 +122,13 @@ Elexifier helps you with the selection of XML elements by validating paths and p
 
 ![](images/xml-suggestions.png)
 
->**NOTE:** The elements search is case-sensitive.
+>**Note:** The elements search is case-sensitive.
 
 Once you are happy with the information that you have entered, click **Update** in the top-right corner to update the transformation. For an example, see [here](#Asimpletransformation).
 
 #### 1.2.3. Advanced editing options
-Sometimes simply selecting the XML element or specifying the path is not enough. In those intances, you can use the following advanced editing options:
-1. Optionally, use **EXCL.** to define the element which should not be included in the transformed dictionary. See [Exclude elements](#Excludeelements) for an example.
+Sometimes simply selecting the XML element or specifying the path is not enough. In those instances, you can use the following advanced editing options:
+1. Use **EXCL.** to define the element which should not be included in the transformed dictionary. See [Exclude elements](#Excludeelements) for an example.
 2. You can join elements to transform multiple XML elements in the input into one core element. See [Join elements](#Joinelements) for an example.
 2. Select the value to be included in the transformed dictionary:
     - **Element inner text**: extract the inner text of the element
@@ -307,7 +307,7 @@ The part-of-speech core element is unique among core elements, because you have 
 
 ![](images/pos-1.png)
 
-Start by definng the original XML file part-of-speech element and its value as usual.
+Start by defining the original XML file part-of-speech element and its value as usual.
 
 ![](images/pos-2.png)
 
@@ -340,6 +340,8 @@ Note that two options are provided, you can download the dictionary:
 - **With namespaces**, which keeps the information on the original xml elements
 - **Without namespaces**, which discards the information on the original xml elements
 <!-- ADD INFO ON WHEN WHICH OPTION SHOULD BE SELECTED; E.G. FOR MATRIX DICTIONARY BOTH OPTIONS ARE FINE, FOR .. -->
+For further processing within the ELEXIS infrastructure, you should choose the option ‘download without namespaces’.
+
 The processing starts in the background. Once processing has finished, you will see a **Download** button which you can use to download the transformed dictionary.
 
 ![](images/download-ready.png)

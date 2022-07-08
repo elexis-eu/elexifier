@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Dictionary title="Global French Portuguese Dictionary" publisher="K Dictionaries Ltd" sourceLanguage="fr" targetLanguage="pt">
+  <Entry hw="boire" HomNum="" pos="verb" identifier="EN00001420">
+    <DictionaryEntry identifier="FR-001585">
+      <HeadwordCtn>
+        <Headword>boire</Headword>
+        <Pronunciation>bwaʀ</Pronunciation>
+        <PartOfSpeechCtn>
+          <PartOfSpeech value="verb" />
+          <Subcategorization value="transitive" />
+        </PartOfSpeechCtn>
+      </HeadwordCtn>
+      <SenseBlock>
+        <SenseGrp identifier="SE00002342">
+          <SidCtn identifier="SI00001059">
+            <SenseIndicator>avaler</SenseIndicator>
+          </SidCtn>
+          <Definition>avaler un liquide</Definition>
+          <TranslationCluster identifier="TC00004340" type="def" text="avaler un liquide">
+            <Locale lang="pt">
+              <Translation>beber<Pronunciation>bəˈber</Pronunciation></Translation>
+            </Locale>
+          </TranslationCluster>
+          <ExampleCtn>
+            <Example>boire du thé</Example>
+            <TranslationCluster identifier="TC00004341" type="exmp" text="boire du thé">
+              <Locale lang="pt">
+                <Translation>beber chá</Translation>
+              </Locale>
+            </TranslationCluster>
+          </ExampleCtn>
+          <ExampleCtn>
+            <Example>boire un verre d'eau</Example>
+            <TranslationCluster identifier="TC00004342" type="exmp" text="boire un verre d'eau">
+              <Locale lang="pt">
+                <Translation>beber um copo de água</Translation>
+              </Locale>
+            </TranslationCluster>
+          </ExampleCtn>
+        </SenseGrp>
+        <SenseGrp identifier="SE00002343">
+          <Definition>absorber</Definition>
+          <TranslationCluster identifier="TC00004343" type="def" text="absorber">
+            <Locale lang="pt">
+              <Translation>beber</Translation>
+            </Locale>
+          </TranslationCluster>
+          <ExampleCtn>
+            <Example>Le sol a bu toute l'eau.</Example>
+            <TranslationCluster identifier="TC00004344" type="exmp" text="Le sol a bu toute l'eau.">
+              <Locale lang="pt">
+                <Translation>A terra bebeu a água toda.</Translation>
+              </Locale>
+            </TranslationCluster>
+          </ExampleCtn>
+        </SenseGrp>
+      </SenseBlock>
+    </DictionaryEntry>
+  </Entry>
+  <Entry hw="café" HomNum="" pos="noun" identifier="EN00001726">
+    <DictionaryEntry identifier="FR-001917">
+      <HeadwordCtn>
+        <Headword>café</Headword>
+        <Pronunciation>kafe</Pronunciation>
+        <PartOfSpeech value="noun" />
+        <GrammaticalGender value="masculine" />
+      </HeadwordCtn>
+      <SenseBlock>
+        <SenseGrp identifier="SE00002806">
+          <SidCtn identifier="SI00001233">
+            <SenseIndicator>boisson</SenseIndicator>
+          </SidCtn>
+          <Definition>boisson obtenue à partir de graines grillées</Definition>
+          <TranslationCluster identifier="TC00005133" type="def" text="boisson obtenue à partir de graines grillées">
+            <Locale lang="pt">
+              <TranslationCtn>
+                <Translation>café<Pronunciation>kɐ'fɛ</Pronunciation></Translation>
+                <GrammaticalGender value="masculine" />
+              </TranslationCtn>
+            </Locale>
+          </TranslationCluster>
+          <ExampleCtn>
+            <Example>un café crème</Example>
+            <TranslationCluster identifier="TC00005134" type="exmp" text="un café crème">
+              <Locale lang="pt">
+                <TranslationCtn>
+                  <Translation>um garoto<Pronunciation>gɐ'rotu</Pronunciation></Translation>
+                  <GrammaticalGender value="masculine" />
+                </TranslationCtn>
+              </Locale>
+            </TranslationCluster>
+          </ExampleCtn>
+          <ExampleCtn>
+            <Example>un café au lait</Example>
+            <TranslationCluster identifier="TC00005135" type="exmp" text="un café au lait">
+              <Locale lang="pt">
+                <TranslationCtn>
+                  <Translation>um galão<Pronunciation>gɐ'lɐ̃w</Pronunciation></Translation>
+                  <GrammaticalGender value="masculine" />
+                </TranslationCtn>
+              </Locale>
+            </TranslationCluster>
+          </ExampleCtn>
+          <ExampleCtn>
+            <Example>boire un café</Example>
+            <TranslationCluster identifier="TC00005136" type="exmp" text="boire un café">
+              <Locale lang="pt">
+                <Translation>beber um café</Translation>
+              </Locale>
+            </TranslationCluster>
+          </ExampleCtn>
+          <ExampleCtn>
+            <Example>faire le café</Example>
+            <TranslationCluster identifier="TC00005137" type="exmp" text="faire le café">
+              <Locale lang="pt">
+                <Translation>fazer café</Translation>
+              </Locale>
+            </TranslationCluster>
+          </ExampleCtn>
+        </SenseGrp>
+        <SenseGrp identifier="SE00002807">
+          <SidCtn identifier="SI00001234">
+            <SenseIndicator>produit</SenseIndicator>
+          </SidCtn>
+          <Definition>produit avec lequel on prépare une boisson</Definition>
+          <TranslationCluster identifier="TC00005138" type="def" text="produit avec lequel on prépare une boisson">
+            <Locale lang="pt">
+              <Translation>café</Translation>
+            </Locale>
+          </TranslationCluster>
+          <ExampleCtn>
+            <Example>acheter un paquet de café</Example>
+            <TranslationCluster identifier="TC00005139" type="exmp" text="acheter un paquet de café">
+              <Locale lang="pt">
+                <Translation>comprar um pacote de café</Translation>
+              </Locale>
+            </TranslationCluster>
+          </ExampleCtn>
+          <ExampleCtn>
+            <Example>du café soluble/instantané</Example>
+            <TranslationCluster identifier="TC00005140" type="exmp" text="du café solubleinstantané">
+              <Locale lang="pt">
+                <TranslationCtn>
+                  <Translation>
+                    <Alternative />
+                  </Translation>
+                  <Display>café solúvel/ instantâneo</Display>
+                </TranslationCtn>
+              </Locale>
+            </TranslationCluster>
+          </ExampleCtn>
+        </SenseGrp>
+        <SenseGrp identifier="SE00002808">
+          <SidCtn identifier="SI00001235">
+            <SenseIndicator>lieu</SenseIndicator>
+          </SidCtn>
+          <Definition>lieu où l'on consomme des boissons</Definition>
+          <TranslationCluster identifier="TC00005141" type="def" text="lieu où l'on consomme des boissons">
+            <Locale lang="pt">
+              <TranslationCtn>
+                <Translation>bar<Pronunciation>'bar</Pronunciation></Translation>
+                <GrammaticalGender value="masculine" />
+              </TranslationCtn>
+            </Locale>
+          </TranslationCluster>
+          <ExampleCtn>
+            <Example>se retrouver dans un café</Example>
+            <TranslationCluster identifier="TC00005142" type="exmp" text="se retrouver dans un café">
+              <Locale lang="pt">
+                <Translation>encontrar-se num café</Translation>
+              </Locale>
+            </TranslationCluster>
+          </ExampleCtn>
+        </SenseGrp>
+      </SenseBlock>
+    </DictionaryEntry>
+  </Entry>
+</Dictionary>
