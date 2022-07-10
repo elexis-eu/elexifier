@@ -199,13 +199,13 @@ If we were to use just the `tr` element in the HEADWORD TRANSLATION core element
 In the example below, the `e/tr` element, which denotes a translation of an example sentence, is also transformed into a headword translation.
 
     <cit type="translationEquivalent">
-        <quote xml:lang="sl">žlobudranje; blebetanje, čvekanje, kvasanje; čebljanje; žuborenje, šumenje</quote>
+      <quote xml:lang="por">beber</quote>
     </cit>
     <cit type="example">
-        <quote>the distant babble of women's voices</quote>
-    </cit>
-    <cit type="translationEquivalent">
-        <quote>oddaljeno žensko žlobudranje</quote>
+      <quote>Le sol a bu toute l'eau.</quote>
+      <cit type="translationEquivalent">
+        <quote xml:lang="por">A terra bebeu a água toda.</quote>
+      </cit>
     </cit>
 
 
@@ -220,13 +220,13 @@ In the EXAMPLE TRANSLATION core element, we can then define the correct path for
 This results in the correct transformation:
 
     <cit type="translationEquivalent">
-        <quote xml:lang="sl">žlobudranje; blebetanje, čvekanje, kvasanje; čebljanje; žuborenje, šumenje</quote>
+      <quote xml:lang="por">beber</quote>
     </cit>
     <cit type="example">
-        <quote>the distant babble of women's voices</quote>
-    </cit>
-    <cit type="translation">
-        <quote xml:lang="sl">oddaljeno žensko žlobudranje</quote>
+      <quote>Le sol a bu toute l'eau.</quote>
+      <cit type="translation">
+        <quote xml:lang="por">A terra bebeu a água toda.</quote>
+      </cit>
     </cit>
 
 ---
@@ -274,10 +274,19 @@ Both elements are transformed as senses:
         </sense>
 
 ---
-<mark>
+
 ##### 1.2.4.5 <a name='Adoptselector'></a>Adopt selector
 Sometimes you need to move elements inside other elements, e.g. an **Example Translation** must be contained within an **Example** element. To achieve this, you can use the **Adopt selector** functionality, which finds all adopted elements that are descendants of the parent element and moves them inside the parent element in the final XML file.
-</mark>
+
+    <cit type="translationEquivalent">
+      <quote xml:lang="por">beber</quote>
+    </cit>
+    <cit type="example">
+      <quote>Le sol a bu toute l'eau.</quote>
+      <cit type="translation">
+        <quote xml:lang="por">A terra bebeu a água toda.</quote>
+      </cit>
+    </cit>
 ---
 
 ####  1.2.5. <a name='BestPractices'></a>Some best practices
