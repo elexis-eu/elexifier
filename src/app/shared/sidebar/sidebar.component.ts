@@ -347,9 +347,9 @@ export class SidebarComponent implements OnInit, OnDestroy {
       });
   }
 
-  public onSelectDictionary(index) {
-    this.selectedDictionaryIndex = index;
-    this.selectedDictionaryDatabaseIndex = this.dictionaries[index].id;
+  public onSelectDictionary(dictionaryId: number) {
+    this.selectedDictionaryIndex = this.dictionaries.findIndex((d) => d.id === dictionaryId);
+    this.selectedDictionaryDatabaseIndex = dictionaryId;
     this.loading.transformations = true;
 
     this.workflowStore.selectedHeadword = null;
